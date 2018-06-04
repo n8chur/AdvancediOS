@@ -1,0 +1,40 @@
+name: BestPractices
+configFiles:
+  Debug: Configurations/Debug.xcconfig
+  Release: Configurations/Release.xcconfig
+options:
+  bundleIdPrefix: com.westinnewell
+targets:
+  BestPractices:
+    type: application
+    platform: iOS
+    deploymentTarget: "12.0"
+    sources: 
+      - BestPractices
+    settings:
+      CUSTOM_BUILD_SETTING: my_value
+    dependencies:
+      - target: MyFramework
+      - carthage: ReactiveCocoa
+      - carthage: ReactiveSwift
+      - carthage: Result
+    configFiles:
+      Debug: Configurations/BestPracticesDebug.xcconfig
+      Release: Configurations/BestPracticesRelease.xcconfig
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  MyFramework:
+    type: framework
+    platform: iOS
+    sources:
+      - MyFramework
+    dependencies:
+      - carthage: ReactiveSwift
+      - carthage: Result
+    configFiles:
+      Debug: Configurations/MyFrameworkDebug.xcconfig
+      Release: Configurations/MyFrameworkRelease.xcconfig
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
