@@ -6,7 +6,7 @@ PROJECT_NAME=BestPractices
 bootstrap: 
 	brew bundle
 	bundle install
-	carthage bootstrap
+	carthage bootstrap --platform ios
 	make genproj
 
 genproj: 
