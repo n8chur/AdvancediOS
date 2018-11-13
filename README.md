@@ -4,7 +4,7 @@ BestPracticesiOS is a repository that represents a basic Swift iOS app that util
 
 ## Setup
 
-### Prerequisits
+### Prerequisites
 
 - [Homebrew](https://brew.sh)
 - [Bundler](https://bundler.io)
