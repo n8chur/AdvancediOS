@@ -4,11 +4,12 @@ configFiles:
   Release: Configurations/Release.xcconfig
 options:
   bundleIdPrefix: com.westinnewell
+  deploymentTarget:
+    iOS: "12.0"
 targets:
   BestPractices:
     type: application
     platform: iOS
-    deploymentTarget: "12.0"
     sources: 
       - BestPractices
     settings:
