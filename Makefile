@@ -1,4 +1,4 @@
-XCODEGEN_VERSION=1.9.0
+XCODEGEN_VERSION=2.0.0
 PROJECT_NAME=BestPractices
 
 .PHONY: bootstrap genproj link regenproj
