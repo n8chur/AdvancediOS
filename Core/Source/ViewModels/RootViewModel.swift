@@ -17,7 +17,8 @@ public class RootViewModel: ViewModel {
                 return Optional.some("It works!")
             }
 
-        let testTextSignalProducer = isActive.producer.whenTrue(subscribeTo: testTextInternalSignalProducer)
+        let testTextSignalProducer = isActive.producer
+            .whenTrue(subscribeTo: testTextInternalSignalProducer)
 
         testText = Property(initial: nil, then: testTextSignalProducer)
     }

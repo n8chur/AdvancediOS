@@ -13,10 +13,9 @@ public extension SignalProducer where Value == Bool, Error == NoError {
     /// - Parameter trueSignalProducer: The signal producer that will be subscribed to when the receiver sends true.
     /// - Parameter falseSignalProducer: The signal producer that will be subscribed to when the receiver sends false.
     public func whenTrue<V, E>(subscribeTo trueSignalProducer: SignalProducer<V, E>, otherwise falseSignalProducer: SignalProducer<V, E> = SignalProducer<V, E>.empty) -> SignalProducer<V, E> {
-        return map({ isActive in
+        return map { isActive in
                 return isActive ? trueSignalProducer : falseSignalProducer
-            })
-            .flatten(.latest)
+            }.flatten(.latest)
     }
 
 }

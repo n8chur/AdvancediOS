@@ -17,18 +17,17 @@ extension UIViewController {
         let trueOnAppearance = reactive
             .trigger(for: #selector(UIViewController.viewWillAppear(_:)))
             .map { _ in return true }
-            .producer
 
         let falseOnDisappearance = reactive
             .trigger(for: #selector(UIViewController.viewDidDisappear(_:)))
             .map { _ in return false }
-            .producer
 
-        return SignalProducer
+        return Signal
             .merge([
                 trueOnAppearance,
                 falseOnDisappearance,
             ])
+            .producer
             .prefix(value: startingValue)
     }
 
