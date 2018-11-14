@@ -15,7 +15,7 @@ targets:
     settings:
       CUSTOM_BUILD_SETTING: my_value
     dependencies:
-      - target: MyFramework
+      - target: Core
       - carthage: ReactiveCocoa
       - carthage: ReactiveSwift
       - carthage: Result
@@ -25,11 +25,11 @@ targets:
     prebuildScripts:
       - path: Scripts/swiftlint-check.sh
         name: Swift Lint Check
-  MyFramework:
+  Core:
     type: framework
     platform: iOS
     sources:
-      - MyFramework
+      - Core
     dependencies:
       - carthage: ReactiveSwift
       - carthage: Result

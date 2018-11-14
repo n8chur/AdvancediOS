@@ -1,4 +1,5 @@
 import UIKit
+import Core
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -6,11 +7,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
 
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-
-        self.window?.rootViewController = ViewController()
-        self.window?.makeKeyAndVisible()
+        window.rootViewController = RootViewController(viewModel: RootViewModel())
+        window.makeKeyAndVisible()
 
         return true
     }
