@@ -10,17 +10,17 @@ public class RootViewModel: ViewModel {
     let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")
 
     public init() {
-        let testTextInternalSignalProducer = SignalProducer
+        let testTextInternalProducer = SignalProducer
             .timer(interval: DispatchTimeInterval.milliseconds(500), on: backgroundScheduler)
             .take(first: 1)
             .map { _ in
                 return Optional.some("It works!")
             }
 
-        let testTextSignalProducer = isActive.producer
-            .whenTrue(subscribeTo: testTextInternalSignalProducer)
+        let testTextProducer = isActive.producer
+            .whenTrue(subscribeTo: testTextInternalProducer)
 
-        testText = Property(initial: nil, then: testTextSignalProducer)
+        testText = Property(initial: nil, then: testTextProducer)
     }
 
 }
