@@ -34,8 +34,27 @@ targets:
       - carthage: ReactiveSwift
       - carthage: Result
     configFiles:
-      Debug: Configurations/MyFrameworkDebug.xcconfig
-      Release: Configurations/MyFrameworkRelease.xcconfig
+      Debug: Configurations/CoreDebug.xcconfig
+      Release: Configurations/CoreRelease.xcconfig
     prebuildScripts:
       - path: Scripts/swiftlint-check.sh
         name: Swift Lint Check
+    scheme:
+      testTargets:
+        - CoreTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  CoreTests:
+    platform: iOS
+    type: bundle.unit-test
+    configFiles:
+      Debug: Configurations/CoreTests.xcconfig
+      Release: Configurations/CoreTests.xcconfig
+    sources:
+      - Tests/CoreTests/
+    dependencies:
+      - target: Core
+      - carthage: Quick
+      - carthage: Nimble

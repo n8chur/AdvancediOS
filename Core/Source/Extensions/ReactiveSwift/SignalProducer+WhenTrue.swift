@@ -10,6 +10,8 @@ public extension SignalProducer where Value == Bool, Error == NoError {
     ///
     /// If the same value is sent twice in a row the signal will be resubscribed to.
     ///
+    /// The returned signal completes with the receiver completes.
+    ///
     /// - Parameter trueProducer: The signal producer that will be subscribed to when the receiver sends true.
     /// - Parameter falseProducer: The signal producer that will be subscribed to when the receiver sends false.
     public func whenTrue<V, E>(subscribeTo trueProducer: SignalProducer<V, E>, otherwise falseProducer: SignalProducer<V, E> = SignalProducer<V, E>.empty) -> SignalProducer<V, E> {
