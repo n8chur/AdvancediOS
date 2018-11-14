@@ -1,5 +1,6 @@
 import ReactiveSwift
 import Result
+import Core
 
 public class RootViewModel: ViewModel {
 
