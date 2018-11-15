@@ -2,8 +2,8 @@ import Quick
 import Nimble
 import ReactiveSwift
 import Result
-import Core
-import XCTest
+
+@testable import Core
 
 class SignalProducerWhenTrueSpec: QuickSpec {
     override func spec() {

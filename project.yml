@@ -10,10 +10,7 @@ targets:
   BestPractices:
     type: application
     platform: iOS
-    sources: 
-      - BestPractices
-    settings:
-      CUSTOM_BUILD_SETTING: my_value
+    sources: BestPractices
     dependencies:
       - target: Core
       - carthage: ReactiveCocoa
@@ -22,9 +19,26 @@ targets:
     configFiles:
       Debug: Configurations/BestPracticesDebug.xcconfig
       Release: Configurations/BestPracticesRelease.xcconfig
+    scheme:
+      testTargets:
+        - BestPracticesTests
+      gatherCoverageData: true
     prebuildScripts:
       - path: Scripts/swiftlint-check.sh
         name: Swift Lint Check
+  BestPracticesTests:
+    platform: iOS
+    type: bundle.unit-test
+    configFiles:
+      Debug: Configurations/BestPracticesTests.xcconfig
+      Release: Configurations/BestPracticesTests.xcconfig
+    settings:
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices
+    sources: Tests/BestPracticesTests/
+    dependencies:
+      - target: BestPractices
+      - carthage: Quick
+      - carthage: Nimble
   Core:
     type: framework
     platform: iOS
@@ -36,11 +50,8 @@ targets:
     configFiles:
       Debug: Configurations/CoreDebug.xcconfig
       Release: Configurations/CoreRelease.xcconfig
-    prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
-        name: Swift Lint Check
     scheme:
-      testTargets:
+      testTargets: 
         - CoreTests
       gatherCoverageData: true
     prebuildScripts:
@@ -52,8 +63,7 @@ targets:
     configFiles:
       Debug: Configurations/CoreTests.xcconfig
       Release: Configurations/CoreTests.xcconfig
-    sources:
-      - Tests/CoreTests/
+    sources: Tests/CoreTests/
     dependencies:
       - target: Core
       - carthage: Quick

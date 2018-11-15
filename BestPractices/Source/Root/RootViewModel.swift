@@ -2,15 +2,15 @@ import ReactiveSwift
 import Result
 import Core
 
-public class RootViewModel: ViewModel {
+class RootViewModel: ViewModel {
 
-    public let isActive = MutableProperty<Bool>(false)
+    let isActive = MutableProperty<Bool>(false)
 
-    public let testText: Property<String?>
+    let testText: Property<String?>
 
-    let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")
+    private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")
 
-    public init() {
+    init() {
         let testTextInternalProducer = SignalProducer
             .timer(interval: DispatchTimeInterval.milliseconds(500), on: backgroundScheduler)
             .take(first: 1)
