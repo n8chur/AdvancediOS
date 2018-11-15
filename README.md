@@ -10,7 +10,6 @@ This project uses [functional reactive programming](https://en.wikipedia.org/wik
 
 - [Homebrew](https://brew.sh)
 - [Bundler](https://bundler.io)
-- [homebrew-bundler](https://github.com/Homebrew/homebrew-bundle) matching the version found in [.bundler-version](.bundler-version)
 - Ruby installation matching the version found in [.ruby-version](.ruby-version) (use [RVM](https://rvm.io/rvm/basics) to switch versions)
 - Xcode installation matching version found in [.xcode-version](.xcode-version) (use [xcode-install](https://github.com/KrauseFx/xcode-install) to switch versions)
 
