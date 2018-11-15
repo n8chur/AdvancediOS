@@ -13,9 +13,6 @@ targets:
     sources: BestPractices
     dependencies:
       - target: Core
-      - carthage: ReactiveCocoa
-      - carthage: ReactiveSwift
-      - carthage: Result
     configFiles:
       Debug: Configurations/BestPracticesDebug.xcconfig
       Release: Configurations/BestPracticesRelease.xcconfig
@@ -44,9 +41,12 @@ targets:
     platform: iOS
     sources:
       - Core
+    settings:
+      OTHER_LDFLAGS: $(inherited) -all_load
     dependencies:
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - framework: Carthage/Build/iOS/Static/ReactiveCocoa.framework
+      - framework: Carthage/Build/iOS/Static/ReactiveSwift.framework
+      - framework: Carthage/Build/iOS/Static/Result.framework
     configFiles:
       Debug: Configurations/CoreDebug.xcconfig
       Release: Configurations/CoreRelease.xcconfig
