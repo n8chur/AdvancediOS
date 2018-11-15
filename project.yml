@@ -6,6 +6,10 @@ options:
   bundleIdPrefix: com.bestpractices
   deploymentTarget:
     iOS: "12.0"
+settings:
+  # These values are read in the appropriate Info.plist files.
+  BEST_PRACTICES_VERSION: "0.1.0"
+  BEST_PRACTICES_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
 targets:
   BestPractices:
     type: application
