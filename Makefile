@@ -3,6 +3,9 @@ PROJECT_NAME=BestPractices
 
 .PHONY: bootstrap genproj link regenproj
 
+autocorrect: 
+	swiftlint autocorrect
+
 bootstrap: 
 	brew bundle
 	bundle install
@@ -12,14 +15,12 @@ bootstrap:
 genproj: 
 	mint run yonaskolb/XcodeGen@$(XCODEGEN_VERSION) xcodegen --spec project.yml
 
-autocorrect: 
-	swiftlint autocorrect
-
-lint:
+lint: 
 	swiftlint lint --strict
 
 regenproj:
 	rm -rf "$(PROJECT_NAME).xcodeproj"
 	make genproj
 
-test: lint
+test: 
+	bundle exec fastlane test

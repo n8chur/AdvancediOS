@@ -1,0 +1,19 @@
+# Fastlane Constants
+default_platform(:ios)
+
+# The device to use for testing
+TEST_DEVICE = "iPhone XS"
+
+platform :ios do
+  desc "Runs all unit test targets."
+  lane :test do
+    scan(
+      devices: [TEST_DEVICE],
+      scheme: "BestPractices"
+    )
+    scan(
+      devices: [TEST_DEVICE],
+      scheme: "Core"
+    )
+  end
+end
