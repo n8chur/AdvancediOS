@@ -1,9 +1,9 @@
 name: BestPractices
-configFiles:
-  Debug: Configurations/Debug.xcconfig
-  Release: Configurations/Release.xcconfig
+# In a production application the Team ID would be set here.
+# settings:
+#  DEVELOPMENT_TEAM: "XXX"
 options:
-  bundleIdPrefix: com.westinnewell
+  bundleIdPrefix: com.bestpractices
   deploymentTarget:
     iOS: "12.0"
 targets:
@@ -16,9 +16,6 @@ targets:
       - carthage: ReactiveCocoa
       - carthage: ReactiveSwift
       - carthage: Result
-    configFiles:
-      Debug: Configurations/BestPracticesDebug.xcconfig
-      Release: Configurations/BestPracticesRelease.xcconfig
     scheme:
       testTargets:
         - BestPracticesTests
@@ -29,9 +26,8 @@ targets:
   BestPracticesTests:
     platform: iOS
     type: bundle.unit-test
-    configFiles:
-      Debug: Configurations/BestPracticesTests.xcconfig
-      Release: Configurations/BestPracticesTests.xcconfig
+    settings:
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
     sources: Tests/BestPracticesTests/
     dependencies:
       - target: BestPractices
@@ -45,9 +41,6 @@ targets:
     dependencies:
       - carthage: ReactiveSwift
       - carthage: Result
-    configFiles:
-      Debug: Configurations/CoreDebug.xcconfig
-      Release: Configurations/CoreRelease.xcconfig
     scheme:
       testTargets: 
         - CoreTests
@@ -58,9 +51,6 @@ targets:
   CoreTests:
     platform: iOS
     type: bundle.unit-test
-    configFiles:
-      Debug: Configurations/CoreTests.xcconfig
-      Release: Configurations/CoreTests.xcconfig
     sources: Tests/CoreTests/
     dependencies:
       - target: Core

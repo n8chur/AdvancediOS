@@ -1,1 +1,0 @@
-TEST_HOST = $(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices
