@@ -1,8 +1,8 @@
 # BestPracticesiOS
 
-BestPracticesiOS is a repository that represents a basic Swift iOS app that utilizes best practices for Xcode developement.
+BestPracticesiOS is a repository that represents a basic Swift iOS app that utilizes best practices for Xcode development.
 
-This project uses [functional reactive programming](https://en.wikipedia.org/wiki/Functional_reactive_programming) inspired concepts (with [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)), although that doing so is necessarily a best practice for every project.
+This project uses [functional reactive programming](https://en.wikipedia.org/wiki/Functional_reactive_programming) inspired concepts (with [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)), although this is not necessarily a best practice for every project.
 
 ## Setup
 
