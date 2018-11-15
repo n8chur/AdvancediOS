@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class RootView: UIView {
 
@@ -16,17 +17,19 @@ class RootView: UIView {
 
         self.backgroundColor = .red
 
-        label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
 
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            label.leadingAnchor.constraint(lessThanOrEqualTo: self.leadingAnchor),
-            label.trailingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
-            label.topAnchor.constraint(lessThanOrEqualTo: self.safeAreaLayoutGuide.topAnchor),
-            label.bottomAnchor.constraint(greaterThanOrEqualTo: self.safeAreaLayoutGuide.bottomAnchor),
-        ])
+        label.backgroundColor = .blue
+
+        label.snp.makeConstraints { make in
+            make.center.equalTo(self.snp.center)
+            // Allow label to expand up to leading/trailing margins.
+            make.leading.greaterThanOrEqualTo(self.snp.leadingMargin)
+            make.trailing.lessThanOrEqualTo(self.snp.trailingMargin)
+            // Allow label to expand up to top and bottom of safe area.
+            make.top.greaterThanOrEqualTo(self.safeAreaLayoutGuide.snp.top)
+            make.bottom.lessThanOrEqualTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
     }
 
     @available(*, unavailable)

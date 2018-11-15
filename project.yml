@@ -20,6 +20,7 @@ targets:
       - carthage: ReactiveCocoa
       - carthage: ReactiveSwift
       - carthage: Result
+      - carthage: SnapKit
     scheme:
       testTargets:
         - BestPracticesTests
