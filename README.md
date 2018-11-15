@@ -18,8 +18,3 @@ This project uses [functional reactive programming](https://en.wikipedia.org/wik
 
 1. `$ make bootstrap`
 2. Open the generated `BestPractices.xcodeproj`.
-
-## // TODO:
-
-- Finish README
-- Add tests
