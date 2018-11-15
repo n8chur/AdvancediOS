@@ -15,12 +15,9 @@ class RootView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.backgroundColor = .red
+        backgroundColor = .white
 
         addSubview(label)
-
-        label.backgroundColor = .blue
-
         label.snp.makeConstraints { make in
             make.center.equalTo(self.snp.center)
             // Allow label to expand up to leading/trailing margins.
