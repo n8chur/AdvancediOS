@@ -32,8 +32,6 @@ targets:
     configFiles:
       Debug: Configurations/BestPracticesTests.xcconfig
       Release: Configurations/BestPracticesTests.xcconfig
-    settings:
-      TEST_HOST: $(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices
     sources: Tests/BestPracticesTests/
     dependencies:
       - target: BestPractices
