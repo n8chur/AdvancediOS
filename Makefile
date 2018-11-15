@@ -1,13 +1,17 @@
 XCODEGEN_VERSION=2.0.0
 PROJECT_NAME=BestPractices
 
-.PHONY: bootstrap genproj link regenproj
+.PHONY: bootstrap build_static genproj autocorrect link regenproj test
 
 bootstrap: 
 	brew bundle
 	bundle install
-	carthage bootstrap --platform ios
+	carthage checkout
+	make build_static
 	make genproj
+
+build_static:
+	./Scripts/carthage-build-static.sh --platform ios
 
 genproj: 
 	mint run yonaskolb/XcodeGen@$(XCODEGEN_VERSION) xcodegen --spec project.yml

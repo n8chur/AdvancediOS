@@ -34,15 +34,13 @@ targets:
     sources: Tests/BestPracticesTests/
     dependencies:
       - target: BestPractices
-      - carthage: Quick
-      - carthage: Nimble
+      - framework: Carthage/Build/iOS/Static/Quick.framework
+      - framework: Carthage/Build/iOS/Static/Nimble.framework
   Core:
     type: framework
     platform: iOS
     sources:
       - Core
-    settings:
-      OTHER_LDFLAGS: $(inherited) -all_load
     dependencies:
       - framework: Carthage/Build/iOS/Static/ReactiveCocoa.framework
       - framework: Carthage/Build/iOS/Static/ReactiveSwift.framework
@@ -66,5 +64,5 @@ targets:
     sources: Tests/CoreTests/
     dependencies:
       - target: Core
-      - carthage: Quick
-      - carthage: Nimble
+      - framework: Carthage/Build/iOS/Static/Quick.framework
+      - framework: Carthage/Build/iOS/Static/Nimble.framework
