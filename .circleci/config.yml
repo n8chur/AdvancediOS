@@ -14,17 +14,26 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Bootstrap Project
-          command: make bootstrap
+      - restore_cache:
+          keys:
+            - rome
 
       - run:
           name: Lint
           command: make lint
 
       - run:
+          name: Bootstrap Project
+          command: make bootstrap
+
+      - run:
           name: Build and run tests
           command: make test
+
+      - save_cache:
+          key: rome
+          paths:
+            - Rome
 
       - store_test_results:
           path: test_output/report.xml
