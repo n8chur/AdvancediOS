@@ -1,4 +1,5 @@
 brew "carthage"
 brew "mint"
 brew "swiftlint"
-brew "blender/tap/rome"
+tap "blender/homebrew-tap"
+brew "rome"
