@@ -2,7 +2,7 @@ xcassets:
   inputs: Core/Resources/Images.xcassets
   outputs:
     templateName: swift4
-    output: Core/Source/SwiftGen/Images.swift
+    output: Core/Source/SwiftGen/Image.swift
     params:
       enumName: Image
       publicAccess: true
