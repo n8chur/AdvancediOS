@@ -19,12 +19,12 @@ jobs:
             - rome
 
       - run:
-          name: Lint
-          command: make lint
-
-      - run:
           name: Setup Project
           command: make setup
+
+      - run:
+          name: Lint
+          command: make lint
 
       - run:
           name: Bootstrap Project
