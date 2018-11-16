@@ -18,4 +18,4 @@ This project is mostly intended to be used as a playground to experiment with ne
 ### Installation
 
 1. `$ make setup && make bootstrap`
-2. Open the generated `BestPractices.xcodeproj`.
+2. Open the generated `BestPractices.xcodeproj`
