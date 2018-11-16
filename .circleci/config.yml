@@ -3,7 +3,7 @@ jobs:
   build:
 
     macos:
-      xcode: "10.1"
+      xcode: "10.1.0"
 
     environment:
       ENV: CI
