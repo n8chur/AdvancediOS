@@ -37,7 +37,7 @@ jobs:
       - save_cache:
           key: rome
           paths:
-            - Rome
+            - RomeCache
 
       - store_test_results:
           path: test_output/report.xml
