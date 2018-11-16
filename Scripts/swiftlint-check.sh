@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if which swiftlint >/dev/null; then
   if [ "$ENV" = "CI" ]; then
     echo "warning: Skipping SwiftLint because ENV is CI"
