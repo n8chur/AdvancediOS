@@ -23,6 +23,10 @@ jobs:
           command: make lint
 
       - run:
+          name: Setup Project
+          command: make setup
+
+      - run:
           name: Bootstrap Project
           command: make bootstrap
 
