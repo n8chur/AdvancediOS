@@ -47,4 +47,4 @@ swiftgen:
 	$(SWIFTGEN)
 
 test: 
-	bundle exec fastlane tes
+	bundle exec fastlane test
