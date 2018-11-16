@@ -1,7 +1,9 @@
 XCODEGEN_VERSION=2.0.0
 PROJECT_NAME=BestPractices
+SWIFTGEN_VERSION=6.0.2
+SWIFTGEN=mint run SwiftGen/SwiftGen@$(SWIFTGEN_VERSION)
 
-.PHONY: autocorrect bootstrap carthage_bootstrap carthage_checkout carthage_update genproj install link regenproj setup test
+.PHONY: autocorrect bootstrap carthage_bootstrap carthage_checkout carthage_update genproj install link regen regenproj setup swiftgen test
 
 autocorrect: 
 	swiftlint autocorrect
@@ -27,6 +29,11 @@ genproj:
 
 lint: 
 	swiftlint lint --strict
+	$(SWIFTGEN) swiftgen config lint
+
+regen:
+	make swiftgen
+	make regenproj
 
 regenproj:
 	rm -rf "$(PROJECT_NAME).xcodeproj"
@@ -36,5 +43,8 @@ setup:
 	brew bundle
 	bundle install
 
+swiftgen:
+	$(SWIFTGEN)
+
 test: 
-	bundle exec fastlane test
+	bundle exec fastlane tes
