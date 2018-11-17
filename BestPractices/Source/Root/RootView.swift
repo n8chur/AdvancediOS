@@ -14,10 +14,16 @@ class RootView: UIView {
     }()
 
     let imageView: UIImageView = {
-        let imageView = UIImageView(image: Image.n8churLogo.image)
+        let imageView = UIImageView()
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         return imageView
+    }()
+
+    let button: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.blue, for: .normal)
+        return button
     }()
 
     override init(frame: CGRect) {
@@ -32,13 +38,14 @@ class RootView: UIView {
 
         addSubview(label)
         label.snp.makeConstraints { make in
-            make.centerX.equalTo(imageView)
+            make.centerX.equalTo(self)
             make.top.equalTo(imageView.snp.bottom).offset(10)
-            // Allow label to expand up to leading/trailing margins.
-            make.leading.greaterThanOrEqualTo(self.snp.leadingMargin)
-            make.trailing.lessThanOrEqualTo(self.snp.trailingMargin)
-            // Allow label to expand up to bottom of safe area.
-            make.bottom.lessThanOrEqualTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.centerX.equalTo(self)
+            make.top.equalTo(label.snp.bottom).offset(10)
         }
     }
 

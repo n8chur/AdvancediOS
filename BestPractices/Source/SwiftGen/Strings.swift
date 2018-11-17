@@ -12,9 +12,18 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
+  internal enum Detail {
+    /// Details
+    internal static let title = L10n.tr("Localizable", "detail.title")
+  }
+
   internal enum Root {
     /// It works!
     internal static let testText = L10n.tr("Localizable", "root.test_text")
+    internal enum SelectDetails {
+      /// Details
+      internal static let title = L10n.tr("Localizable", "root.select_details.title")
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

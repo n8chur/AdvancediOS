@@ -3,33 +3,29 @@ import Core
 import ReactiveCocoa
 import ReactiveSwift
 
-class RootViewController: UIViewController, ViewController {
+class DetailViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = RootViewModel
-    let viewModel: RootViewModel
+    typealias ViewModelType = DetailViewModel
+    let viewModel: DetailViewModel
 
-    lazy var rootView: RootView = {
-        return RootView(frame: UIScreen.main.bounds)
+    lazy var detailView: DetailView = {
+        return DetailView(frame: UIScreen.main.bounds)
     }()
 
-    required init(viewModel: RootViewModel) {
+    required init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
     }
 
     override func loadView() {
-        view = rootView
+        view = detailView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        rootView.label.reactive.text <~ viewModel.testText
-        rootView.imageView.reactive.image <~ viewModel.image
-        rootView.button.reactive.title <~ viewModel.selectDetailsTitle
-
-        rootView.button.reactive.pressed = CocoaAction(viewModel.selectDetails)
+        detailView.label.reactive.text <~ viewModel.title
 
         viewModel.isActive <~ isAppearedProducer()
     }

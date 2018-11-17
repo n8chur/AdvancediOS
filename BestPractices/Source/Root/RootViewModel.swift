@@ -8,6 +8,14 @@ class RootViewModel: ViewModel {
 
     let testText: Property<String?>
 
+    let selectDetailsTitle = Property(value: L10n.Root.SelectDetails.title)
+
+    let image = Property(value: Image.n8churLogo.image)
+
+    let selectDetails = Action<(), DetailViewModel, NoError> { _ in
+        return SignalProducer(value: DetailViewModel())
+    }
+
     private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")
 
     init() {
