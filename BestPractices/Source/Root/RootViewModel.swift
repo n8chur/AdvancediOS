@@ -15,7 +15,7 @@ class RootViewModel: ViewModel {
             .timer(interval: DispatchTimeInterval.milliseconds(500), on: backgroundScheduler)
             .take(first: 1)
             .map { _ in
-                return Optional.some("It works!")
+                return Optional.some(L10n.Root.testText)
             }
 
         let testTextProducer = isActive.producer

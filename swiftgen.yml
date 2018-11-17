@@ -6,3 +6,9 @@ xcassets:
     params:
       enumName: Image
       publicAccess: true
+
+strings:
+  inputs: BestPractices/Supporting Files/Base.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift4
+      output: BestPractices/Source/SwiftGen/Strings.swift

@@ -1,0 +1,2 @@
+/* Test text for the root view. */
+"root.test_text" = "It works!";
