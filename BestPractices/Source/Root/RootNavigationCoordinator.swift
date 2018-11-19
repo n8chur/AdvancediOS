@@ -40,8 +40,12 @@ extension RootNavigationCoordinator: DetailPresenter {
 
         let viewController = DetailViewController(viewModel: viewModel)
 
+        let didMoveToNilParent = viewController.reactive.didMoveToNilParent.take(first: 1)
+
+        // Create a signal producer that completes when the view controller is dismissed.
         return navigationController.reactive.pushViewController.apply((viewController, true))
             .flatMapError { _ in return SignalProducer<(), NoError>.empty }
+            .then(didMoveToNilParent.producer)
             .then(SignalProducer(value: viewModel))
     }
 

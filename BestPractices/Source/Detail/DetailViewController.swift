@@ -30,7 +30,7 @@ class DetailViewController: UIViewController, ViewController {
 
         detailView.button.reactive.pressed = CocoaAction(viewModel.presentDetails)
 
-        viewModel.isActive <~ isAppearedProducer()
+        viewModel.isActive <~ reactive.isAppeared
     }
 
     @available(*, unavailable)

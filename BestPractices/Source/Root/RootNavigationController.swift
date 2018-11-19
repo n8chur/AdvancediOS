@@ -21,7 +21,7 @@ class RootNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationModel.isActive <~ isAppearedProducer()
+        navigationModel.isActive <~ reactive.isAppeared
     }
 
     @available(*, unavailable)

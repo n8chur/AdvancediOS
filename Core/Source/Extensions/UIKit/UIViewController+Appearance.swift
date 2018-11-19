@@ -1,34 +1,31 @@
 import UIKit
-import Core
 import ReactiveCocoa
 import ReactiveSwift
 import Result
 
-public extension UIViewController {
+extension Reactive where Base: UIViewController {
 
-    /// Returns a signal producer that sends true when the view has appeared and sends true when the view has
-    /// disappeared.
-    ///
-    /// Consumers can supply a starting value (whether the reciever is currently "appeared") if the view has already
-    /// appeared when this function has been called.
-    ///
-    /// - Parameter startingValue: The value to send first in the returned signal.
-    public func isAppearedProducer(startingValue: Bool = false) -> SignalProducer<Bool, NoError> {
-        let trueOnAppearance = reactive
-            .trigger(for: #selector(UIViewController.viewWillAppear(_:)))
+    public var isAppeared: Signal<Bool, NoError> {
+        let trueOnAppearance = trigger(for: #selector(UIViewController.viewWillAppear(_:)))
             .map { _ in return true }
 
-        let falseOnDisappearance = reactive
-            .trigger(for: #selector(UIViewController.viewDidDisappear(_:)))
+        let falseOnDisappearance = trigger(for: #selector(UIViewController.viewDidDisappear(_:)))
             .map { _ in return false }
 
-        return Signal
-            .merge([
-                trueOnAppearance,
-                falseOnDisappearance,
-            ])
-            .producer
-            .prefix(value: startingValue)
+        return Signal.merge([
+            trueOnAppearance,
+            falseOnDisappearance,
+        ])
     }
 
+    public var didMoveToNilParent: Signal<Base, NoError> {
+        return  signal(for: #selector(UIViewController.didMove(toParent:)))
+            .skip { arguments in
+                arguments.first != nil
+            }
+            .map { [weak base] _ in
+                return base
+            }
+            .skipNil()
+    }
 }
