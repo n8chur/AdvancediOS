@@ -1,5 +1,6 @@
 import UIKit
 import ReactiveSwift
+import Result
 import Core
 
 class RootNavigationController: UINavigationController {

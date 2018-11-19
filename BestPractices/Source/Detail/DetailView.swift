@@ -6,7 +6,7 @@ class DetailView: UIView {
 
     let requiresConstraintBasedLayout = true
 
-    let label: UILabel = {
+    let title: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -19,13 +19,20 @@ class DetailView: UIView {
         return button
     }()
 
+    let selectionResult: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         backgroundColor = .white
 
-        addSubview(label)
-        label.snp.makeConstraints { make in
+        addSubview(title)
+        title.snp.makeConstraints { make in
             make.center.equalTo(self)
             // Allow label to expand up to leading/trailing margins.
             make.leading.greaterThanOrEqualTo(self.snp.leadingMargin)
@@ -38,7 +45,13 @@ class DetailView: UIView {
         addSubview(button)
         button.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(label.snp.bottom).offset(10)
+            make.top.equalTo(title.snp.bottom).offset(10)
+        }
+
+        addSubview(selectionResult)
+        selectionResult.snp.makeConstraints { make in
+            make.centerX.equalTo(self)
+            make.top.equalTo(button.snp.bottom).offset(10)
         }
     }
 

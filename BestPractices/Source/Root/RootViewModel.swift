@@ -4,9 +4,9 @@ import Core
 
 class RootViewModel: ViewModel, DetailPresentingViewModel {
 
-    weak var presenter: DetailPresenter?
+    weak var detailPresenter: DetailPresenter?
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = MutableProperty(false)
 
     let testText: Property<String?>
 
@@ -15,7 +15,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
     let presentDetailsTitle = Property(value: L10n.Root.PresentDetails.title)
 
     lazy var presentDetails = Action<(), DetailViewModel, NoError> { [weak self] _ in
-        guard let presenter = self?.presenter else {
+        guard let presenter = self?.detailPresenter else {
             fatalError()
         }
 

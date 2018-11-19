@@ -4,7 +4,7 @@ import Core
 
 protocol DetailPresentingViewModel: class {
 
-    var presenter: DetailPresenter? { get set }
+    var detailPresenter: DetailPresenter? { get set }
 
     var presentDetails: Action<(), DetailViewModel, NoError> { get }
 

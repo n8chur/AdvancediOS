@@ -17,7 +17,7 @@ class ApplicationCoordinator: Coordinator {
     }
 
     func start(viewModel: ApplicationViewModel, completion: (() -> Void)? = nil) {
-        viewModel.presenter = self
+        viewModel.rootNavigationPresenter = self
         viewModel.presentRootNavigation.apply().startWithCompleted { completion?() }
     }
 

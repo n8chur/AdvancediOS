@@ -2,6 +2,7 @@ import UIKit
 import Core
 import ReactiveCocoa
 import ReactiveSwift
+import Result
 
 class DetailViewController: UIViewController, ViewController {
 
@@ -25,10 +26,11 @@ class DetailViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        detailView.label.reactive.text <~ viewModel.title
-        detailView.button.reactive.title <~ viewModel.presentDetailsTitle
+        detailView.title.reactive.text <~ viewModel.title
+        detailView.button.reactive.title <~ viewModel.presentSelectionTitle
+        detailView.selectionResult.reactive.text <~ viewModel.selectionResult
 
-        detailView.button.reactive.pressed = CocoaAction(viewModel.presentDetails)
+        detailView.button.reactive.pressed = CocoaAction(viewModel.presentSelection)
 
         viewModel.isActive <~ reactive.isAppeared
     }

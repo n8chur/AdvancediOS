@@ -15,6 +15,10 @@ internal enum L10n {
   internal enum Detail {
     /// Details
     internal static let title = L10n.tr("Localizable", "detail.title")
+    internal enum Select {
+      /// Select Text
+      internal static let title = L10n.tr("Localizable", "detail.select.title")
+    }
   }
 
   internal enum Root {
@@ -23,6 +27,13 @@ internal enum L10n {
     internal enum PresentDetails {
       /// Details
       internal static let title = L10n.tr("Localizable", "root.present_details.title")
+    }
+  }
+
+  internal enum Selection {
+    internal enum Submit {
+      /// Submit
+      internal static let title = L10n.tr("Localizable", "selection.submit.title")
     }
   }
 }

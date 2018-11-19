@@ -1,5 +1,6 @@
 import UIKit
 import Core
+import ReactiveCocoa
 import ReactiveSwift
 import Result
 
@@ -16,7 +17,7 @@ class RootNavigationCoordinator: Coordinator {
     }
 
     func start(viewModel: RootNavigationModel, completion: (() -> Void)? = nil) {
-        viewModel.rootViewModel.presenter = self
+        viewModel.rootViewModel.detailPresenter = self
 
         let navigationController = RootNavigationController(navigationModel: viewModel)
         self.navigationController = navigationController
@@ -36,7 +37,7 @@ extension RootNavigationCoordinator: DetailPresenter {
             fatalError()
         }
 
-        viewModel.presenter = self
+        viewModel.selectionPresenter = self
 
         let viewController = DetailViewController(viewModel: viewModel)
 
@@ -46,7 +47,37 @@ extension RootNavigationCoordinator: DetailPresenter {
         return navigationController.reactive.pushViewController.apply((viewController, true))
             .flatMapError { _ in return SignalProducer<(), NoError>.empty }
             .then(didMoveToNilParent.producer)
+            .then(SignalProducer<DetailViewModel, NoError>.empty)
+            .prefix(value: viewModel)
+    }
+
+}
+
+extension RootNavigationCoordinator: SelectionPresenter {
+
+    func presentSelection(_ viewModel: SelectionViewModel) -> SignalProducer<SelectionViewModel, NoError> {
+        guard let navigationController = navigationController else {
+            fatalError()
+        }
+
+        let viewController = SelectionViewController(viewModel: viewModel)
+
+        let selectionNavigationController = UINavigationController(rootViewController: viewController)
+
+        // Create a signal producer that completes when the view controller is dismissed.
+        return navigationController.reactive.present.apply((selectionNavigationController, true))
+            .flatMapError { _ in return SignalProducer<(), NoError>.empty }
             .then(SignalProducer(value: viewModel))
+            .flatMap(.concat) { viewModel in
+                return viewModel.submit.values
+            }
+            .take(first: 1)
+            .flatMap(.concat) { _ in
+                return selectionNavigationController.reactive.dismiss.apply(true).producer
+            }
+            .flatMapError { _ in return SignalProducer<(), NoError>.empty }
+            .then(SignalProducer<SelectionViewModel, NoError>.empty)
+            .prefix(value: viewModel)
     }
 
 }
