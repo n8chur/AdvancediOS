@@ -14,7 +14,11 @@ class DetailViewModel: ViewModel, DetailPresentingViewModel {
 
     let presentDetailsTitle = Property(value: L10n.Root.PresentDetails.title)
 
-    lazy var presentDetails = Action<(), DetailViewModel, NoError> { [weak self] _ in
+    var presentDetails: Action<(), DetailViewModel, NoError> {
+        return _presentDetails
+    }
+
+    private lazy var _presentDetails = Action<(), DetailViewModel, NoError> { [weak self] _ in
         guard let presenter = self?.presenter else {
             fatalError()
         }
