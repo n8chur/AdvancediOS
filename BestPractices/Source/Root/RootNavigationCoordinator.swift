@@ -23,6 +23,8 @@ class RootNavigationCoordinator: Coordinator {
 
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+
+        completion?()
     }
 
 }
@@ -30,21 +32,17 @@ class RootNavigationCoordinator: Coordinator {
 extension RootNavigationCoordinator: DetailPresenter {
 
     func presentDetails(_ viewModel: DetailViewModel) -> SignalProducer<DetailViewModel, NoError> {
-        return SignalProducer<DetailViewModel, NoError> { [weak self] (observer, _) in
-            guard
-                let strongSelf = self,
-                let navigationController = strongSelf.navigationController else {
-                    fatalError()
-            }
-
-            viewModel.presenter = self
-
-            let viewController = DetailViewController(viewModel: viewModel)
-            navigationController.pushViewController(viewController, animated: true) {
-                observer.send(value: viewModel)
-                observer.sendCompleted()
-            }
+        guard let navigationController = self.navigationController else {
+            fatalError()
         }
+
+        viewModel.presenter = self
+
+        let viewController = DetailViewController(viewModel: viewModel)
+
+        return navigationController.reactive.pushViewController.apply((viewController, true))
+            .flatMapError { _ in return SignalProducer<(), NoError>.empty }
+            .then(SignalProducer(value: viewModel))
     }
 
 }

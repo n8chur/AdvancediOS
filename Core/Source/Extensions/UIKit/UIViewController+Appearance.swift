@@ -4,7 +4,7 @@ import ReactiveCocoa
 import ReactiveSwift
 import Result
 
-extension UIViewController {
+public extension UIViewController {
 
     /// Returns a signal producer that sends true when the view has appeared and sends true when the view has
     /// disappeared.
@@ -13,7 +13,7 @@ extension UIViewController {
     /// appeared when this function has been called.
     ///
     /// - Parameter startingValue: The value to send first in the returned signal.
-    func isAppearedProducer(startingValue: Bool = false) -> SignalProducer<Bool, NoError> {
+    public func isAppearedProducer(startingValue: Bool = false) -> SignalProducer<Bool, NoError> {
         let trueOnAppearance = reactive
             .trigger(for: #selector(UIViewController.viewWillAppear(_:)))
             .map { _ in return true }
