@@ -26,6 +26,9 @@ class DetailViewController: UIViewController, ViewController {
         super.viewDidLoad()
 
         detailView.label.reactive.text <~ viewModel.title
+        detailView.button.reactive.title <~ viewModel.presentDetailsTitle
+
+        detailView.button.reactive.pressed = CocoaAction(viewModel.presentDetails)
 
         viewModel.isActive <~ isAppearedProducer()
     }

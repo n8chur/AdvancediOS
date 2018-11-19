@@ -27,9 +27,9 @@ class RootViewController: UIViewController, ViewController {
 
         rootView.label.reactive.text <~ viewModel.testText
         rootView.imageView.reactive.image <~ viewModel.image
-        rootView.button.reactive.title <~ viewModel.selectDetailsTitle
+        rootView.button.reactive.title <~ viewModel.presentDetailsTitle
 
-        rootView.button.reactive.pressed = CocoaAction(viewModel.selectDetails)
+        rootView.button.reactive.pressed = CocoaAction(viewModel.presentDetails)
 
         viewModel.isActive <~ isAppearedProducer()
     }

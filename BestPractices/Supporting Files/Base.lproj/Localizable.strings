@@ -2,7 +2,7 @@
 "root.test_text" = "It works!";
 
 /* The title of the button that presents the detail view. */
-"root.select_details.title" = "Details";
+"root.present_details.title" = "Details";
 
 /* The title of the detail view. */
 "detail.title" = "Details";

@@ -13,6 +13,12 @@ class DetailView: UIView {
         return label
     }()
 
+    let button: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.blue, for: .normal)
+        return button
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -27,6 +33,12 @@ class DetailView: UIView {
             // Allow label to expand up to bottom and bottom of safe area.
             make.top.greaterThanOrEqualTo(self.safeAreaLayoutGuide.snp.top)
             make.bottom.lessThanOrEqualTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.centerX.equalTo(self)
+            make.top.equalTo(label.snp.bottom).offset(10)
         }
     }
 
