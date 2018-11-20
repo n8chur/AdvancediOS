@@ -8,7 +8,7 @@ class SelectionViewController: UIViewController, ViewController {
     typealias ViewModelType = SelectionViewModel
     let viewModel: SelectionViewModel
 
-    lazy var selectionView: SelectionView = {
+    private(set) lazy var selectionView: SelectionView = {
         return SelectionView(frame: UIScreen.main.bounds)
     }()
 

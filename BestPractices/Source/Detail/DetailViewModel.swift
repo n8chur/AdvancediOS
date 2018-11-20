@@ -16,10 +16,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
-    var presentSelection: Action<(), SelectionViewModel, NoError> {
-        return _presentSelection
-    }
-    private lazy var _presentSelection = Action<(), SelectionViewModel, NoError> { [weak self] _ in
+    private(set) lazy var presentSelection = Action<(), SelectionViewModel, NoError> { [weak self] _ in
         guard
             let strongSelf = self,
             let presenter = self?.selectionPresenter else {

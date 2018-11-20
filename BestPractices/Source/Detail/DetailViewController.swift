@@ -9,7 +9,7 @@ class DetailViewController: UIViewController, ViewController {
     typealias ViewModelType = DetailViewModel
     let viewModel: DetailViewModel
 
-    lazy var detailView: DetailView = {
+    private(set) lazy var detailView: DetailView = {
         return DetailView(frame: UIScreen.main.bounds)
     }()
 

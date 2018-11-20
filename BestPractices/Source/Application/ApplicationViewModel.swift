@@ -11,11 +11,7 @@ class ApplicationViewModel: ViewModel, RootNavigationPresentingViewModel {
 
     weak var rootNavigationPresenter: RootNavigationPresenter?
 
-    var presentRootNavigation: Action<(), RootNavigationModel, NoError> {
-        return _presentRootNavigation
-    }
-
-    private lazy var _presentRootNavigation = Action<(), RootNavigationModel, NoError> { [weak self] _ in
+    private(set) lazy var presentRootNavigation = Action<(), RootNavigationModel, NoError> { [weak self] _ in
         guard let presenter = self?.rootNavigationPresenter else {
             fatalError()
         }

@@ -14,11 +14,7 @@ class SelectionViewModel: ViewModel {
 
     let submitTitle = Property(value: L10n.Selection.Submit.title)
 
-    var submit: Action<(), String?, NoError> {
-        return _submit
-    }
-
-    private lazy var _submit: Action<(), String?, NoError> = {
+    private(set) lazy var submit: Action<(), String?, NoError> = {
         return Action<(), String?, NoError> { [weak self] string in
             guard let strongSelf = self else {
                 fatalError()

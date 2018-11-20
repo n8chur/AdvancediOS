@@ -8,7 +8,7 @@ class RootViewController: UIViewController, ViewController {
     typealias ViewModelType = RootViewModel
     let viewModel: RootViewModel
 
-    lazy var rootView: RootView = {
+    private(set) lazy var rootView: RootView = {
         return RootView(frame: UIScreen.main.bounds)
     }()
 
