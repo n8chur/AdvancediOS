@@ -29,7 +29,7 @@ class RootViewController: UIViewController, ViewController {
         rootView.imageView.reactive.image <~ viewModel.image
         rootView.button.reactive.title <~ viewModel.presentDetailsTitle
 
-        rootView.button.reactive.pressed = CocoaAction(viewModel.presentDetails)
+        rootView.button.reactive.pressed = CocoaAction(viewModel.presentDetail)
 
         viewModel.isActive <~ reactive.isAppeared
     }

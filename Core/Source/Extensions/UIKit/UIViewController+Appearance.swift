@@ -28,4 +28,13 @@ extension Reactive where Base: UIViewController {
             }
             .skipNil()
     }
+
+    public var didDismiss: Signal<Base, NoError> {
+        return signal(for: #selector(UIViewController.viewWillDisappear(_:)))
+            .map { [weak base] _ in
+                return base
+            }
+            .skipNil()
+            .filter { $0.isBeingDismissed }
+    }
 }

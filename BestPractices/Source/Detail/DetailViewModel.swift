@@ -16,7 +16,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
-    private(set) lazy var presentSelection = Action<(), SelectionViewModel, NoError> { [weak self] _ in
+    private(set) lazy var presentSelection = Action<(), (), SelectionPresentError> { [weak self] _ in
         guard
             let strongSelf = self,
             let presenter = self?.selectionPresenter else {
@@ -25,15 +25,10 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
         let viewModel = SelectionViewModel()
 
-        return presenter.presentSelection(viewModel)
-    }
+        strongSelf.selectionResult <~ viewModel.submit.values
 
-    private let selectionResultTextDisposable = SerialDisposable()
-
-    init() {
-        selectionResult <~ self.presentSelection.values.flatMap(.latest) { viewModel in
-            return viewModel.submit.values
-        }
+        return presenter.selectionPresentation(of: viewModel)
+            .mapError { _ in return .unknown }
     }
 
 }

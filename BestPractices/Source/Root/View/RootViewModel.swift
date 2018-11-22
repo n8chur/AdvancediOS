@@ -14,13 +14,14 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
 
     let presentDetailsTitle = Property(value: L10n.Root.PresentDetails.title)
 
-    private(set) lazy var presentDetails = Action<(), DetailViewModel, NoError> { [weak self] _ in
+    private(set) lazy var presentDetail = Action<(), (), DetailPresentError> { [weak self] _ in
         guard let presenter = self?.detailPresenter else {
             fatalError()
         }
 
         let detailViewModel = DetailViewModel()
-        return presenter.presentDetails(detailViewModel)
+        return presenter.detailPresentation(of: detailViewModel)
+            .mapError { _ in return .unknown }
     }
 
     private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")

@@ -7,16 +7,10 @@ class RootNavigationController: UINavigationController {
 
     let navigationModel: RootNavigationModel
 
-    let rootViewController: RootViewController
-
     required init(navigationModel: RootNavigationModel) {
         self.navigationModel = navigationModel
 
-        rootViewController = RootViewController(viewModel: navigationModel.rootViewModel)
-
         super.init(nibName: nil, bundle: nil)
-
-        viewControllers = [ rootViewController ]
     }
 
     override func viewDidLoad() {

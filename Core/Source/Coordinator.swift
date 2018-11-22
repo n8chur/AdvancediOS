@@ -4,24 +4,11 @@ import Result
 public protocol Coordinator: class {
 
     associatedtype ViewModel
+    associatedtype StartError: Swift.Error
 
-    func start(viewModel: ViewModel, completion: (() -> Void)?)
-
-}
-
-public extension Coordinator {
-
-    public func makeStart(_ viewModel: ViewModel) -> SignalProducer<ViewModel, NoError> {
-        return SignalProducer { [weak self] (observer, _) in
-            guard let strongSelf = self else {
-                fatalError()
-            }
-
-            strongSelf.start(viewModel: viewModel, completion: {
-                observer.send(value: viewModel)
-                observer.sendCompleted()
-            })
-        }
-    }
+    /// Starts presenting the view modle provided by the input.
+    ///
+    /// The signal completes when the presentation finishes.
+    var start: Action<ViewModel, (), StartError> { get }
 
 }

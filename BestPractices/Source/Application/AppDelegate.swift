@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let viewModel = ApplicationViewModel()
         self.viewModel = viewModel
 
-        coordinator.start(viewModel: viewModel)
+        coordinator.start.apply(viewModel).start()
 
         return true
     }
