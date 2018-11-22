@@ -13,17 +13,21 @@ class ApplicationCoordinator: Coordinator {
     private let window: UIWindow
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { viewModel in
-        let setPresenter = SignalProducer<ViewModel, StartError> { [weak self] () -> ViewModel in
+        let setup = SignalProducer<ViewModel, StartError> { [weak self] () -> ViewModel in
             guard let strongSelf = self else {
                 fatalError()
             }
 
             viewModel.rootNavigationPresenter = strongSelf
 
+            // This should be hooked up to the UIApplication's state, but the value is currently unused so it has been
+            // omitted for simplicity.
+            viewModel.isActive.value = true
+
             return viewModel
         }
 
-        return setPresenter
+        return setup
             .flatMap(.merge) { return $0.presentRootNavigation.apply() }
             .ignoreValues()
     }

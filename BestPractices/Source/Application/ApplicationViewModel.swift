@@ -4,8 +4,7 @@ import Core
 
 class ApplicationViewModel: ViewModel, RootNavigationPresentingViewModel {
 
-    // TODO: This should be connected to Application active state.
-    var isActive = MutableProperty(true)
+    var isActive = MutableProperty(false)
 
     weak var rootNavigationPresenter: RootNavigationPresenter?
 
