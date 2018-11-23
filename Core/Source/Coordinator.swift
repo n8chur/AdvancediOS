@@ -2,7 +2,6 @@ import ReactiveSwift
 import Result
 
 public protocol Coordinator: class {
-
     associatedtype ViewModel
     associatedtype StartError: Swift.Error
 
@@ -10,5 +9,4 @@ public protocol Coordinator: class {
     ///
     /// The signal completes when the presentation finishes.
     var start: Action<ViewModel, (), StartError> { get }
-
 }

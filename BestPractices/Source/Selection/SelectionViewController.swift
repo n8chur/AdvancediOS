@@ -6,6 +6,7 @@ import ReactiveSwift
 class SelectionViewController: UIViewController, ViewController {
 
     typealias ViewModelType = SelectionViewModel
+
     let viewModel: SelectionViewModel
 
     private(set) lazy var selectionView: SelectionView = {

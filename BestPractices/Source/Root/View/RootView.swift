@@ -4,8 +4,6 @@ import Core
 
 class RootView: UIView {
 
-    let requiresConstraintBasedLayout = true
-
     let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -25,6 +23,8 @@ class RootView: UIView {
         button.setTitleColor(.blue, for: .normal)
         return button
     }()
+
+    let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -4,16 +4,13 @@ import Core
 
 class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
-    weak var selectionPresenter: SelectionPresenter?
-
     let isActive = MutableProperty(false)
 
+    weak var selectionPresenter: SelectionPresenter?
+
     let title = Property(value: L10n.Detail.title)
-
     let image = Property(value: Image.n8churLogo.image)
-
     let selectionResult = MutableProperty<String?>(nil)
-
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
     private(set) lazy var presentSelection = Action<(), (), SelectionPresentError> { [weak self] _ in

@@ -7,6 +7,7 @@ import Result
 class DetailViewController: UIViewController, ViewController {
 
     typealias ViewModelType = DetailViewModel
+
     let viewModel: DetailViewModel
 
     private(set) lazy var detailView: DetailView = {

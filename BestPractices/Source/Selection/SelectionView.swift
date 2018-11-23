@@ -4,15 +4,15 @@ import Core
 
 class SelectionView: UIView {
 
-    let requiresConstraintBasedLayout = true
-
     let textField = UITextField()
-
+    
     let submitButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.blue, for: .normal)
         return button
     }()
+
+    let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)

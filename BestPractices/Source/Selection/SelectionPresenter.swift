@@ -7,11 +7,8 @@ enum SelectionPresentError: Error {
 }
 
 protocol SelectionPresentingViewModel: class {
-
     var selectionPresenter: SelectionPresenter? { get set }
-
     var presentSelection: Action<(), (), SelectionPresentError> { get }
-
 }
 
 enum SelectionPresentationError: Error {
@@ -19,7 +16,5 @@ enum SelectionPresentationError: Error {
 }
 
 protocol SelectionPresenter: class {
-
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError>
-
 }

@@ -7,15 +7,7 @@ class ApplicationCoordinator: Coordinator {
 
     typealias ViewModel = ApplicationViewModel
     typealias StartError = ActionError<RootNavigationPresentError>
-
-    private var rootNavigationCoordinator: RootNavigationCoordinator?
-
-    private var window: UIWindow?
-
-    init(window: UIWindow) {
-        self.window = window
-    }
-
+    
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         let setup = SignalProducer<ViewModel, StartError> { () -> ViewModel in
             guard let strongSelf = self else {
@@ -34,6 +26,13 @@ class ApplicationCoordinator: Coordinator {
         return setup
             .flatMap(.merge) { return $0.presentRootNavigation.apply() }
             .ignoreValues()
+    }
+
+    private var rootNavigationCoordinator: RootNavigationCoordinator?
+    private var window: UIWindow?
+
+    init(window: UIWindow) {
+        self.window = window
     }
 
 }

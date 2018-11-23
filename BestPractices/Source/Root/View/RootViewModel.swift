@@ -4,14 +4,12 @@ import Core
 
 class RootViewModel: ViewModel, DetailPresentingViewModel {
 
-    weak var detailPresenter: DetailPresenter?
-
     let isActive = MutableProperty(false)
 
+    weak var detailPresenter: DetailPresenter?
+
     let testText: Property<String?>
-
     let image = Property(value: Image.n8churLogo.image)
-
     let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
 
     private(set) lazy var presentDetail = Action<(), (), DetailPresentError> { [weak self] _ in

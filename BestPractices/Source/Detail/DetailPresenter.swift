@@ -7,11 +7,8 @@ enum DetailPresentError: Error {
 }
 
 protocol DetailPresentingViewModel: class {
-
     var detailPresenter: DetailPresenter? { get set }
-
     var presentDetail: Action<(), (), DetailPresentError> { get }
-
 }
 
 enum DetailPresentationError: Error {
@@ -19,7 +16,5 @@ enum DetailPresentationError: Error {
 }
 
 protocol DetailPresenter: class {
-
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError>
-
 }

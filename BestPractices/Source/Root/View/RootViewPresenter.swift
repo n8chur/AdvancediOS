@@ -7,11 +7,8 @@ enum RootViewPresentError: Error {
 }
 
 protocol RootViewPresentingViewModel: class {
-
     var rootViewPresenter: RootViewPresenter? { get set }
-
     var presentRootView: Action<(), (), RootViewPresentError> { get }
-
 }
 
 enum RootViewPresentationError: Error {
@@ -19,7 +16,5 @@ enum RootViewPresentationError: Error {
 }
 
 protocol RootViewPresenter: class {
-
     func rootViewPresentation(of viewModel: RootViewModel) -> SignalProducer<(), RootViewPresentationError>
-
 }

@@ -12,10 +12,6 @@ class DetailCoordinator: Coordinator {
 
     private var viewController: DetailViewController?
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
-
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<DetailViewController, NoError> { DetailViewController(viewModel: viewModel) }
             .flatMap(.merge) { viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
@@ -38,6 +34,10 @@ class DetailCoordinator: Coordinator {
             }
             .ignoreValues()
             .mapError { _ in return .unknown }
+    }
+
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
     }
 
 }

@@ -6,6 +6,7 @@ import ReactiveSwift
 class RootViewController: UIViewController, ViewController {
 
     typealias ViewModelType = RootViewModel
+
     let viewModel: RootViewModel
 
     private(set) lazy var rootView: RootView = {

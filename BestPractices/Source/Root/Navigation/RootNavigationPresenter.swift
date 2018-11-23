@@ -7,11 +7,8 @@ enum RootNavigationPresentError: Error {
 }
 
 protocol RootNavigationPresentingViewModel: class {
-
     var rootNavigationPresenter: RootNavigationPresenter? { get set }
-
     var presentRootNavigation: Action<(), (), RootNavigationPresentError> { get }
-
 }
 
 enum RootNavigationPresentationError: Error {
@@ -19,7 +16,5 @@ enum RootNavigationPresentationError: Error {
 }
 
 protocol RootNavigationPresenter: class {
-
     func rootNavigationPresentation(of navigationModel: RootNavigationModel) -> SignalProducer<(), RootNavigationPresentationError>
-
 }

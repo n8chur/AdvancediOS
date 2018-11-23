@@ -8,12 +8,6 @@ class SelectionCoordinator: Coordinator {
     typealias ViewModel = SelectionViewModel
     typealias StartError = SelectionPresentError
 
-    private weak var presentingViewController: UIViewController?
-
-    init(presentingViewController: UIViewController) {
-        self.presentingViewController = presentingViewController
-    }
-
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
             .map(UINavigationController.init)
@@ -48,6 +42,13 @@ class SelectionCoordinator: Coordinator {
             }
             .mapError { _ in return .unknown }
     }
+
+    private weak var presentingViewController: UIViewController?
+
+    init(presentingViewController: UIViewController) {
+        self.presentingViewController = presentingViewController
+    }
+
 }
 
 extension SelectionCoordinator {

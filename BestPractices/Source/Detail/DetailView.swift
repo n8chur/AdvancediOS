@@ -4,8 +4,6 @@ import Core
 
 class DetailView: UIView {
 
-    let requiresConstraintBasedLayout = true
-
     let title: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -25,6 +23,8 @@ class DetailView: UIView {
         label.numberOfLines = 0
         return label
     }()
+
+    let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
