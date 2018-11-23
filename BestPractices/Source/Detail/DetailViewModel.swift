@@ -17,17 +17,20 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
     private(set) lazy var presentSelection = Action<(), (), SelectionPresentError> { [weak self] _ in
-        guard
-            let strongSelf = self,
-            let presenter = self?.selectionPresenter else {
-                fatalError()
-        }
+        let viewModel = SignalProducer<SelectionViewModel, SelectionPresentationError> { SelectionViewModel() }
 
-        let viewModel = SelectionViewModel()
+        return viewModel
+            .flatMap(.merge) { viewModel -> SignalProducer<(), SelectionPresentationError> in
+                guard
+                    let strongSelf = self,
+                    let presenter = self?.selectionPresenter else {
+                        fatalError()
+                }
 
-        strongSelf.selectionResult <~ viewModel.submit.values
+                strongSelf.selectionResult <~ viewModel.submit.values
 
-        return presenter.selectionPresentation(of: viewModel)
+                return presenter.selectionPresentation(of: viewModel)
+            }
             .mapError { _ in return .unknown }
     }
 

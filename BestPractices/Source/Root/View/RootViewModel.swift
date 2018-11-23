@@ -15,12 +15,16 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
     let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
 
     private(set) lazy var presentDetail = Action<(), (), DetailPresentError> { [weak self] _ in
-        guard let presenter = self?.detailPresenter else {
-            fatalError()
-        }
+        let viewModel = SignalProducer<DetailViewModel, DetailPresentationError> { DetailViewModel() }
 
-        let detailViewModel = DetailViewModel()
-        return presenter.detailPresentation(of: detailViewModel)
+        return viewModel
+            .flatMap(.merge) { viewModel -> SignalProducer<(), DetailPresentationError> in
+                guard let presenter = self?.detailPresenter else {
+                    fatalError()
+                }
+
+                return presenter.detailPresentation(of: viewModel)
+            }
             .mapError { _ in return .unknown }
     }
 
