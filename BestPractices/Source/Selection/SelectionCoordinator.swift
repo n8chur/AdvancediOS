@@ -8,7 +8,7 @@ class SelectionCoordinator: Coordinator {
     typealias ViewModel = SelectionViewModel
     typealias StartError = SelectionPresentError
 
-    let presentingViewController: UIViewController
+    private weak var presentingViewController: UIViewController?
 
     init(presentingViewController: UIViewController) {
         self.presentingViewController = presentingViewController
@@ -18,26 +18,32 @@ class SelectionCoordinator: Coordinator {
         return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
             .map(UINavigationController.init)
             .flatMap(.merge) { [weak self] navigationController -> SignalProducer<(), ActionError<NoError>> in
-                guard let strongSelf = self else {
-                    fatalError()
+                guard
+                    let strongSelf = self,
+                    let presentingViewController = strongSelf.presentingViewController else {
+                        fatalError()
                 }
 
-                let dismissOnSubmission = viewModel.submit.values.take(first: 1)
+                let dismissOnSubmission = viewModel.submit.values
+                    .take(first: 1)
                     .producer
                     .then(navigationController.reactive.dismiss.apply(true))
+                    .then(SignalProducer(value: navigationController))
 
                 let didDismiss = navigationController.reactive
                     .didDismiss
                     .take(first: 1)
-                    .ignoreValues()
                     .producer
 
-                let dismissal = SignalProducer.merge([
-                    didDismiss.promoteError(ActionError<NoError>.self),
-                    dismissOnSubmission,
-                ])
+                let dismissal = SignalProducer
+                    .merge([
+                        didDismiss.promoteError(ActionError<NoError>.self),
+                        dismissOnSubmission,
+                    ])
+                    .take(first: 1)
+                    .ignoreValues()
 
-                return strongSelf.presentingViewController.reactive.present.apply((navigationController, true))
+                return presentingViewController.reactive.present.apply((navigationController, true))
                     .then(dismissal)
             }
             .mapError { _ in return .unknown }
