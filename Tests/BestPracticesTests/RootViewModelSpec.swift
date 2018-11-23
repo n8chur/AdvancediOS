@@ -25,7 +25,7 @@ class RootViewModelSpec: QuickSpec {
 
                         rootViewModel.isActive.value = true
 
-                        expect(rootViewModel.testText.value).toEventually(equal("It works!"), timeout: 2)
+                        expect(rootViewModel.testText.value).toEventually(equal(L10n.Root.testText), timeout: 2)
                     }
                 }
             }

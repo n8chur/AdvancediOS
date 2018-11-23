@@ -5,7 +5,7 @@ import Core
 class SelectionView: UIView {
 
     let textField = UITextField()
-    
+
     let submitButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.blue, for: .normal)

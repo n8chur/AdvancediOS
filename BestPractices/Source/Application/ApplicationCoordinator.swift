@@ -7,7 +7,7 @@ class ApplicationCoordinator: Coordinator {
 
     typealias ViewModel = ApplicationViewModel
     typealias StartError = ActionError<RootNavigationPresentError>
-    
+
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         let setup = SignalProducer<ViewModel, StartError> { () -> ViewModel in
             guard let strongSelf = self else {

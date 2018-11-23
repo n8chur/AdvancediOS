@@ -40,7 +40,6 @@ extension Reactive where Base: UIViewController {
             .skipNil()
     }
 
-
     /// Sends the UIViewController when the view is being dismissed.
     public var didDismiss: Signal<Base, NoError> {
         return signal(for: #selector(UIViewController.viewWillDisappear(_:)))
