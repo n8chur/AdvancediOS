@@ -18,7 +18,7 @@ class DetailCoordinator: Coordinator {
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<DetailViewController, NoError> { DetailViewController(viewModel: viewModel) }
-            .flatMap(.merge) { [weak self] viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
+            .flatMap(.merge) { viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
                 guard let strongSelf = self else {
                     fatalError()
                 }

@@ -14,10 +14,10 @@ class SelectionCoordinator: Coordinator {
         self.presentingViewController = presentingViewController
     }
 
-    private(set) lazy var start = Action<ViewModel, (), StartError> { viewModel in
+    private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
             .map(UINavigationController.init)
-            .flatMap(.merge) { [weak self] navigationController -> SignalProducer<(), ActionError<NoError>> in
+            .flatMap(.merge) { navigationController -> SignalProducer<(), ActionError<NoError>> in
                 guard
                     let strongSelf = self,
                     let presentingViewController = strongSelf.presentingViewController else {

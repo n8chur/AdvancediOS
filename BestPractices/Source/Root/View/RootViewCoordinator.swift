@@ -14,8 +14,8 @@ class RootViewCoordinator: Coordinator {
         self.navigationController = navigationController
     }
 
-    private(set) lazy var start = Action<ViewModel, (), StartError> { viewModel in
-        let setup = SignalProducer<RootViewController, NoError> { [weak self] () -> RootViewController in
+    private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
+        let setup = SignalProducer<RootViewController, NoError> { () -> RootViewController in
             guard let strongSelf = self else {
                 fatalError()
             }
@@ -29,7 +29,7 @@ class RootViewCoordinator: Coordinator {
         }
 
         return setup
-            .flatMap(.merge) { [weak self] viewController -> SignalProducer<RootViewController, NoError> in
+            .flatMap(.merge) { viewController -> SignalProducer<RootViewController, NoError> in
                 let didMoveToNilParent = viewController.reactive.didMoveToNilParent.producer
                     .take(first: 1)
                     .ignoreValues()

@@ -19,7 +19,7 @@ class RootNavigationCoordinator: Coordinator {
     }
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] navigationModel in
-        let setup = SignalProducer<RootNavigationController, NoError> { [weak self] () -> RootNavigationController in
+        let setup = SignalProducer<RootNavigationController, NoError> { () -> RootNavigationController in
             guard let strongSelf = self else {
                 fatalError()
             }
