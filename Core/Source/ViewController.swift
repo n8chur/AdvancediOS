@@ -1,6 +1,6 @@
 import Foundation
 
-/// A view controller that has a view model property.
+/// A view controller with an associated ViewModel.
 public protocol ViewController {
     associatedtype ViewModelType: ViewModel
     

@@ -5,19 +5,28 @@ import Result
 
 extension Reactive where Base: UIViewController {
 
-    public var isAppeared: Signal<Bool, NoError> {
+    /// Indicates whether the view controller's lifecycle is in between viewWillAppear and viewDidDisappear.
+    ///
+    /// Initializes with a value determined by base.view.window != nil.
+    public var isAppeared: Property<Bool> {
         let trueOnAppearance = trigger(for: #selector(UIViewController.viewWillAppear(_:)))
             .map { _ in return true }
 
         let falseOnDisappearance = trigger(for: #selector(UIViewController.viewDidDisappear(_:)))
             .map { _ in return false }
 
-        return Signal.merge([
-            trueOnAppearance,
-            falseOnDisappearance,
-        ])
+        let signal = Signal
+            .merge([
+                trueOnAppearance,
+                falseOnDisappearance,
+            ])
+
+        let initial = base.view.window != nil
+
+        return Property(initial: initial, then: signal)
     }
 
+    /// Sends the UIViewController when the view controller's parent view controller becomes nil.
     public var didMoveToNilParent: Signal<Base, NoError> {
         return  signal(for: #selector(UIViewController.didMove(toParent:)))
             .map { $0.first }
@@ -31,6 +40,8 @@ extension Reactive where Base: UIViewController {
             .skipNil()
     }
 
+
+    /// Sends the UIViewController when the view is being dismissed.
     public var didDismiss: Signal<Base, NoError> {
         return signal(for: #selector(UIViewController.viewWillDisappear(_:)))
             .map { [weak base] _ in
@@ -40,6 +51,7 @@ extension Reactive where Base: UIViewController {
             .filter { $0.isBeingDismissed }
     }
 
+    /// Sends the UIViewController whenever the view controller's viewDidLoad method is called.
     public var viewDidLoad: SignalProducer<Base, NoError> {
         return SignalProducer { [weak base] (observer, lifetime) in
             guard let viewController = base else {
@@ -64,6 +76,7 @@ extension Reactive where Base: UIViewController {
         }
     }
 
+    /// Sends the UIViewController when the view controller's view's window becomes nil.
     public var didMoveToNilWindow: SignalProducer<Base, NoError> {
         return viewDidLoad
             .flatMap(.merge) { viewController in
@@ -73,7 +86,8 @@ extension Reactive where Base: UIViewController {
             }
     }
 
-    public var present: Action<(UIViewController, Bool), (), NoError> {
+    /// The execution signal completes when the view controller's presentation has completed.
+    public var present: Action<(UIViewController, animated: Bool), (), NoError> {
         let baseViewController = base
         return Action { (viewController, animated) in
             return SignalProducer { [weak baseViewController] (observer, _) in
@@ -85,6 +99,9 @@ extension Reactive where Base: UIViewController {
         }
     }
 
+    /// Executed with a Bool representing whether the dismissal should be animated.
+    ///
+    /// The execution signal completes when the view controller's dismissal has completed.
     public var dismiss: Action<Bool, (), NoError> {
         let baseViewController = base
         return Action { animated in

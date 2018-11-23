@@ -4,6 +4,7 @@ import Result
 
 extension Reactive where Base: UINavigationController {
 
+    /// The execution signal sends no values and completes when the view controller has finished presenting.
     public var pushViewController: Action<(UIViewController, Bool), (), NoError> {
         let navigationController = base
         return Action { (viewController, animated) in
@@ -16,6 +17,7 @@ extension Reactive where Base: UINavigationController {
         }
     }
 
+    /// The execution signal sends no values and completes when the view controller has finished popping.
     public var popViewController: Action<Bool, (), NoError> {
         let navigationController = base
         return Action { animated in

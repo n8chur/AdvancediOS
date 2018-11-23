@@ -5,7 +5,7 @@ import Result
 
 @testable import Core
 
-class SignalProducerWhenTrueSpec: QuickSpec {
+class WhenTrueSpec: QuickSpec {
     override func spec() {
 
         describe("SignalProducer.whenTrue(subscribeTo:,otherwise:)") {
