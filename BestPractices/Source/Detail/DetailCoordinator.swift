@@ -10,7 +10,8 @@ class DetailCoordinator: Coordinator {
 
     let navigationController: UINavigationController
 
-    private var viewController: DetailViewController?
+    /// This property will be nil until the start action has been executed.
+    private weak var viewController: DetailViewController?
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<DetailViewController, NoError> { DetailViewController(viewModel: viewModel) }
@@ -19,18 +20,24 @@ class DetailCoordinator: Coordinator {
                     fatalError()
                 }
 
+                // Keep a reference to the view controller so that it can be used in our presntation callbacks.
                 strongSelf.viewController = viewController
 
                 viewModel.selectionPresenter = strongSelf
 
-                let didMoveToNilParent = viewController.reactive
-                    .didMoveToNilParent
-                    .take(first: 1)
+                // Make the signal last until the view controller is removed from the navigation stack.
+                //
+                // This ensures that the coordinator will be alive while the view controller is in the navigation stack
+                // since it is retained for the duration of the start command (see detailViewPresentation(in:of:)).
+                //
+                // This also ensures that the start action will be disabled while this view controller is already in the
+                // navigation stack since the Action will still be executing.
+                let didMoveToNilParent = viewController.reactive.didMoveToNilParent
                     .producer
-                    .promoteError(ActionError<NoError>.self)
+                    .take(first: 1)
 
                 return strongSelf.navigationController.reactive.pushViewController.apply((viewController, true))
-                    .then(didMoveToNilParent)
+                    .then(didMoveToNilParent.promoteError(ActionError<NoError>.self))
             }
             .ignoreValues()
             .mapError { _ in return .unknown }
@@ -60,6 +67,8 @@ extension DetailCoordinator {
         return SignalProducer<DetailCoordinator, NoError> { DetailCoordinator(navigationController: navigationController) }
             .flatMap(.merge) { coordinator in
                 return coordinator.start.apply(viewModel)
+                    // This keeps the coordinator alive while the presentation is still active to ensure it can handle
+                    // any presentation callbacks.
                     .untilDisposal(retain: coordinator)
             }
             .ignoreValues()

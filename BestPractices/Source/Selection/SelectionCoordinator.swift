@@ -8,6 +8,8 @@ class SelectionCoordinator: Coordinator {
     typealias ViewModel = SelectionViewModel
     typealias StartError = SelectionPresentError
 
+    private weak var presentingViewController: UIViewController?
+
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
             .map(UINavigationController.init)
@@ -18,12 +20,21 @@ class SelectionCoordinator: Coordinator {
                         fatalError()
                 }
 
+                // Ensure that the navigation controller is dismissed when the view model's submit action sends a value
+                // since this indicates that selection is complete.
                 let dismissOnSubmission = viewModel.submit.values
                     .take(first: 1)
                     .producer
                     .then(navigationController.reactive.dismiss.apply(true))
                     .then(SignalProducer(value: navigationController))
 
+                // Make the signal last until the navigation controller is dismissed.
+                //
+                // This ensures that the coordinator will be alive while the view controller is in the navigation stack
+                // since it is retained for the duration of the start command (see detailViewPresentation(in:of:)).
+                //
+                // This also ensures that the start action will be disabled while this view controller is already in the
+                // navigation stack since the Action will still be executing.
                 let didDismiss = navigationController.reactive
                     .didDismiss
                     .take(first: 1)
@@ -43,8 +54,6 @@ class SelectionCoordinator: Coordinator {
             .mapError { _ in return .unknown }
     }
 
-    private weak var presentingViewController: UIViewController?
-
     init(presentingViewController: UIViewController) {
         self.presentingViewController = presentingViewController
     }
@@ -57,6 +66,8 @@ extension SelectionCoordinator {
         return SignalProducer<SelectionCoordinator, NoError> { SelectionCoordinator(presentingViewController: viewController) }
             .flatMap(.merge) { coordinator in
                 return coordinator.start.apply(viewModel)
+                    // This keeps the coordinator alive while the presentation is still active to ensure it can handle
+                    // any presentation callbacks.
                     .untilDisposal(retain: coordinator)
             }
             .ignoreValues()

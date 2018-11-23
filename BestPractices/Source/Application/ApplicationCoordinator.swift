@@ -3,10 +3,13 @@ import Core
 import ReactiveSwift
 import Result
 
+/// Coordinates presenting the RootNavigationCoordinator in the application.
 class ApplicationCoordinator: Coordinator {
 
     typealias ViewModel = ApplicationViewModel
     typealias StartError = ActionError<RootNavigationPresentError>
+
+    private weak var window: UIWindow?
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         let setup = SignalProducer<ViewModel, StartError> { () -> ViewModel in
@@ -28,9 +31,6 @@ class ApplicationCoordinator: Coordinator {
             .ignoreValues()
     }
 
-    private var rootNavigationCoordinator: RootNavigationCoordinator?
-    private var window: UIWindow?
-
     init(window: UIWindow) {
         self.window = window
     }
@@ -40,23 +40,11 @@ class ApplicationCoordinator: Coordinator {
 extension ApplicationCoordinator: RootNavigationPresenter {
 
     func rootNavigationPresentation(of navigationModel: RootNavigationModel) -> SignalProducer<(), RootNavigationPresentationError> {
-        let makeCoordinator = SignalProducer<RootNavigationCoordinator, NoError> { [weak self] () -> RootNavigationCoordinator in
-            guard
-                let strongSelf = self,
-                let window = strongSelf.window else {
-                    fatalError()
-            }
-
-            let coordinator = RootNavigationCoordinator(window: window)
-
-            strongSelf.rootNavigationCoordinator = coordinator
-
-            return coordinator
+        guard let window = self.window else {
+            fatalError()
         }
 
-        return makeCoordinator
-            .flatMap(.merge) { $0.start.apply(navigationModel) }
-            .mapError { _ in return .unknown }
+        return RootNavigationCoordinator.rootNavigationPresentation(in: window, of: navigationModel)
     }
 
 }
