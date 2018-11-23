@@ -20,7 +20,7 @@ class RootView: UIView {
         return imageView
     }()
 
-    let button: UIButton = {
+    let detailButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.blue, for: .normal)
         return button
@@ -42,8 +42,8 @@ class RootView: UIView {
             make.top.equalTo(imageView.snp.bottom).offset(10)
         }
 
-        addSubview(button)
-        button.snp.makeConstraints { make in
+        addSubview(detailButton)
+        detailButton.snp.makeConstraints { make in
             make.centerX.equalTo(self)
             make.top.equalTo(label.snp.bottom).offset(10)
         }

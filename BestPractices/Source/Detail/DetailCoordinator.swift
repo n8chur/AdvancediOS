@@ -45,18 +45,22 @@ class DetailCoordinator: Coordinator {
 extension DetailCoordinator: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
-        let makeCoordinator = SignalProducer<SelectionCoordinator, NoError> { [weak self] () -> SelectionCoordinator in
-            guard let detailViewController = self?.viewController else {
-                fatalError()
-            }
-
-            return SelectionCoordinator(presentingViewController: detailViewController)
+        guard let viewController = self.viewController else {
+            fatalError()
         }
 
-        return makeCoordinator
+        return SelectionCoordinator.selectionPresentation(over: viewController, for: viewModel)
+    }
+
+}
+
+extension DetailCoordinator {
+
+    static func detailPresentation(in navigationController: UINavigationController, of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
+        return SignalProducer<DetailCoordinator, NoError> { DetailCoordinator(navigationController: navigationController) }
             .flatMap(.merge) { coordinator in
                 return coordinator.start.apply(viewModel)
-                .untilDisposal(retain: coordinator)
+                    .untilDisposal(retain: coordinator)
             }
             .ignoreValues()
             .mapError { _ in return .unknown }

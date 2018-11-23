@@ -43,3 +43,17 @@ class SelectionCoordinator: Coordinator {
             .mapError { _ in return .unknown }
     }
 }
+
+extension SelectionCoordinator {
+
+    static func selectionPresentation(over viewController: UIViewController, for viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
+        return SignalProducer<SelectionCoordinator, NoError> { SelectionCoordinator(presentingViewController: viewController) }
+            .flatMap(.merge) { coordinator in
+                return coordinator.start.apply(viewModel)
+                    .untilDisposal(retain: coordinator)
+            }
+            .ignoreValues()
+            .mapError { _ in return .unknown }
+    }
+
+}

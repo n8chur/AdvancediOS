@@ -20,8 +20,10 @@ extension Reactive where Base: UIViewController {
 
     public var didMoveToNilParent: Signal<Base, NoError> {
         return  signal(for: #selector(UIViewController.didMove(toParent:)))
-            .skip { arguments in
-                arguments.first != nil
+            .map { $0.first }
+            .skipNil()
+            .filter {
+                $0 == nil
             }
             .map { [weak base] _ in
                 return base
@@ -36,5 +38,38 @@ extension Reactive where Base: UIViewController {
             }
             .skipNil()
             .filter { $0.isBeingDismissed }
+    }
+
+    public var viewDidLoad: SignalProducer<Base, NoError> {
+        return SignalProducer { [weak base] (observer, lifetime) in
+            guard let viewController = base else {
+                observer.sendCompleted()
+                return
+            }
+
+            if viewController.isViewLoaded {
+                observer.send(value: viewController)
+                observer.sendCompleted()
+                return
+            }
+
+            self.signal(for: #selector(UIViewController.viewDidLoad))
+                .take(first: 1)
+                .map { [weak viewController] _ in
+                    return viewController
+                }
+                .skipNil()
+                .take(during: lifetime)
+                .observe(observer)
+        }
+    }
+
+    public var didMoveToNilWindow: SignalProducer<Base, NoError> {
+        return viewDidLoad
+            .flatMap(.merge) { viewController in
+                return viewController.view.reactive.signal(for: #selector(UIView.didMoveToWindow))
+                    .map { _ in return viewController }
+                    .filter { $0.view.window == nil }
+            }
     }
 }

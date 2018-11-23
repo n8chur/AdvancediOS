@@ -6,7 +6,7 @@ import Result
 class RootViewCoordinator: Coordinator {
 
     typealias ViewModel = RootViewModel
-    typealias StartError = ActionError<RootViewPresentError>
+    typealias StartError = RootViewPresentError
 
     let navigationController: UINavigationController
 
@@ -15,7 +15,7 @@ class RootViewCoordinator: Coordinator {
     }
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { viewModel in
-        return SignalProducer { [weak self] (observer, _) in
+        let setup = SignalProducer<RootViewController, NoError> { [weak self] () -> RootViewController in
             guard let strongSelf = self else {
                 fatalError()
             }
@@ -25,8 +25,20 @@ class RootViewCoordinator: Coordinator {
             let viewController = RootViewController(viewModel: viewModel)
             strongSelf.navigationController.viewControllers = [ viewController ]
 
-            observer.sendCompleted()
+            return viewController
         }
+
+        return setup
+            .flatMap(.merge) { [weak self] viewController -> SignalProducer<RootViewController, NoError> in
+                let didMoveToNilParent = viewController.reactive.didMoveToNilParent.producer
+                    .take(first: 1)
+                    .ignoreValues()
+
+                return SignalProducer<RootViewController, NoError>.never
+                    .take(until: didMoveToNilParent)
+            }
+            .ignoreValues()
+            .mapError { _ in return .unknown }
     }
 
 }
@@ -34,21 +46,19 @@ class RootViewCoordinator: Coordinator {
 extension RootViewCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
-        let makeCoordinator = SignalProducer<DetailCoordinator, NoError> { [weak self] () -> DetailCoordinator in
-            guard let strongSelf = self else {
-                fatalError()
-            }
+        return DetailCoordinator.detailPresentation(in: navigationController, of: viewModel)
+    }
 
-            return DetailCoordinator(navigationController: strongSelf.navigationController)
-        }
+}
 
-        return makeCoordinator
+extension RootViewCoordinator {
+
+    static func rootViewPresentation(in navigationController: UINavigationController, of viewModel: RootViewModel) -> SignalProducer<(), RootViewPresentationError> {
+        return SignalProducer<RootViewCoordinator, NoError> { RootViewCoordinator(navigationController: navigationController) }
             .flatMap(.merge) { coordinator in
                 return coordinator.start.apply(viewModel)
                     .untilDisposal(retain: coordinator)
             }
-            .ignoreValues()
             .mapError { _ in return .unknown }
     }
-
 }

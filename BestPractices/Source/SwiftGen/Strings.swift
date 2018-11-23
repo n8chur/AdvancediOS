@@ -24,9 +24,9 @@ internal enum L10n {
   internal enum Root {
     /// It works!
     internal static let testText = L10n.tr("Localizable", "root.test_text")
-    internal enum PresentDetails {
+    internal enum PresentDetail {
       /// Details
-      internal static let title = L10n.tr("Localizable", "root.present_details.title")
+      internal static let title = L10n.tr("Localizable", "root.present_detail.title")
     }
   }
 

@@ -12,7 +12,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
 
     let image = Property(value: Image.n8churLogo.image)
 
-    let presentDetailsTitle = Property(value: L10n.Root.PresentDetails.title)
+    let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
 
     private(set) lazy var presentDetail = Action<(), (), DetailPresentError> { [weak self] _ in
         guard let presenter = self?.detailPresenter else {

@@ -19,7 +19,7 @@ class RootNavigationCoordinator: Coordinator {
     }
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] navigationModel in
-        let setupNavigationController = SignalProducer<RootNavigationModel, NoError> { [weak self] () -> RootNavigationModel in
+        let setup = SignalProducer<RootNavigationController, NoError> { [weak self] () -> RootNavigationController in
             guard let strongSelf = self else {
                 fatalError()
             }
@@ -32,11 +32,17 @@ class RootNavigationCoordinator: Coordinator {
             strongSelf.window.rootViewController = navigationController
             strongSelf.window.makeKeyAndVisible()
 
-            return navigationModel
+            return navigationController
         }
 
-        return setupNavigationController
-            .flatMap(.merge) { $0.presentRootView.apply() }
+        return setup
+            .flatMap(.merge) { navigationController -> SignalProducer<RootNavigationController, ActionError<RootViewPresentError>> in
+                let didMoveToNilWindow = navigationController.reactive.didMoveToNilWindow.ignoreValues()
+
+                return navigationController.navigationModel.presentRootView.apply()
+                    .then(SignalProducer<RootNavigationController, ActionError<RootViewPresentError>>.never)
+                    .take(until: didMoveToNilWindow)
+            }
             .ignoreValues()
     }
 
@@ -45,22 +51,11 @@ class RootNavigationCoordinator: Coordinator {
 extension RootNavigationCoordinator: RootViewPresenter {
 
     func rootViewPresentation(of viewModel: RootViewModel) -> SignalProducer<(), RootViewPresentationError> {
-        let makeCoordinator = SignalProducer<RootViewCoordinator, NoError> { [weak self] () -> RootViewCoordinator in
-            guard let strongSelf = self,
-                let navigationController = strongSelf.navigationController else {
-                fatalError()
-            }
-
-            let coordinator = RootViewCoordinator(navigationController: navigationController)
-
-            strongSelf.rootViewCoordinator = coordinator
-
-            return coordinator
+        guard let navigationController = self.navigationController else {
+            fatalError()
         }
 
-        return makeCoordinator
-            .flatMap(.merge) { $0.start.apply(viewModel) }
-            .mapError { _ in return .unknown }
+        return RootViewCoordinator.rootViewPresentation(in: navigationController, of: viewModel)
     }
 
 }
