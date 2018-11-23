@@ -8,7 +8,7 @@ class RootViewCoordinator: Coordinator {
     typealias ViewModel = RootViewModel
     typealias StartError = RootViewPresentError
 
-    let navigationController: UINavigationController
+    private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -16,14 +16,16 @@ class RootViewCoordinator: Coordinator {
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         let setup = SignalProducer<RootViewController, NoError> { () -> RootViewController in
-            guard let strongSelf = self else {
-                fatalError()
+            guard
+                let strongSelf = self,
+                let navigationController = strongSelf.navigationController else {
+                    fatalError()
             }
 
             viewModel.detailPresenter = strongSelf
 
             let viewController = RootViewController(viewModel: viewModel)
-            strongSelf.navigationController.viewControllers = [ viewController ]
+            navigationController.viewControllers = [ viewController ]
 
             return viewController
         }
@@ -46,6 +48,10 @@ class RootViewCoordinator: Coordinator {
 extension RootViewCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
+        guard let navigationController = self.navigationController else {
+            fatalError()
+        }
+
         return DetailCoordinator.detailPresentation(in: navigationController, of: viewModel)
     }
 

@@ -10,7 +10,11 @@ class ApplicationCoordinator: Coordinator {
 
     private var rootNavigationCoordinator: RootNavigationCoordinator?
 
-    private let window: UIWindow
+    private var window: UIWindow?
+
+    init(window: UIWindow) {
+        self.window = window
+    }
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] viewModel in
         let setup = SignalProducer<ViewModel, StartError> { () -> ViewModel in
@@ -32,21 +36,19 @@ class ApplicationCoordinator: Coordinator {
             .ignoreValues()
     }
 
-    init(window: UIWindow) {
-        self.window = window
-    }
-
 }
 
 extension ApplicationCoordinator: RootNavigationPresenter {
 
     func rootNavigationPresentation(of navigationModel: RootNavigationModel) -> SignalProducer<(), RootNavigationPresentationError> {
         let makeCoordinator = SignalProducer<RootNavigationCoordinator, NoError> { [weak self] () -> RootNavigationCoordinator in
-            guard let strongSelf = self else {
-                fatalError()
+            guard
+                let strongSelf = self,
+                let window = strongSelf.window else {
+                    fatalError()
             }
 
-            let coordinator = RootNavigationCoordinator(window: strongSelf.window)
+            let coordinator = RootNavigationCoordinator(window: window)
 
             strongSelf.rootNavigationCoordinator = coordinator
 

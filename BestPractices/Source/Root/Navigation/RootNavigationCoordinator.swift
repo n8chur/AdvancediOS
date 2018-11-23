@@ -9,7 +9,7 @@ class RootNavigationCoordinator: Coordinator {
     typealias ViewModel = RootNavigationModel
     typealias StartError = ActionError<RootViewPresentError>
 
-    private let window: UIWindow
+    private weak var window: UIWindow?
 
     private var rootViewCoordinator: RootViewCoordinator?
     private var navigationController: RootNavigationController?
@@ -20,8 +20,10 @@ class RootNavigationCoordinator: Coordinator {
 
     private(set) lazy var start = Action<ViewModel, (), StartError> { [weak self] navigationModel in
         let setup = SignalProducer<RootNavigationController, NoError> { () -> RootNavigationController in
-            guard let strongSelf = self else {
-                fatalError()
+            guard
+                let strongSelf = self,
+                let window = strongSelf.window else {
+                    fatalError()
             }
 
             let navigationController = RootNavigationController(navigationModel: navigationModel)
@@ -29,8 +31,8 @@ class RootNavigationCoordinator: Coordinator {
 
             navigationModel.rootViewPresenter = self
 
-            strongSelf.window.rootViewController = navigationController
-            strongSelf.window.makeKeyAndVisible()
+            window.rootViewController = navigationController
+            window.makeKeyAndVisible()
 
             return navigationController
         }
