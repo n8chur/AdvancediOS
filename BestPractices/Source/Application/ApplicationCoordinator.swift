@@ -4,7 +4,7 @@ import ReactiveCocoa
 import ReactiveSwift
 import Result
 
-class RootCoordinator {
+class ApplicationCoordinator {
 
     let window: UIWindow
     let navigationController = UINavigationController(nibName: nil, bundle: nil)
@@ -28,7 +28,7 @@ class RootCoordinator {
 
 }
 
-extension RootCoordinator: DetailPresenter {
+extension ApplicationCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
         return SignalProducer<DetailViewController, NoError> { DetailViewController(viewModel: viewModel) }
@@ -53,7 +53,7 @@ extension RootCoordinator: DetailPresenter {
 
 }
 
-extension RootCoordinator: SelectionPresenter {
+extension ApplicationCoordinator: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
         return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
