@@ -44,9 +44,7 @@ extension ApplicationCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
         let viewController = SignalProducer<DetailViewController, NoError> { [weak self] () -> DetailViewController in
-            guard let self = self else {
-                fatalError()
-            }
+            guard let self = self else { fatalError() }
 
             viewModel.selectionPresenter = self
 
@@ -57,9 +55,7 @@ extension ApplicationCoordinator: DetailPresenter {
 
         return viewController
             .flatMap(.merge) { [weak self] viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
-                guard let self = self else {
-                    fatalError()
-                }
+                guard let self = self else { fatalError() }
 
                 // Make the signal last until the view controller is removed from the navigation stack.
                 let didMoveToNilParent = viewController.reactive.didMoveToNilParent
@@ -79,13 +75,11 @@ extension ApplicationCoordinator: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
         let viewController = SignalProducer<SelectionViewController, NoError> { [weak self] () -> SelectionViewController in
-            guard let self = self else {
-                fatalError()
-            }
+            guard let self = self else { fatalError() }
 
             return self.makeSelectionViewController(viewModel: viewModel)
         }
-        
+
         return viewController
             .map(UINavigationController.init)
             .flatMap(.merge) { [weak self] selectionNavigationController -> SignalProducer<(), ActionError<NoError>> in
@@ -101,7 +95,8 @@ extension ApplicationCoordinator: SelectionPresenter {
                     .then(selectionNavigationController.reactive.dismiss.apply(true))
                     .then(SignalProducer(value: selectionNavigationController))
 
-                // Make the signal last until the navigation controller is dismissed.
+                // Make the returned signal producer's signal lifecycle last until the navigation controller is
+                // dismissed.
                 let didDismiss = selectionNavigationController.reactive
                     .didDismiss
                     .take(first: 1)
@@ -111,7 +106,7 @@ extension ApplicationCoordinator: SelectionPresenter {
                     .merge([
                         didDismiss.promoteError(ActionError<NoError>.self),
                         dismissOnSubmission,
-                        ])
+                    ])
                     .take(first: 1)
                     .ignoreValues()
 

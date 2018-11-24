@@ -15,9 +15,7 @@ class SelectionViewModel: ViewModel {
 
     /// Sends the value of input when exectuted.
     private(set) lazy var submit = Action<(), String?, NoError> { [weak self] in
-        guard let self = self else {
-            fatalError()
-        }
+        guard let self = self else { fatalError() }
 
         return SignalProducer(value: self.input.value)
     }
