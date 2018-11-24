@@ -6,7 +6,7 @@ enum DetailPresentError: Error {
     case unknown
 }
 
-protocol DetailPresentingViewModel: class {
+protocol DetailPresentingViewModel: class, ViewModel {
     var detailPresenter: DetailPresenter? { get set }
     var presentDetail: Action<(), (), DetailPresentError> { get }
 }

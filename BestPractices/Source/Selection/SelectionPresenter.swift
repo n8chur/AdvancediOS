@@ -6,7 +6,7 @@ enum SelectionPresentError: Error {
     case unknown
 }
 
-protocol SelectionPresentingViewModel: class {
+protocol SelectionPresentingViewModel: class, ViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
     var presentSelection: Action<(), (), SelectionPresentError> { get }
 }

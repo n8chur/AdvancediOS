@@ -9,11 +9,11 @@ class SelectionViewModel: ViewModel {
     let submitTitle = Property(value: L10n.Selection.Submit.title)
 
     private(set) lazy var submit = Action<(), String?, NoError> { [weak self] string in
-        guard let strongSelf = self else {
+        guard let self = self else {
             fatalError()
         }
 
-        return SignalProducer(value: strongSelf.string.value)
+        return SignalProducer(value: self.string.value)
     }
 
 }
