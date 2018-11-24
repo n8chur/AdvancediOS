@@ -15,7 +15,7 @@ class IgnoreValuesSpec: QuickSpec {
                 let signal = valuesSignal.ignoreValues()
 
                 var valueCount = 0
-                signal.observeValues { () in
+                signal.observeValues { in
                     valueCount += 1
                 }
 

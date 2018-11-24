@@ -29,7 +29,7 @@ class SelectionViewController: UIViewController, ViewController {
         selectionView.submitButton.reactive.title <~ viewModel.submitTitle
         selectionView.submitButton.reactive.pressed = CocoaAction(viewModel.submit)
 
-        viewModel.string <~ selectionView.textField.reactive.continuousTextValues
+        viewModel.input <~ selectionView.textField.reactive.continuousTextValues
         viewModel.isActive <~ reactive.isAppeared
     }
 
