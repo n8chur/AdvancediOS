@@ -21,9 +21,21 @@ class ApplicationCoordinator {
 
         viewModel.detailPresenter = self
 
-        let rootViewController = RootViewController(viewModel: viewModel)
+        let rootViewController = makeRootViewController(viewModel: viewModel)
 
         navigationController.viewControllers = [ rootViewController ]
+    }
+
+    private func makeRootViewController(viewModel: RootViewModel) -> RootViewController {
+        return RootViewController(viewModel: viewModel)
+    }
+
+    private func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {
+        return DetailViewController(viewModel: viewModel)
+    }
+
+    private func makeSelectionViewController(viewModel: SelectionViewModel) -> SelectionViewController {
+        return SelectionViewController(viewModel: viewModel)
     }
 
 }
@@ -31,13 +43,23 @@ class ApplicationCoordinator {
 extension ApplicationCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
-        return SignalProducer<DetailViewController, NoError> { DetailViewController(viewModel: viewModel) }
+        let viewController = SignalProducer<DetailViewController, NoError> { [weak self] () -> DetailViewController in
+            guard let self = self else {
+                fatalError()
+            }
+
+            viewModel.selectionPresenter = self
+
+            let viewController = self.makeDetailViewController(viewModel: viewModel)
+
+            return viewController
+        }
+
+        return viewController
             .flatMap(.merge) { [weak self] viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
                 guard let self = self else {
                     fatalError()
                 }
-
-                viewModel.selectionPresenter = self
 
                 // Make the signal last until the view controller is removed from the navigation stack.
                 let didMoveToNilParent = viewController.reactive.didMoveToNilParent
@@ -56,7 +78,15 @@ extension ApplicationCoordinator: DetailPresenter {
 extension ApplicationCoordinator: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
-        return SignalProducer<SelectionViewController, NoError> { SelectionViewController(viewModel: viewModel) }
+        let viewController = SignalProducer<SelectionViewController, NoError> { [weak self] () -> SelectionViewController in
+            guard let self = self else {
+                fatalError()
+            }
+
+            return self.makeSelectionViewController(viewModel: viewModel)
+        }
+        
+        return viewController
             .map(UINavigationController.init)
             .flatMap(.merge) { [weak self] selectionNavigationController -> SignalProducer<(), ActionError<NoError>> in
                 guard let self = self else {
