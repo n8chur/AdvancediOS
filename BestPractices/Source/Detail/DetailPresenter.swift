@@ -2,19 +2,11 @@ import ReactiveSwift
 import Result
 import Core
 
-enum DetailPresentError: Error {
-    case unknown
-}
-
 protocol DetailPresentingViewModel: class, ViewModel {
     var detailPresenter: DetailPresenter? { get set }
-    var presentDetail: Action<(), (), DetailPresentError> { get }
-}
-
-enum DetailPresentationError: Error {
-    case unknown
+    var presentDetail: Action<(), Never, NoError> { get }
 }
 
 protocol DetailPresenter: class {
-    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError>
+    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError>
 }

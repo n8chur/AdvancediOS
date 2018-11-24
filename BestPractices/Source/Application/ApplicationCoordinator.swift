@@ -4,6 +4,9 @@ import ReactiveCocoa
 import ReactiveSwift
 import Result
 
+/// The flow coordinator for the application.
+///
+/// This class is responsible for setting up the window with the appropriate views and handle all view routing.
 class ApplicationCoordinator {
 
     let window: UIWindow
@@ -42,7 +45,7 @@ class ApplicationCoordinator {
 
 extension ApplicationCoordinator: DetailPresenter {
 
-    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<(), DetailPresentationError> {
+    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError> {
         let viewController = SignalProducer<DetailViewController, NoError> { [weak self] () -> DetailViewController in
             guard let self = self else { fatalError() }
 
@@ -53,67 +56,50 @@ extension ApplicationCoordinator: DetailPresenter {
             return viewController
         }
 
-        return viewController
-            .flatMap(.merge) { [weak self] viewController -> SignalProducer<DetailViewController, ActionError<NoError>> in
-                guard let self = self else { fatalError() }
+        return viewController.flatMap(.merge) { [weak self] viewController -> SignalProducer<Never, NoError> in
+            guard let self = self else { fatalError() }
 
-                // Make the signal last until the view controller is removed from the navigation stack.
-                let didMoveToNilParent = viewController.reactive.didMoveToNilParent
-                    .producer
-                    .take(first: 1)
+            let presentation = self.navigationController.makePushPresentation(of: viewController)
 
-                return self.navigationController.reactive.pushViewController.apply((viewController, true))
-                    .then(didMoveToNilParent.promoteError(ActionError<NoError>.self))
-            }
-            .ignoreValues()
-            .mapError { _ in return .unknown }
+            return presentation.present.apply(true)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+        }
     }
 
 }
 
 extension ApplicationCoordinator: SelectionPresenter {
 
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<(), SelectionPresentationError> {
+    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
         let viewController = SignalProducer<SelectionViewController, NoError> { [weak self] () -> SelectionViewController in
             guard let self = self else { fatalError() }
 
             return self.makeSelectionViewController(viewModel: viewModel)
         }
 
-        return viewController
-            .map(UINavigationController.init)
-            .flatMap(.merge) { [weak self] selectionNavigationController -> SignalProducer<(), ActionError<NoError>> in
-                guard let self = self else {
-                    fatalError()
-                }
+        let navigationController = viewController.map(UINavigationController.init)
 
-                // Ensure that the navigation controller is dismissed when the view model's submit action sends a value
-                // since this indicates that selection is complete.
-                let dismissOnSubmission = viewModel.submit.values
-                    .take(first: 1)
-                    .producer
-                    .then(selectionNavigationController.reactive.dismiss.apply(true))
-                    .then(SignalProducer(value: selectionNavigationController))
-
-                // Make the returned signal producer's signal lifecycle last until the navigation controller is
-                // dismissed.
-                let didDismiss = selectionNavigationController.reactive
-                    .didDismiss
-                    .take(first: 1)
-                    .producer
-
-                let dismissal = SignalProducer
-                    .merge([
-                        didDismiss.promoteError(ActionError<NoError>.self),
-                        dismissOnSubmission,
-                    ])
-                    .take(first: 1)
-                    .ignoreValues()
-
-                return self.navigationController.reactive.present.apply((selectionNavigationController, true))
-                    .then(dismissal)
+        return navigationController.flatMap(.merge) { [weak self] selectionNavigationController -> SignalProducer<Never, NoError> in
+            guard let self = self else {
+                fatalError()
             }
-            .mapError { _ in return .unknown }
+
+            let presentation = self.navigationController.makeModalPresentation(of: selectionNavigationController)
+
+            let dismiss = presentation.dismiss.apply(true)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+
+            // Ensure that the navigation controller is dismissed when the view model's submit action sends a value
+            // since this indicates that selection is complete.
+            viewModel.submit.values
+                .producer
+                .take(first: 1)
+                .then(dismiss)
+                .start()
+
+            return presentation.present.apply(true)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+        }
     }
 
 }

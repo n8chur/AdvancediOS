@@ -35,4 +35,19 @@ extension UINavigationController {
         coordinator.animate(alongsideTransition: nil) { _ in unwrappedCompletion() }
     }
 
+    public func popToViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
+        popToViewController(viewController, animated: animated)
+
+        guard let unwrappedCompletion = completion else {
+            return
+        }
+
+        guard animated, let coordinator = transitionCoordinator else {
+            DispatchQueue.main.async { unwrappedCompletion() }
+            return
+        }
+
+        coordinator.animate(alongsideTransition: nil) { _ in unwrappedCompletion() }
+    }
+
 }

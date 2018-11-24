@@ -86,7 +86,7 @@ extension Reactive where Base: UIViewController {
     }
 
     /// The execution signal completes when the view controller's presentation has completed.
-    public var present: Action<(UIViewController, animated: Bool), (), NoError> {
+    public var present: Action<(UIViewController, animated: Bool), Never, NoError> {
         let baseViewController = base
         return Action { (viewController, animated) in
             return SignalProducer { [weak baseViewController] (observer, _) in
@@ -101,7 +101,7 @@ extension Reactive where Base: UIViewController {
     /// Executed with a Bool representing whether the dismissal should be animated.
     ///
     /// The execution signal completes when the view controller's dismissal has completed.
-    public var dismiss: Action<Bool, (), NoError> {
+    public var dismiss: Action<Bool, Never, NoError> {
         let baseViewController = base
         return Action { animated in
             return SignalProducer { [weak baseViewController] (observer, _) in

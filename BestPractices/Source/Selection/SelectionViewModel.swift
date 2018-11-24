@@ -6,6 +6,7 @@ class SelectionViewModel: ViewModel {
 
     let isActive = MutableProperty(false)
     let submitTitle = Property(value: L10n.Selection.Submit.title)
+
     /// The input for the selection.
     ///
     /// The value of this property will be sent as a value in the submit action's exectution signal.
