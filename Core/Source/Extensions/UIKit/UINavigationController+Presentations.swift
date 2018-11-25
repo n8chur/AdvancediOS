@@ -30,7 +30,6 @@ public extension UINavigationController {
         // Retain the presentation for its lifecycle.
         presentation.didDismiss.producer
             .untilDisposal(retain: presentation)
-            .take(duringLifetimeOf: viewController)
             .take(duringLifetimeOf: self)
             .start()
 

@@ -90,7 +90,12 @@ extension Reactive where Base: UIViewController {
         let baseViewController = base
         return Action { (viewController, animated) in
             return SignalProducer { [weak baseViewController] (observer, _) in
-                baseViewController?.present(viewController, animated: animated, completion: {
+                guard let baseViewController = baseViewController else {
+                    observer.sendCompleted()
+                    return
+                }
+
+                baseViewController.present(viewController, animated: animated, completion: {
                     observer.sendCompleted()
                 })
             }
@@ -105,7 +110,12 @@ extension Reactive where Base: UIViewController {
         let baseViewController = base
         return Action { animated in
             return SignalProducer { [weak baseViewController] (observer, _) in
-                baseViewController?.dismiss(animated: animated, completion: {
+                guard let baseViewController = baseViewController else {
+                    observer.sendCompleted()
+                    return
+                }
+
+                baseViewController.dismiss(animated: animated, completion: {
                     observer.sendCompleted()
                 })
             }

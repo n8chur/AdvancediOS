@@ -13,7 +13,7 @@ extension UINavigationController {
         }
 
         guard animated, let coordinator = transitionCoordinator else {
-            DispatchQueue.main.async { unwrappedCompletion() }
+            unwrappedCompletion()
             return
         }
 
@@ -28,7 +28,7 @@ extension UINavigationController {
         }
 
         guard animated, let coordinator = transitionCoordinator else {
-            DispatchQueue.main.async { unwrappedCompletion() }
+            unwrappedCompletion()
             return
         }
 
@@ -43,7 +43,7 @@ extension UINavigationController {
         }
 
         guard animated, let coordinator = transitionCoordinator else {
-            DispatchQueue.main.async { unwrappedCompletion() }
+            unwrappedCompletion()
             return
         }
 
