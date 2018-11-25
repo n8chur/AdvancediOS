@@ -9,15 +9,10 @@ class IgnoreValuesSpec: QuickSpec {
     override func spec() {
 
         describe("Signal.ignoreValues()") {
-            it("should ignore all values") {
+            it("should should ignore all values and eventually complete") {
                 let (valuesSignal, observer) = Signal<Bool, NoError>.pipe()
 
                 let signal = valuesSignal.ignoreValues()
-
-                var valueCount = 0
-                signal.observeValues { _ in
-                    valueCount += 1
-                }
 
                 var completed = false
                 signal.observeCompleted {
@@ -27,28 +22,24 @@ class IgnoreValuesSpec: QuickSpec {
                 observer.send(value: true)
                 observer.sendCompleted()
 
-                expect(valueCount).to(be(0))
                 expect(completed).to(beTrue())
             }
         }
 
         describe("SignalProducer.ignoreValues()") {
-            it("should ignore all values") {
+            it("should ignore all values and eventually complete") {
                 let (signal, observer) = Signal<Bool, NoError>.pipe()
                 let producer = signal.producer.ignoreValues()
 
-                var valueCount = 0
                 var completed = false
 
                 producer
-                    .on(completed: { completed = true },
-                        value: { valueCount += 1 })
+                    .on(completed: { completed = true })
                     .start()
 
                 observer.send(value: true)
                 observer.sendCompleted()
 
-                expect(valueCount).to(be(0))
                 expect(completed).to(beTrue())
 
             }
