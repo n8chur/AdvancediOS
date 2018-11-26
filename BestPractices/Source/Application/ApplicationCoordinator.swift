@@ -51,9 +51,7 @@ extension ApplicationCoordinator: DetailPresenter {
 
             viewModel.selectionPresenter = self
 
-            let viewController = self.makeDetailViewController(viewModel: viewModel)
-
-            return viewController
+            return self.makeDetailViewController(viewModel: viewModel)
         }
 
         return viewController.flatMap(.merge) { [weak self] viewController -> SignalProducer<Never, NoError> in
@@ -77,14 +75,13 @@ extension ApplicationCoordinator: SelectionPresenter {
             return self.makeSelectionViewController(viewModel: viewModel)
         }
 
-        let navigationController = viewController.map(UINavigationController.init)
+        return viewController.flatMap(.merge) { [weak self] viewController -> SignalProducer<Never, NoError> in
+            guard let self = self else { fatalError() }
 
-        return navigationController.flatMap(.merge) { [weak self] selectionNavigationController -> SignalProducer<Never, NoError> in
-            guard let self = self else {
-                fatalError()
-            }
+            let selectionNavigationController = UINavigationController(rootViewController: viewController)
 
             let presentation = self.navigationController.makeModalPresentation(of: selectionNavigationController)
+            presentation.addCancelBarButtonItem(to: viewController, animated: true)
 
             let dismiss = presentation.dismiss.apply(true)
                 .flatMapError { _ in return SignalProducer<Never, NoError>.empty }

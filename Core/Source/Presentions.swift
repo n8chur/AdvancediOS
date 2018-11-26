@@ -14,7 +14,7 @@ public class DismissablePresentation<PresentedViewController: UIViewController> 
     /// closure at intialization time). The action's execution signal completes when the signal producer's signal
     /// completes.
     ///
-    /// This action is only enalbed when the view controller has not yet been presented or after it has been dismissed.
+    /// This action is only enabled when the view controller has not yet been presented or after it has been dismissed.
     public let present: Action<Bool, Never, NoError>
 
     /// The action that begins executing the producer returned from the dismiss producer (provided by the MakeDismiss

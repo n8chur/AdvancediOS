@@ -9,7 +9,8 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     weak var selectionPresenter: SelectionPresenter?
 
     let title = Property(value: L10n.Detail.title)
-    let image = Property(value: Image.n8churLogo.image)
+
+    /// The value of the result from a selection presentation.
     let selectionResult = MutableProperty<String?>(nil)
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 

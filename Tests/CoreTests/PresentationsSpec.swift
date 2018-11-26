@@ -1,3 +1,5 @@
+// swiftlint:disable function_body_length
+
 import Quick
 import Nimble
 import ReactiveSwift
@@ -166,3 +168,5 @@ class PresentationsSpec: QuickSpec {
 
     }
 }
+
+// swiftlint:enable function_body_length

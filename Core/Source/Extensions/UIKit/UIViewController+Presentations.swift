@@ -1,4 +1,5 @@
 import UIKit
+import ReactiveCocoa
 import ReactiveSwift
 import Result
 
@@ -33,6 +34,20 @@ public extension UIViewController {
             .start()
 
         return presentation
+    }
+
+}
+
+public extension DismissablePresentation {
+
+    /// Sets the left navigation item to be a cancel button that executes the dimiss action.
+    ///
+    /// - Parameter animated: The view controller to add the navigation item to.
+    /// - Parameter animated: The Bool value to execute the dismiss action with when the cancel button is pressed.
+    public func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+        cancelButton.reactive.pressed = CocoaAction(dismiss, input: animated)
+        viewController.navigationItem.leftBarButtonItem = cancelButton
     }
 
 }

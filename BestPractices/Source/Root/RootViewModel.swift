@@ -8,6 +8,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
 
     weak var detailPresenter: DetailPresenter?
 
+    /// Example text that will be updated asynchonously when isActive becomes true.
     let testText: Property<String?>
     let image = Property(value: Image.n8churLogo.image)
     let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
@@ -24,11 +25,12 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
         }
     }
 
-    private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel")
+    private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel.backgroundScheduler")
 
     init() {
         let testTextInternalProducer = SignalProducer
-            .timer(interval: DispatchTimeInterval.milliseconds(500), on: backgroundScheduler)
+            // Add a delay to simulate a network operation.
+            .timer(interval: DispatchTimeInterval.milliseconds(50), on: backgroundScheduler)
             .take(first: 1)
             .map { _ in
                 return Optional.some(L10n.Root.testText)

@@ -9,6 +9,8 @@ class RootViewController: UIViewController, ViewController {
 
     let viewModel: RootViewModel
 
+    private let uiScheduler = UIScheduler()
+
     private(set) lazy var rootView: RootView = {
         return RootView(frame: UIScreen.main.bounds)
     }()
@@ -26,7 +28,7 @@ class RootViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        rootView.label.reactive.text <~ viewModel.testText
+        rootView.label.reactive.text <~ viewModel.testText.signal
         rootView.imageView.reactive.image <~ viewModel.image
         rootView.detailButton.reactive.title <~ viewModel.presentDetailTitle
 
