@@ -13,17 +13,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
     let image = Property(value: Image.n8churLogo.image)
     let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
 
-    private(set) lazy var presentDetail = Action<(), Never, NoError> { [weak self] _ in
-        let viewModel = SignalProducer<DetailViewModel, NoError> { DetailViewModel() }
-
-        return viewModel.flatMap(.merge) { viewModel -> SignalProducer<Never, NoError> in
-            guard let presenter = self?.detailPresenter else {
-                fatalError()
-            }
-
-            return presenter.detailPresentation(of: viewModel)
-        }
-    }
+    private(set) lazy var presentDetail = makePresentDetail()
 
     private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel.backgroundScheduler")
 

@@ -14,20 +14,10 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let selectionResult = MutableProperty<String?>(nil)
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
-    private(set) lazy var presentSelection = Action<(), Never, NoError> { [weak self] _ in
-        let viewModel = SignalProducer<SelectionViewModel, NoError> { SelectionViewModel() }
+    private(set) lazy var presentSelection = makePresentSelection() { [weak self] viewModel in
+        guard let self = self else { fatalError() }
 
-        return viewModel.flatMap(.merge) { viewModel -> SignalProducer<Never, NoError> in
-            guard
-                let self = self,
-                let presenter = self.selectionPresenter else {
-                    fatalError()
-            }
-
-            self.selectionResult <~ viewModel.submit.values
-
-            return presenter.selectionPresentation(of: viewModel)
-        }
+        self.selectionResult <~ viewModel.submit.values
     }
 
 }

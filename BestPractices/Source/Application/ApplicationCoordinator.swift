@@ -6,13 +6,18 @@ import Result
 
 /// The flow coordinator for the application.
 ///
-/// This class is responsible for setting up the window with the appropriate views and handle all view routing.
+/// This class is responsible for:
+/// - Setting up the window with the appropriate views and handle all view routing
+/// - Handling presentation of views controllers
+/// - Forwarding view model creation to the view model factory it was initialized with
 class ApplicationCoordinator {
 
+    let viewModelFactory: ApplicationViewModelFactory
     let window: UIWindow
     let navigationController = UINavigationController(nibName: nil, bundle: nil)
 
-    init(window: UIWindow) {
+    init(viewModelFactory: ApplicationViewModelFactory, window: UIWindow) {
+        self.viewModelFactory = viewModelFactory
         self.window = window
     }
 
@@ -45,6 +50,10 @@ class ApplicationCoordinator {
 
 extension ApplicationCoordinator: DetailPresenter {
 
+    func makeDetailViewModel() -> DetailViewModel {
+        return viewModelFactory.makeDetailViewModel()
+    }
+
     func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError> {
         let viewController = SignalProducer<DetailViewController, NoError> { [weak self] () -> DetailViewController in
             guard let self = self else { fatalError() }
@@ -67,6 +76,10 @@ extension ApplicationCoordinator: DetailPresenter {
 }
 
 extension ApplicationCoordinator: SelectionPresenter {
+
+    func makeSelectionViewModel() -> SelectionViewModel {
+        return viewModelFactory.makeSelectionViewModel()
+    }
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
         let viewController = SignalProducer<SelectionViewController, NoError> { [weak self] () -> SelectionViewController in
