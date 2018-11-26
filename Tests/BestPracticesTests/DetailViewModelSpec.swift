@@ -19,29 +19,6 @@ class DetailViewModelSpec: QuickSpec {
                 expect(viewModel.isActive.value).to(beFalse())
             }
 
-            describe("presentSelection") {
-                it("should call the presenter to create a presentation") {
-                    let presenter = StubSelectionPresenter()
-                    viewModel.selectionPresenter = presenter
-
-                    let viewModelsProperty = MutableProperty<[SelectionViewModel]?>(nil)
-                    viewModelsProperty <~ presenter.viewModel.collect()
-
-                    viewModel.presentSelection.apply()
-                        .on(completed: {
-                            presenter.viewModelObserver.sendCompleted()
-                        })
-                        .start()
-
-                    guard let viewModels = viewModelsProperty.value else {
-                        fail("Failed to get view models.")
-                        return
-                    }
-
-                    expect(viewModels).to(haveCount(1))
-                }
-            }
-
             describe("selectionResult") {
                 it("should intialize as nil") {
                     expect(viewModel.selectionResult.value).to(beNil())
@@ -53,7 +30,7 @@ class DetailViewModelSpec: QuickSpec {
 
                     let selectionValue = "Test selection input"
 
-                    presenter.viewModel.observeValues { viewModel in
+                    presenter.presentationViewModelSignal.observeValues { viewModel in
                         viewModel.input.value = selectionValue
                         viewModel.submit.apply().start()
                     }
@@ -74,16 +51,16 @@ class DetailViewModelSpec: QuickSpec {
     }
 }
 
-class StubSelectionPresenter: SelectionPresenter {
+private class StubSelectionPresenter: SelectionPresenter {
 
     let (viewModel, viewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
 
+    func makeSelectionViewModel() -> SelectionViewModel {
+        return SelectionViewModel()
+    }
+
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        return SignalProducer { [weak self] () -> SelectionViewModel in
-                self?.viewModelObserver.send(value: viewModel)
-                return viewModel
-            }
-            .ignoreValues()
+        return SignalProducer.empty
     }
 
 }

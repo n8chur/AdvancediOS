@@ -8,6 +8,11 @@ protocol DetailPresentingViewModel: class, ViewModel {
 }
 
 extension DetailPresentingViewModel {
+
+    /// Makes an action that is suitable to be set as the presentDetail action.
+    ///
+    /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
+    ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
     func makePresentDetail(setupViewModel: ((DetailViewModel) -> Void)? = nil) -> Action<(), Never, NoError> {
         return Action<(), Never, NoError> { [weak self] _ in
             return SignalProducer<Never, NoError> { (observer, lifetime) in
@@ -25,10 +30,10 @@ extension DetailPresentingViewModel {
             }
         }
     }
+
 }
 
 protocol DetailPresenter: class {
-    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError>
-
     func makeDetailViewModel() -> DetailViewModel
+    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError>
 }
