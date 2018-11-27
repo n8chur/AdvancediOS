@@ -2,7 +2,7 @@ import ReactiveSwift
 import Result
 import Core
 
-class RootViewModel: ViewModel, DetailPresentingViewModel {
+class HomeViewModel: ViewModel, DetailPresentingViewModel {
 
     let isActive = MutableProperty(false)
 
@@ -11,7 +11,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
     /// Example text that will be updated asynchonously when isActive becomes true.
     let testText: Property<String?>
     let image = Property(value: Image.n8churLogo.image)
-    let presentDetailTitle = Property(value: L10n.Root.PresentDetail.title)
+    let presentDetailTitle = Property(value: L10n.Home.PresentDetail.title)
 
     private(set) lazy var presentDetail = makePresentDetail()
 
@@ -23,7 +23,7 @@ class RootViewModel: ViewModel, DetailPresentingViewModel {
             .timer(interval: DispatchTimeInterval.milliseconds(50), on: backgroundScheduler)
             .take(first: 1)
             .map { _ in
-                return Optional.some(L10n.Root.testText)
+                return Optional.some(L10n.Home.testText)
             }
 
         let testTextProducer = isActive.producer

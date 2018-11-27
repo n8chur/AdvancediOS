@@ -3,36 +3,36 @@ import Core
 import ReactiveCocoa
 import ReactiveSwift
 
-class RootViewController: UIViewController, ViewController {
+class HomeViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = RootViewModel
+    typealias ViewModelType = HomeViewModel
 
-    let viewModel: RootViewModel
+    let viewModel: HomeViewModel
 
     private let uiScheduler = UIScheduler()
 
-    private(set) lazy var rootView: RootView = {
-        return RootView(frame: UIScreen.main.bounds)
+    private(set) lazy var homeView: HomeView = {
+        return HomeView(frame: UIScreen.main.bounds)
     }()
 
-    required init(viewModel: RootViewModel) {
+    required init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
     }
 
     override func loadView() {
-        view = rootView
+        view = homeView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        rootView.label.reactive.text <~ viewModel.testText.signal
-        rootView.imageView.reactive.image <~ viewModel.image
-        rootView.detailButton.reactive.title <~ viewModel.presentDetailTitle
+        homeView.label.reactive.text <~ viewModel.testText.signal
+        homeView.imageView.reactive.image <~ viewModel.image
+        homeView.detailButton.reactive.title <~ viewModel.presentDetailTitle
 
-        rootView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail)
+        homeView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail)
 
         viewModel.isActive <~ reactive.isAppeared
     }

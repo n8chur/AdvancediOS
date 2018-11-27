@@ -6,16 +6,16 @@ import Core
 
 @testable import BestPractices
 
-class RootViewModelSpec: QuickSpec {
+class HomeViewModelSpec: QuickSpec {
     override func spec() {
 
-        var viewModel: RootViewModel!
+        var viewModel: HomeViewModel!
 
         beforeEach {
-            viewModel = RootViewModel()
+            viewModel = HomeViewModel()
         }
 
-        describe("RootViewModel") {
+        describe("HomeViewModel") {
             it("should initialize with a false isActive") {
                 expect(viewModel.isActive.value).to(beFalse())
             }
@@ -27,7 +27,7 @@ class RootViewModelSpec: QuickSpec {
 
                         viewModel.isActive.value = true
 
-                        expect(viewModel.testText.value).toEventually(equal(L10n.Root.testText))
+                        expect(viewModel.testText.value).toEventually(equal(L10n.Home.testText))
                     }
                 }
             }

@@ -1,8 +1,8 @@
 /* The title of the button that presents the detail view. */
-"root.present_detail.title" = "Details";
+"home.present_detail.title" = "Details";
 
-/* Test copy for the root view. */
-"root.test_text" = "It works!";
+/* Test copy for the home view. */
+"home.test_text" = "It works!";
 
 /* The title of the detail view. */
 "detail.title" = "Details";

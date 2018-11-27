@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import Core
 
-class RootView: UIView {
+class HomeView: UIView {
 
     let label: UILabel = {
         let label = UILabel()

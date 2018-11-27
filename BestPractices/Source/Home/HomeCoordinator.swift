@@ -4,46 +4,33 @@ import ReactiveCocoa
 import ReactiveSwift
 import Result
 
-/// The flow coordinator for the application.
+/// The flow coordinator for the home flow.
 ///
 /// This class is responsible for:
-/// - Setting up the window with the appropriate views and handle all view routing
-/// - Handling presentation of views controllers
+/// - Instantiating the root navigation controller
+/// - Handling presentation of views controllers in the navigation controller
 /// - Forwarding view model creation to the view model factory it was initialized with
 /// - Forwarding view controller creation to the view controller factory it was initialized with
-class ApplicationCoordinator {
+class HomeCoordinator {
 
-    let viewModelFactory: ApplicationViewModelFactory
-    let viewControllerFactory: ApplicationViewControllerFactory
-    let window: UIWindow
-    let navigationController = UINavigationController(nibName: nil, bundle: nil)
+    let viewModelFactory: HomeViewModelFactory
+    let viewControllerFactory: HomeViewControllerFactory
+    let navigationModel: HomeNavigationModel
+    let navigationController: HomeNavigationController
 
-    init(viewModelFactory: ApplicationViewModelFactory, viewControllerFactory: ApplicationViewControllerFactory, window: UIWindow) {
+    init(viewModelFactory: HomeViewModelFactory, viewControllerFactory: HomeViewControllerFactory) {
         self.viewModelFactory = viewModelFactory
         self.viewControllerFactory = viewControllerFactory
-        self.window = window
-    }
 
-    func start() {
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        navigationModel = viewModelFactory.makeHomeNavigationModel()
+        navigationController = viewControllerFactory.makeHomeNavigationController(navigationModel: navigationModel)
 
-        let viewModel = RootViewModel()
-
-        viewModel.detailPresenter = self
-
-        let rootViewController = makeRootViewController(viewModel: viewModel)
-
-        navigationController.viewControllers = [ rootViewController ]
-    }
-
-    private func makeRootViewController(viewModel: RootViewModel) -> RootViewController {
-        return RootViewController(viewModel: viewModel)
+        navigationModel.homeViewModel.detailPresenter = self
     }
 
 }
 
-extension ApplicationCoordinator: DetailPresenter {
+extension HomeCoordinator: DetailPresenter {
 
     func makeDetailViewModel() -> DetailViewModel {
         return viewModelFactory.makeDetailViewModel()
@@ -57,7 +44,7 @@ extension ApplicationCoordinator: DetailPresenter {
 
 }
 
-extension ApplicationCoordinator: SelectionPresenter {
+extension HomeCoordinator: SelectionPresenter {
 
     func makeSelectionViewModel() -> SelectionViewModel {
         return viewModelFactory.makeSelectionViewModel()
