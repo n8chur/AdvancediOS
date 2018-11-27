@@ -73,7 +73,7 @@ class PresentationsSpec: QuickSpec {
 
                     dismissObserver.sendCompleted()
 
-                    expect(presentation.present.isEnabled.value).to(beTrue())
+                    expect(presentation.present.isEnabled.value).to(beFalse())
                 }
             }
 
