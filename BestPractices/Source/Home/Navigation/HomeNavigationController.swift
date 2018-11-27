@@ -6,14 +6,12 @@ class HomeNavigationController: UINavigationController {
 
     let navigationModel: HomeNavigationModel
 
-    required init(navigationModel: HomeNavigationModel) {
+    required init(navigationModel: HomeNavigationModel, homeViewController: HomeViewController) {
         self.navigationModel = navigationModel
 
         super.init(nibName: nil, bundle: nil)
 
-        let viewController = HomeViewController(viewModel: navigationModel.homeViewModel)
-        
-        viewControllers = [ viewController ]
+        viewControllers = [ homeViewController ]
     }
 
     override func viewDidLoad() {

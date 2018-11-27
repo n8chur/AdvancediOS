@@ -1,7 +1,7 @@
 import ReactiveSwift
 import Core
 
-class HomeNavigationModel: ViewModel {
+class RootTabBarViewModel: ViewModel {
 
     let isActive = MutableProperty<Bool>(false)
 

@@ -6,8 +6,13 @@ import Core
 /// not have knowledge of each of its view controller's dependencies.
 class HomeViewControllerFactory {
 
-    func makeHomeNavigationController(navigationModel: HomeNavigationModel) -> HomeNavigationController {
-        return HomeNavigationController(navigationModel: navigationModel)
+    func makeHomeNavigationController(navigationModel: HomeNavigationModel, homeViewModel: HomeViewModel) -> HomeNavigationController {
+        let homeViewController = makeHomeViewController(viewModel: homeViewModel)
+        return HomeNavigationController(navigationModel: navigationModel, homeViewController: homeViewController)
+    }
+
+    func makeHomeViewController(viewModel: HomeViewModel) -> HomeViewController {
+        return HomeViewController(viewModel: viewModel)
     }
 
     func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {

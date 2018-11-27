@@ -10,6 +10,10 @@ class HomeViewModelFactory {
         return HomeNavigationModel()
     }
 
+    func makeHomeViewModel() -> HomeViewModel {
+        return HomeViewModel()
+    }
+
     func makeDetailViewModel() -> DetailViewModel {
         return DetailViewModel()
     }
