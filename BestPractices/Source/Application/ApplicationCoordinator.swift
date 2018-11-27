@@ -66,8 +66,7 @@ extension ApplicationCoordinator: SelectionPresenter {
     func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
         let viewController = viewControllerFactory.makeSelectionViewController(viewModel: viewModel)
 
-        let result = viewModel.submit.values.map { _ in return () }
-        return self.navigationController.makeCancellablePresentationContext(of: viewController, result: result)
+        return self.navigationController.makeCancellablePresentationContext(of: viewController, viewModel: viewModel)
     }
 
 }
