@@ -17,6 +17,8 @@ class HomeNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tabBarItem.reactive.title <~ navigationModel.tabBarItemTitle
+
         navigationModel.isActive <~ reactive.isAppeared
     }
 

@@ -9,6 +9,8 @@ class HomeNavigationModel: ViewModel, HomePresentingViewModel {
 
     weak var homePresenter: HomePresenter?
 
+    let tabBarItemTitle = Property(value: L10n.HomeNavigation.TabBarItem.title)
+
     init() { }
 
 }

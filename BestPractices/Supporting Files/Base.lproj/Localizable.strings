@@ -1,14 +1,17 @@
+/* The title of the detail view. */
+"detail.title" = "Details";
+
+/* The title of the select button that presents the selection view. */
+"detail.select.title" = "Select Text";
+
 /* The title of the button that presents the detail view. */
 "home.present_detail.title" = "Details";
 
 /* Test copy for the home view. */
 "home.test_text" = "It works!";
 
-/* The title of the detail view. */
-"detail.title" = "Details";
-
-/* The title of the select button that presents the selection view. */
-"detail.select.title" = "Select Text";
+/* The title of the tab bar item for the home navigation flow. */
+"home_navigation.tab_bar_item.title" = "Home";
 
 /* The title of submit button on the selection view. */
 "selection.submit.title" = "Submit";

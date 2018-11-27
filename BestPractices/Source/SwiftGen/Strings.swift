@@ -30,6 +30,13 @@ internal enum L10n {
     }
   }
 
+  internal enum HomeNavigation {
+    internal enum TabBarItem {
+      /// Home
+      internal static let title = L10n.tr("Localizable", "home_navigation.tab_bar_item.title")
+    }
+  }
+
   internal enum Selection {
     internal enum Submit {
       /// Submit
