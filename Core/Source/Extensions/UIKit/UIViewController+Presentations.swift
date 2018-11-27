@@ -42,33 +42,11 @@ public extension UIViewController {
     /// If a result view model is provided the view controller will be dismissed when its result signal sends a value.
     /// Result values begin being capturtued immediately but will not cause a dismissal until the present action has
     /// completed.
-    public func makeCancellablePresentationContext<ViewModel: ResultViewModel>(of viewController: UIViewController, presentAnimated: Bool = true, dismissAnimated: Bool = true, viewModel: ViewModel? = nil) -> DismissablePresentationContext {
+    public func makeCancellablePresentationContext<ViewModel: ResultViewModel>(of viewController: UIViewController, viewModel: ViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) -> DismissablePresentationContext {
         let navigationController = UINavigationController(rootViewController: viewController)
         let presentation = makeModalPresentation(of: navigationController)
-        let context = DismissablePresentationContext(presentation: presentation, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
+        let context = ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
         context.addCancelBarButtonItem(to: viewController)
-
-        if let viewModel = viewModel {
-            let dismiss = presentation.dismiss.apply(context.dismissAnimated)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-
-            // Begin capturing a result value immediately.
-            let capturedResult = viewModel.result.producer
-                .take(duringLifetimeOf: presentation)
-                .take(first: 1)
-                .replayLazily(upTo: 1)
-            capturedResult.start()
-
-            let dismissOnResult = capturedResult.producer
-                .then(dismiss)
-
-            // Wait until the dismiss action is enabled before dismissing from a result.
-            presentation.dismiss.isEnabled.signal.producer
-                .whenTrue(subscribeTo: dismissOnResult)
-                .take(until: presentation.didDismiss)
-                .start()
-        }
-
         return context
     }
 
