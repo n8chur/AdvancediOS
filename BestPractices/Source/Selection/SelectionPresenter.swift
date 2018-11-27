@@ -2,7 +2,7 @@ import ReactiveSwift
 import Result
 import Core
 
-protocol SelectionPresentingViewModel: class, ViewModel {
+protocol SelectionPresentingViewModel: class, PresentingViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
     var presentSelection: Action<(), Never, NoError> { get }
 }
@@ -14,26 +14,22 @@ extension SelectionPresentingViewModel {
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
     func makePresentSelection(setupViewModel: ((SelectionViewModel) -> Void)? = nil) -> Action<(), Never, NoError> {
-        return Action<(), Never, NoError> { [weak self] _ in
-            return SignalProducer<Never, NoError> { (observer, lifetime) in
-                guard let presenter = self?.selectionPresenter else {
-                    fatalError()
-                }
-
-                let viewModel = presenter.makeSelectionViewModel()
-
-                setupViewModel?(viewModel)
-
-                presenter.selectionPresentation(of: viewModel)
-                    .take(during: lifetime)
-                    .start(observer)
-            }
-        }
+        return makePresent(
+            getPresenter: { [weak self] in
+                return self?.selectionPresenter
+            },
+            getViewModel: { (presenter) in
+                return presenter.makeSelectionViewModel()
+            },
+            setupViewModel: setupViewModel,
+            getPresentationProducer: { (presenter, viewModel) in
+                return presenter.selectionPresentation(of: viewModel)
+            })
     }
 
 }
 
-protocol SelectionPresenter: class {
+protocol SelectionPresenter: class, Presenter {
     func makeSelectionViewModel() -> SelectionViewModel
     func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext
 }
@@ -41,16 +37,8 @@ protocol SelectionPresenter: class {
 fileprivate extension SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        let context = SignalProducer<DismissablePresentationContext, NoError> { [weak self] () -> DismissablePresentationContext in
-            guard let self = self else { fatalError() }
-
-            return self.selectionPresentationContext(of: viewModel)
-        }
-
-        return context.flatMap(.merge) { context -> SignalProducer<Never, NoError> in
-            return context.presentation.present.apply(context.presentAnimated)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-                .untilDisposal(retain: context)
+        return makePresentation(of: viewModel) { [weak self] viewModel in
+            return self?.selectionPresentationContext(of: viewModel)
         }
     }
 

@@ -40,7 +40,7 @@ extension HomeCoordinator: HomePresenter {
     func homePresentationContext(of viewModel: HomeViewModel) -> DismissablePresentationContext {
         let viewController = factory.viewController.makeHomeViewController(viewModel: viewModel)
         let presentation = navigationController.makePushPresentation(of: viewController)
-        
+
         // Do not present/dismiss animated since this is the root view controller.
         return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
     }
