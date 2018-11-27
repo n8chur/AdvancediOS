@@ -25,7 +25,24 @@ class HomeCoordinator {
 
         navigationController = factory.viewController.makeHomeNavigationController(navigationModel: navigationModel, homeViewModel: homeViewModel)
 
-        homeViewModel.detailPresenter = self
+        navigationModel.homePresenter = self
+        navigationModel.presentHome.apply().start()
+    }
+
+}
+
+extension HomeCoordinator: HomePresenter {
+
+    func makeHomeViewModel() -> HomeViewModel {
+        return factory.viewModel.makeHomeViewModel()
+    }
+
+    func homePresentationContext(of viewModel: HomeViewModel) -> DismissablePresentationContext {
+        let viewController = factory.viewController.makeHomeViewController(viewModel: viewModel)
+        let presentation = navigationController.makePushPresentation(of: viewController)
+        
+        // Do not present/dismiss animated since this is the root view controller.
+        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
     }
 
 }
