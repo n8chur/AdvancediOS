@@ -33,7 +33,27 @@ extension DetailPresentingViewModel {
 
 }
 
-protocol DetailPresenter: class {
+protocol DetailPresenter: SelectionPresenter {
     func makeDetailViewModel() -> DetailViewModel
-    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError>
+    func detailPresentationContext(of viewModel: DetailViewModel) -> DismissablePresentationContext
+}
+
+fileprivate extension DetailPresenter {
+
+    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError> {
+        let context = SignalProducer<DismissablePresentationContext, NoError> { [weak self] () -> DismissablePresentationContext in
+            guard let self = self else { fatalError() }
+
+            viewModel.selectionPresenter = self
+
+            return self.detailPresentationContext(of: viewModel)
+        }
+
+        return context.flatMap(.latest) { context in
+            return context.presentation.present.apply(context.presentAnimated)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+                .untilDisposal(retain: context)
+        }
+    }
+
 }

@@ -4,15 +4,15 @@ import Result
 
 public extension UINavigationController {
 
-    public func makePushPresentation<ViewController: UIViewController>(of viewController: ViewController) -> DismissablePresentation<ViewController> {
-        let present: DismissablePresentation<ViewController>.MakePresent = { [weak self] (viewController, animated) in
+    public func makePushPresentation(of viewController: UIViewController) -> DismissablePresentation {
+        let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
             return self.reactive.pushViewController.apply((viewController, animated))
                 .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
         }
 
-        let dismiss: DismissablePresentation<ViewController>.MakeDismiss = { [weak self] (viewController, animated) in
+        let dismiss: DismissablePresentation.MakeDismiss = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
             return self.reactive.popViewController.apply((viewController, animated))

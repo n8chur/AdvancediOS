@@ -13,7 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
 
         let viewModelFactory = ApplicationViewModelFactory()
-        let coordinator = ApplicationCoordinator(viewModelFactory: viewModelFactory, window: window)
+        let viewControllerFactory = ApplicationViewControllerFactory()
+        let coordinator = ApplicationCoordinator(viewModelFactory: viewModelFactory, viewControllerFactory: viewControllerFactory, window: window)
         self.coordinator = coordinator
 
         coordinator.start()

@@ -10,14 +10,17 @@ import Result
 /// - Setting up the window with the appropriate views and handle all view routing
 /// - Handling presentation of views controllers
 /// - Forwarding view model creation to the view model factory it was initialized with
+/// - Forwarding view controller creation to the view controller factory it was initialized with
 class ApplicationCoordinator {
 
     let viewModelFactory: ApplicationViewModelFactory
+    let viewControllerFactory: ApplicationViewControllerFactory
     let window: UIWindow
     let navigationController = UINavigationController(nibName: nil, bundle: nil)
 
-    init(viewModelFactory: ApplicationViewModelFactory, window: UIWindow) {
+    init(viewModelFactory: ApplicationViewModelFactory, viewControllerFactory: ApplicationViewControllerFactory, window: UIWindow) {
         self.viewModelFactory = viewModelFactory
+        self.viewControllerFactory = viewControllerFactory
         self.window = window
     }
 
@@ -38,14 +41,6 @@ class ApplicationCoordinator {
         return RootViewController(viewModel: viewModel)
     }
 
-    private func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {
-        return DetailViewController(viewModel: viewModel)
-    }
-
-    private func makeSelectionViewController(viewModel: SelectionViewModel) -> SelectionViewController {
-        return SelectionViewController(viewModel: viewModel)
-    }
-
 }
 
 extension ApplicationCoordinator: DetailPresenter {
@@ -54,23 +49,10 @@ extension ApplicationCoordinator: DetailPresenter {
         return viewModelFactory.makeDetailViewModel()
     }
 
-    func detailPresentation(of viewModel: DetailViewModel) -> SignalProducer<Never, NoError> {
-        let viewController = SignalProducer<DetailViewController, NoError> { [weak self] () -> DetailViewController in
-            guard let self = self else { fatalError() }
-
-            viewModel.selectionPresenter = self
-
-            return self.makeDetailViewController(viewModel: viewModel)
-        }
-
-        return viewController.flatMap(.merge) { [weak self] viewController -> SignalProducer<Never, NoError> in
-            guard let self = self else { fatalError() }
-
-            let presentation = self.navigationController.makePushPresentation(of: viewController)
-
-            return presentation.present.apply(true)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-        }
+    func detailPresentationContext(of viewModel: DetailViewModel) -> DismissablePresentationContext {
+        let viewController = viewControllerFactory.makeDetailViewController(viewModel: viewModel)
+        let presentation = navigationController.makePushPresentation(of: viewController)
+        return DismissablePresentationContext(presentation: presentation)
     }
 
 }
@@ -81,35 +63,11 @@ extension ApplicationCoordinator: SelectionPresenter {
         return viewModelFactory.makeSelectionViewModel()
     }
 
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        let viewController = SignalProducer<SelectionViewController, NoError> { [weak self] () -> SelectionViewController in
-            guard let self = self else { fatalError() }
+    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
+        let viewController = viewControllerFactory.makeSelectionViewController(viewModel: viewModel)
 
-            return self.makeSelectionViewController(viewModel: viewModel)
-        }
-
-        return viewController.flatMap(.merge) { [weak self] viewController -> SignalProducer<Never, NoError> in
-            guard let self = self else { fatalError() }
-
-            let selectionNavigationController = UINavigationController(rootViewController: viewController)
-
-            let presentation = self.navigationController.makeModalPresentation(of: selectionNavigationController)
-            presentation.addCancelBarButtonItem(to: viewController, animated: true)
-
-            let dismiss = presentation.dismiss.apply(true)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-
-            // Ensure that the navigation controller is dismissed when the view model's submit action sends a value
-            // since this indicates that selection is complete.
-            viewModel.submit.values
-                .producer
-                .take(first: 1)
-                .then(dismiss)
-                .start()
-
-            return presentation.present.apply(true)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-        }
+        let result = viewModel.submit.values.map { _ in return () }
+        return self.navigationController.makeCancellablePresentationContext(of: viewController, result: result)
     }
 
 }

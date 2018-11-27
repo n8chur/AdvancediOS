@@ -14,7 +14,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let selectionResult = MutableProperty<String?>(nil)
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
-    private(set) lazy var presentSelection = makePresentSelection() { [weak self] viewModel in
+    private(set) lazy var presentSelection = makePresentSelection { [weak self] viewModel in
         guard let self = self else { fatalError() }
 
         self.selectionResult <~ viewModel.submit.values

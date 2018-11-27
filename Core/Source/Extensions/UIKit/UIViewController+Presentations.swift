@@ -5,15 +5,15 @@ import Result
 
 public extension UIViewController {
 
-    public func makeModalPresentation<ViewController: UIViewController>(of viewController: ViewController) -> DismissablePresentation<ViewController> {
-        let present: DismissablePresentation<ViewController>.MakePresent = { [weak self] (viewController, animated) in
+    public func makeModalPresentation(of viewController: UIViewController) -> DismissablePresentation {
+        let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
             return self.reactive.present.apply((viewController, animated))
                 .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
         }
 
-        let dismiss: DismissablePresentation<ViewController>.MakeDismiss = { (viewController, animated) in
+        let dismiss: DismissablePresentation.MakeDismiss = { (viewController, animated) in
             return viewController.reactive.dismiss.apply(animated)
                 .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
         }
@@ -36,17 +36,51 @@ public extension UIViewController {
         return presentation
     }
 
+    /// Wraps the provided view controller in a navigation controller, adds a cancel button to the navigation item's
+    /// left bar button item that calls the presentation's dismiss command.
+    ///
+    /// If a value is sent along the result signal the preesnted navigation controller will be dismissed. Result values
+    /// begin being capturtued immediately but will not cause a dismissal until the present action has completed.
+    public func makeCancellablePresentationContext(of viewController: UIViewController, presentAnimated: Bool = true, dismissAnimated: Bool = true, result: Signal<(), NoError>? = nil) -> DismissablePresentationContext {
+        let navigationController = UINavigationController(rootViewController: viewController)
+        let presentation = makeModalPresentation(of: navigationController)
+        let context = DismissablePresentationContext(presentation: presentation, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
+        context.addCancelBarButtonItem(to: viewController)
+
+        if let result = result {
+            let dismiss = presentation.dismiss.apply(context.dismissAnimated)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+
+            // Begin capturing a result value immediately.
+            let capturedResult = result.producer
+                .take(duringLifetimeOf: presentation)
+                .take(first: 1)
+                .replayLazily(upTo: 1)
+            capturedResult.start()
+
+            let dismissOnResult = capturedResult.producer
+                .then(dismiss)
+
+            // Wait until the dismiss action is enabled before dismissing from a result.
+            presentation.dismiss.isEnabled.signal.producer
+                .whenTrue(subscribeTo: dismissOnResult)
+                .take(until: presentation.didDismiss)
+                .start()
+        }
+
+        return context
+    }
+
 }
 
-public extension DismissablePresentation {
+public extension DismissablePresentationContext {
 
     /// Sets the left navigation item to be a cancel button that executes the dimiss action.
     ///
-    /// - Parameter animated: The view controller to add the navigation item to.
-    /// - Parameter animated: The Bool value to execute the dismiss action with when the cancel button is pressed.
-    public func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
+    /// - Parameter viewController: The view controller to add the navigation item to.
+    public func addCancelBarButtonItem(to viewController: UIViewController) {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-        cancelButton.reactive.pressed = CocoaAction(dismiss, input: animated)
+        cancelButton.reactive.pressed = CocoaAction(presentation.dismiss, input: dismissAnimated)
         viewController.navigationItem.leftBarButtonItem = cancelButton
     }
 

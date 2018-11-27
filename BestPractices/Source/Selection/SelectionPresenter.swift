@@ -35,5 +35,23 @@ extension SelectionPresentingViewModel {
 
 protocol SelectionPresenter: class {
     func makeSelectionViewModel() -> SelectionViewModel
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError>
+    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext
+}
+
+fileprivate extension SelectionPresenter {
+
+    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
+        let context = SignalProducer<DismissablePresentationContext, NoError> { [weak self] () -> DismissablePresentationContext in
+            guard let self = self else { fatalError() }
+
+            return self.selectionPresentationContext(of: viewModel)
+        }
+
+        return context.flatMap(.merge) { context -> SignalProducer<Never, NoError> in
+            return context.presentation.present.apply(context.presentAnimated)
+                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+                .untilDisposal(retain: context)
+        }
+    }
+
 }
