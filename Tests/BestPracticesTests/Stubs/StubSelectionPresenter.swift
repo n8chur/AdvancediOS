@@ -1,12 +1,13 @@
 import ReactiveSwift
 import Result
+import Core
 
 @testable import BestPractices
 
 class StubSelectionPresenter {
 
-    let (makeViewModelSignal, makeViewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
-    let (presentationViewModelSignal, presentationViewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
+    let (makeSelectionViewModelSignal, makeSelectionViewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
+    let (selectionPresentationContextSignal, selectionPresentationContextObserver) = Signal<SelectionViewModel, NoError>.pipe()
 
 }
 
@@ -14,12 +15,13 @@ extension StubSelectionPresenter: SelectionPresenter {
 
     func makeSelectionViewModel() -> SelectionViewModel {
         let viewModel = SelectionViewModel()
-        makeViewModelObserver.send(value: viewModel)
+        makeSelectionViewModelObserver.send(value: viewModel)
         return viewModel
     }
 
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        presentationViewModelObserver.send(value: viewModel)
-        return SignalProducer.empty
+    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
+        selectionPresentationContextObserver.send(value: viewModel)
+        return DismissablePresentationContext.stub()
     }
+
 }

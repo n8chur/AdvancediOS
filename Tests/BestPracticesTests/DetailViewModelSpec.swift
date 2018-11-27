@@ -2,6 +2,7 @@ import Quick
 import Nimble
 import ReactiveSwift
 import Result
+import Core
 
 @testable import BestPractices
 
@@ -30,7 +31,7 @@ class DetailViewModelSpec: QuickSpec {
 
                     let selectionValue = "Test selection input"
 
-                    presenter.presentationViewModelSignal.observeValues { viewModel in
+                    presenter.selectionPresentationContextSignal.observeValues { viewModel in
                         viewModel.input.value = selectionValue
                         viewModel.submit.apply().start()
                     }
@@ -49,18 +50,4 @@ class DetailViewModelSpec: QuickSpec {
         }
 
     }
-}
-
-private class StubSelectionPresenter: SelectionPresenter {
-
-    let (viewModel, viewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
-
-    func makeSelectionViewModel() -> SelectionViewModel {
-        return SelectionViewModel()
-    }
-
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        return SignalProducer.empty
-    }
-
 }

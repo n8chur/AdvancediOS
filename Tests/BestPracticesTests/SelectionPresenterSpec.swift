@@ -22,9 +22,9 @@ class SelectionPresenterSpec: QuickSpec {
                     presentingViewModel.selectionPresenter = presenter
                 }
 
-                it("should call the presenter to create a presentation") {
+                it("should call the presenter to create a presentation context") {
                     let viewModel = MutableProperty<SelectionViewModel?>(nil)
-                    viewModel <~ presenter.presentationViewModelSignal
+                    viewModel <~ presenter.selectionPresentationContextSignal
 
                     presentingViewModel.presentSelection.apply().start()
 
@@ -32,12 +32,15 @@ class SelectionPresenterSpec: QuickSpec {
                 }
 
                 it("should call the presenter to create a view model") {
+                    let contextViewModel = MutableProperty<SelectionViewModel?>(nil)
+                    contextViewModel <~ presenter.makeSelectionViewModelSignal
+
                     let viewModel = MutableProperty<SelectionViewModel?>(nil)
-                    viewModel <~ presenter.makeViewModelSignal
+                    viewModel <~ presenter.makeSelectionViewModelSignal
 
                     presentingViewModel.presentSelection.apply().start()
 
-                    expect(viewModel.value).notTo(beNil())
+                    expect(viewModel.value).to(be(contextViewModel.value))
                 }
 
                 it("should call the setup block") {

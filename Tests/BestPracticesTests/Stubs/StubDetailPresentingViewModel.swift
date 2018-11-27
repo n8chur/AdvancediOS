@@ -9,7 +9,7 @@ class StubDetailPresentingViewModel: DetailPresentingViewModel {
 
     weak var detailPresenter: DetailPresenter?
 
-    private(set) lazy var presentDetail: Action<(), Never, NoError> = makePresentDetail { [unowned self] viewModel in
+    private(set) lazy var presentDetail = makePresentDetail { [unowned self] (viewModel) in
         self.setupViewModelObserver.send(value: viewModel)
     }
 

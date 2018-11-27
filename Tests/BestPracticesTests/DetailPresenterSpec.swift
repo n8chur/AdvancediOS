@@ -22,18 +22,18 @@ class DetailPresenterSpec: QuickSpec {
                     presentingViewModel.detailPresenter = presenter
                 }
 
-                it("should call the presenter to create a presentation") {
+                it("should call the presenter to create a view model") {
                     let viewModel = MutableProperty<DetailViewModel?>(nil)
-                    viewModel <~ presenter.presentationViewModelSignal
+                    viewModel <~ presenter.makeDetailViewModelSignal
 
                     presentingViewModel.presentDetail.apply().start()
 
                     expect(viewModel.value).notTo(beNil())
                 }
 
-                it("should call the presenter to create a view model") {
+                it("should call the presenter to create a presentation context") {
                     let viewModel = MutableProperty<DetailViewModel?>(nil)
-                    viewModel <~ presenter.makeViewModelSignal
+                    viewModel <~ presenter.detailPresentationContextSignal
 
                     presentingViewModel.presentDetail.apply().start()
 
