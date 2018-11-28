@@ -21,3 +21,13 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     }
 
 }
+
+protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol { }
+
+extension DetailViewModelFactoryProtocol {
+
+    func makeDetailViewModel() -> DetailViewModel {
+        return DetailViewModel()
+    }
+
+}

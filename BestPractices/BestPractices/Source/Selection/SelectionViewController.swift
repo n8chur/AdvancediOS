@@ -46,3 +46,13 @@ class SelectionViewController: UIViewController, ViewController {
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
 
 }
+
+protocol SelectionViewControllerFactoryProtocol { }
+
+extension SelectionViewControllerFactoryProtocol {
+
+    func makeSelectionViewController(viewModel: SelectionViewModel) -> SelectionViewController {
+        return SelectionViewController(viewModel: viewModel)
+    }
+
+}

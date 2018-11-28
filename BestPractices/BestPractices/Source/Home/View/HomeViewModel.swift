@@ -33,3 +33,13 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
     }
 
 }
+
+protocol HomeViewModelFactoryProtocol: DetailViewModelFactoryProtocol { }
+
+extension HomeViewModelFactoryProtocol {
+
+    func makeHomeViewModel() -> HomeViewModel {
+        return HomeViewModel()
+    }
+
+}

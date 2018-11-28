@@ -14,3 +14,13 @@ class DetailNavigationModel: TabBarChildViewModel, DetailPresentingViewModel {
     init() { }
 
 }
+
+protocol DetailNavigationModelFactory: DetailViewModelFactoryProtocol { }
+
+extension DetailNavigationModelFactory {
+
+    func makeDetailNavigationModel() -> DetailNavigationModel {
+        return DetailNavigationModel()
+    }
+
+}

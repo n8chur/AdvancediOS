@@ -43,3 +43,13 @@ class DetailViewController: UIViewController, ViewController {
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
 
 }
+
+protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol { }
+
+extension DetailViewControllerFactoryProtocol {
+
+    func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {
+        return DetailViewController(viewModel: viewModel)
+    }
+
+}

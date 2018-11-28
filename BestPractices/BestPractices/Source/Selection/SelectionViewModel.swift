@@ -33,3 +33,13 @@ class SelectionViewModel: ResultViewModel {
     }
 
 }
+
+protocol SelectionViewModelFactoryProtocol { }
+
+extension SelectionViewModelFactoryProtocol {
+
+    func makeSelectionViewModel() -> SelectionViewModel {
+        return SelectionViewModel()
+    }
+
+}

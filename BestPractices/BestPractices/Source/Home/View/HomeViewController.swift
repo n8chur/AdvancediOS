@@ -44,3 +44,13 @@ class HomeViewController: UIViewController, ViewController {
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
 
 }
+
+protocol HomeViewControllerFactoryProtocol: DetailViewControllerFactoryProtocol { }
+
+extension HomeViewControllerFactoryProtocol {
+
+    func makeHomeViewController(viewModel: HomeViewModel) -> HomeViewController {
+        return HomeViewController(viewModel: viewModel)
+    }
+
+}
