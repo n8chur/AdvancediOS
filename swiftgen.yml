@@ -1,14 +1,14 @@
 xcassets:
-  inputs: Core/Resources/Images.xcassets
+  inputs: Core/Core/Resources/Images.xcassets
   outputs:
     templateName: swift4
-    output: Core/Source/SwiftGen/Image.swift
+    output: Core/Core/Source/SwiftGen/Image.swift
     params:
       enumName: Image
       publicAccess: true
 
 strings:
-  inputs: BestPractices/Supporting Files/Base.lproj/Localizable.strings
+  inputs: BestPractices/BestPractices/Supporting Files/Base.lproj/Localizable.strings
   outputs:
     - templateName: structured-swift4
-      output: BestPractices/Source/SwiftGen/Strings.swift
+      output: BestPractices/BestPractices/Source/SwiftGen/Strings.swift
