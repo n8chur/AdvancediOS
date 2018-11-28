@@ -13,7 +13,7 @@ import Result
 /// - Forwarding view controller creation to the view controller factory it was initialized with
 class HomeCoordinator {
 
-    let navigationController: HomeNavigationController
+    let navigationController: TabBarChildNavigationController
 
     private let factory: HomeCoordinatorFactory
 
@@ -21,9 +21,7 @@ class HomeCoordinator {
         self.factory = factory
 
         let navigationModel = factory.viewModel.makeHomeNavigationModel()
-        let homeViewModel = factory.viewModel.makeHomeViewModel()
-
-        navigationController = factory.viewController.makeHomeNavigationController(navigationModel: navigationModel, homeViewModel: homeViewModel)
+        navigationController = factory.viewController.makeHomeNavigationController(navigationModel: navigationModel)
 
         navigationModel.homePresenter = self
         navigationModel.presentHome.apply().start()

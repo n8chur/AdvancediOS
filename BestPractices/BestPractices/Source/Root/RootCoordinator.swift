@@ -13,7 +13,7 @@ import Result
 /// - Forwarding view controller creation to the view controller factory it was initialized with
 class RootCoordinator {
 
-    let tabBarController: RootTabBarController
+    let tabBarController: TabBarController
 
     private let factory: RootCoordinatorFactory
     private let homeCoordinator: HomeCoordinator

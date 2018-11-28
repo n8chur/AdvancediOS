@@ -1,15 +1,15 @@
 import ReactiveSwift
 import Core
 
-class HomeNavigationModel: ViewModel, HomePresentingViewModel {
+class HomeNavigationModel: TabBarChildViewModel, HomePresentingViewModel {
 
     let isActive = MutableProperty<Bool>(false)
+
+    let tabBarItemTitle = Property(value: L10n.HomeNavigation.TabBarItem.title)
 
     private(set) lazy var presentHome = makePresentHome()
 
     weak var homePresenter: HomePresenter?
-
-    let tabBarItemTitle = Property(value: L10n.HomeNavigation.TabBarItem.title)
 
     init() { }
 

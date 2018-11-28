@@ -2,16 +2,16 @@ import UIKit
 import ReactiveSwift
 import Core
 
-class RootTabBarController: UITabBarController {
+class TabBarController: UITabBarController {
 
-    let viewModel: RootTabBarViewModel
+    let viewModel: ViewModel
 
-    required init(viewModel: RootTabBarViewModel, homeNavigationController: HomeNavigationController) {
+    required init(viewModel: ViewModel, viewControllers: [UIViewController]) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
 
-        viewControllers = [ homeNavigationController ]
+        self.viewControllers = viewControllers
     }
 
     override func viewDidLoad() {

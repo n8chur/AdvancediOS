@@ -6,9 +6,8 @@ import Core
 /// not have knowledge of each of its view controller's dependencies.
 class HomeViewControllerFactory {
 
-    func makeHomeNavigationController(navigationModel: HomeNavigationModel, homeViewModel: HomeViewModel) -> HomeNavigationController {
-        let homeViewController = makeHomeViewController(viewModel: homeViewModel)
-        return HomeNavigationController(navigationModel: navigationModel, homeViewController: homeViewController)
+    func makeHomeNavigationController(navigationModel: HomeNavigationModel) -> TabBarChildNavigationController {
+        return TabBarChildNavigationController(navigationModel: navigationModel)
     }
 
     func makeHomeViewController(viewModel: HomeViewModel) -> HomeViewController {
