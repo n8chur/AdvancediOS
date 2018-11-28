@@ -33,19 +33,19 @@ public class ResultPresentationContext<ViewModel: ResultViewModel>: DismissableP
         let dismiss = presentation.dismiss.apply(dismissAnimated)
             .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
 
-        // Begin capturing a result value immediately.
-        let capturedResult = viewModel.result.producer
-            .take(duringLifetimeOf: presentation)
+        // Wait until the dismiss action is enabled before dismissing.
+        let dismissWhenEnabled = presentation.dismiss.isEnabled.producer
+            // Observe on the main queue scheduler to avoid a deadlock if this all happens synchronously.
+            .observe(on: QueueScheduler.main)
+            .filter { $0 }
             .take(first: 1)
-            .replayLazily(upTo: 1)
-        capturedResult.start()
+            .whenTrue(subscribeTo: dismiss)
+            .take(until: presentation.didDismiss)
 
-        let dismissOnResult = capturedResult.producer
-            .then(dismiss)
-
-        // Wait until the dismiss action is enabled before dismissing from a result.
-        presentation.dismiss.isEnabled.signal.producer
-            .whenTrue(subscribeTo: dismissOnResult)
+        // When a result is received begin waiting for the dismiss action to be enabled and then dismiss.
+        viewModel.result.producer
+            .take(first: 1)
+            .then(dismissWhenEnabled)
             .take(until: presentation.didDismiss)
             .start()
     }

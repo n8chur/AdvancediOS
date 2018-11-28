@@ -3,11 +3,11 @@ import ReactiveSwift
 import Result
 import Core
 
-extension DismissablePresentationContext {
+extension DismissablePresentation {
 
-    static func stub() -> DismissablePresentationContext {
+    static func stub() -> DismissablePresentation {
         let viewController = UIViewController()
-        let presentation = DismissablePresentation(
+        return DismissablePresentation(
             presentedViewController: viewController,
             present: { (_, _)  in
                 return SignalProducer<Never, NoError>.empty
@@ -16,7 +16,6 @@ extension DismissablePresentationContext {
                 return SignalProducer<Never, NoError>.empty
             },
             didDismiss: Signal<(), NoError>.empty)
-        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
     }
 
 }

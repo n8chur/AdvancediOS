@@ -14,7 +14,7 @@ targets:
   BestPractices:
     type: application
     platform: iOS
-    sources: BestPractices
+    sources: BestPractices/BestPractices
     dependencies:
       - target: Core
       - carthage: ReactiveCocoa
@@ -33,7 +33,9 @@ targets:
     type: bundle.unit-test
     settings:
       TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
-    sources: Tests/BestPracticesTests/
+    sources: 
+      - BestPractices/BestPracticesTests
+      - Shared/SharedTests
     dependencies:
       - target: BestPractices
       - carthage: Quick
@@ -41,8 +43,7 @@ targets:
   Core:
     type: framework
     platform: iOS
-    sources:
-      - Core
+    sources: Core/Core
     dependencies:
       - carthage: ReactiveSwift
       - carthage: Result
@@ -56,11 +57,12 @@ targets:
   CoreTests:
     platform: iOS
     type: bundle.unit-test
-    sources: Tests/CoreTests/
+    sources: 
+      - Core/CoreTests
+      - Shared/SharedTests
     dependencies:
       - target: Core
       - carthage: Quick
       - carthage: Nimble
     settings:
       LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)
-
