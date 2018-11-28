@@ -10,6 +10,10 @@ class RootViewModelFactory {
         return HomeViewModelFactory()
     }
 
+    func makeDetailViewModelFactory() -> DetailViewModelFactory {
+        return DetailViewModelFactory()
+    }
+
     func makeRootTabBarViewModel() -> RootTabBarViewModel {
         return RootTabBarViewModel()
     }

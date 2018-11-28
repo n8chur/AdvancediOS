@@ -21,4 +21,11 @@ class RootCoordinatorFactory {
         return HomeCoordinator(factory: factory)
     }
 
+    func makeDetailCoordinator() -> DetailCoordinator {
+        let viewModel = self.viewModel.makeDetailViewModelFactory()
+        let viewController = self.viewController.makeDetailViewControllerFactory()
+        let factory = DetailCoordinatorFactory(viewModel: viewModel, viewController: viewController)
+        return DetailCoordinator(factory: factory)
+    }
+
 }

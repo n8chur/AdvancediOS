@@ -4,6 +4,9 @@
 /* The title of the select button that presents the selection view. */
 "detail.select.title" = "Select Text";
 
+/* The title of the tab bar item for the detail navigation flow. */
+"detail_navigation.tab_bar_item.title" = "Detail";
+
 /* The title of the button that presents the detail view. */
 "home.present_detail.title" = "Details";
 

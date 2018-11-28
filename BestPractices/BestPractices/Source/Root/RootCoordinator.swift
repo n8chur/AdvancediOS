@@ -17,14 +17,16 @@ class RootCoordinator {
 
     private let factory: RootCoordinatorFactory
     private let homeCoordinator: HomeCoordinator
+    private let detailCoordinator: DetailCoordinator
 
     init(factory: RootCoordinatorFactory) {
         self.factory = factory
 
         homeCoordinator = factory.makeHomeCoordinator()
+        detailCoordinator = factory.makeDetailCoordinator()
 
         let viewModel = factory.viewModel.makeRootTabBarViewModel()
-        tabBarController = factory.viewController.makeRootTabBarController(viewModel: viewModel, homeNavigationController: homeCoordinator.navigationController)
+        tabBarController = factory.viewController.makeRootTabBarController(viewModel: viewModel, homeNavigationController: homeCoordinator.navigationController, detailNavigationController: detailCoordinator.navigationController)
     }
 
 }

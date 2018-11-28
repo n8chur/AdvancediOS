@@ -10,8 +10,15 @@ class RootViewControllerFactory {
         return HomeViewControllerFactory()
     }
 
-    func makeRootTabBarController(viewModel: RootTabBarViewModel, homeNavigationController: TabBarChildNavigationController) -> TabBarController {
-        let viewControllers = [ homeNavigationController ]
+    func makeDetailViewControllerFactory() -> DetailViewControllerFactory {
+        return DetailViewControllerFactory()
+    }
+
+    func makeRootTabBarController(viewModel: RootTabBarViewModel, homeNavigationController: TabBarChildNavigationController, detailNavigationController: TabBarChildNavigationController) -> TabBarController {
+        let viewControllers = [
+            homeNavigationController,
+            detailNavigationController,
+        ]
         return TabBarController(viewModel: viewModel, viewControllers: viewControllers)
     }
 
