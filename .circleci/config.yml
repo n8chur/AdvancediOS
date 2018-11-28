@@ -40,9 +40,9 @@ jobs:
             - RomeCache
 
       - store_test_results:
-          path: ./fastlane/test_output
+          path: fastlane/test_output
       - store_artifacts:
-          path: ./fastlane
+          path: fastlane
           destination: scan-test-results
       - store_artifacts:
           path: ~/Library/Logs/scan
