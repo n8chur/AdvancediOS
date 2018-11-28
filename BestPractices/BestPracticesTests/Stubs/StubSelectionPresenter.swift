@@ -6,8 +6,8 @@ import Core
 
 class StubSelectionPresenter {
 
-    let (makeSelectionViewModelSignal, makeSelectionViewModelObserver) = Signal<SelectionViewModel, NoError>.pipe()
-    let (selectionPresentationContextSignal, selectionPresentationContextObserver) = Signal<SelectionViewModel, NoError>.pipe()
+    let makeSelectionViewModelCall = MutableProperty<SelectionViewModel?>(nil)
+    let selectionPresentationContext = MutableProperty<SelectionViewModel?>(nil)
 
 }
 
@@ -15,12 +15,12 @@ extension StubSelectionPresenter: SelectionPresenter {
 
     func makeSelectionViewModel() -> SelectionViewModel {
         let viewModel = SelectionViewModel()
-        makeSelectionViewModelObserver.send(value: viewModel)
+        makeSelectionViewModelCall.value = viewModel
         return viewModel
     }
 
     func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
-        selectionPresentationContextObserver.send(value: viewModel)
+        selectionPresentationContext.value = viewModel
         return DismissablePresentationContext.stub()
     }
 

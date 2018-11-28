@@ -31,10 +31,12 @@ class DetailViewModelSpec: QuickSpec {
 
                     let selectionValue = "Test selection input"
 
-                    presenter.selectionPresentationContextSignal.observeValues { viewModel in
-                        viewModel.input.value = selectionValue
-                        viewModel.submit.apply().start()
-                    }
+                    presenter.selectionPresentationContext.signal
+                        .skipNil()
+                        .observeValues { viewModel in
+                            viewModel.input.value = selectionValue
+                            viewModel.submit.apply().start()
+                        }
 
                     viewModel.presentSelection.apply().start()
 
