@@ -26,7 +26,7 @@ targets:
         - BestPracticesTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: BestPractices/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   BestPracticesTests:
     platform: iOS
@@ -52,7 +52,7 @@ targets:
         - CoreTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: Core/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   CoreTests:
     platform: iOS
