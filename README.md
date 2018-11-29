@@ -17,5 +17,12 @@ This project is mostly intended to be used as a playground to experiment with ne
 
 ### Installation
 
-1. `$ make setup && make bootstrap`
+1. Setup the project:
+```
+$ brew bundle
+$ bundle install
+$ fastlane bootstrap
+```
 2. Open the generated `BestPractices.xcodeproj`
+
+Run `$ fastlane` for a list of commands.

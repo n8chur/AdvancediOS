@@ -1,9 +1,10 @@
 brew "carthage"
+
 brew "mint"
-brew "swiftlint"
 
 tap "blender/homebrew-tap"
 brew "rome"
 
+brew "swiftlint"
 # Required by SwiftGen
 brew "libxml2"

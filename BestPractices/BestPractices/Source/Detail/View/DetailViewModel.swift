@@ -17,7 +17,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     private(set) lazy var presentSelection = makePresentSelection { [weak self] viewModel in
         guard let self = self else { fatalError() }
 
-        self.selectionResult <~ viewModel.submit.values
+        self.selectionResult <~ viewModel.result
     }
 
 }

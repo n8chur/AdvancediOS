@@ -1,19 +1,126 @@
 # Fastlane Constants
 default_platform(:ios)
 
-# The device to use for testing
 TEST_DEVICE = "iPhone XS"
 
+SWIFTGEN_VERSION = "6.0.2"
+SWIFTGEN = "mint run SwiftGen/SwiftGen@" + SWIFTGEN_VERSION + " swiftgen"
+
+XCODEGEN_VERSION = "2.0.0"
+XCODEGEN = "mint run yonaskolb/XcodeGen@" + XCODEGEN_VERSION + " xcodegen"
+
+APPLICATION_NAME = "BestPractices"
+CORE_NAME = "Core"
+TARGETS = [ APPLICATION_NAME, CORE_NAME ]
+
 platform :ios do
+
+  # PUBLIC
+
+  desc "Bootstraps the project."
+  desc "This builds all dependencies and generates the project file."
+  lane :bootstrap do
+    carthage_bootstrap
+    generate_project
+  end
+
+  desc "Runs a carthage bootstrap leveraging Rome for caching."
+  lane :carthage_bootstrap do
+    Dir.chdir("..") do
+      sh "bundle exec carthage checkout"
+      sh "bundle exec rome download --platform iOS"
+      sh "bundle exec rome list --missing --platform ios | awk '{print $1}' | xargs carthage build --platform ios --cache-builds"
+      sh "bundle exec rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
+    end
+  end
+
+  desc "Updates the Cartfile.resolved based on the latest versions of each dependency according to the rules defined in the Cartfile."
+  desc "This does not rebuild any depencies. Run the carthage_bootstrap afterwards to rebuild."
+  lane :carthage_update do
+    Dir.chdir("..") do
+      sh "bundle exec carthage update --platform ios --no-build"
+    end
+  end
+
+  desc "Generates the project file using Xcodegen."
+  lane :generate_project do
+    Dir.chdir("..") do
+      sh XCODEGEN + " --spec project.yml"
+    end
+  end
+
   desc "Runs all unit test targets."
   lane :test do
-    scan(
-      devices: [TEST_DEVICE],
-      scheme: "BestPractices"
-    )
-    scan(
-      devices: [TEST_DEVICE],
-      scheme: "Core"
+    TARGETS.each do |target|
+      scan(
+        devices: [TEST_DEVICE],
+        scheme: target
+      )
+    end
+  end
+
+  desc "Lints all the things (source and SwiftGen configs)."
+  lane :lint do |options|
+    lint_source
+    lint_swiftgen
+  end
+
+  desc "Lints all targets source files."
+  lane :lint_source do
+    TARGETS.each do |target|
+      lint_source_for_target(
+        target: target,
+        config_file: "../.swiftlint.yml"
+      )
+    end
+  end
+
+  desc "Lints all targets SwiftGen configs."
+  lane :lint_swiftgen do
+    TARGETS.each do |target|
+      swiftgen_lint_target(
+        target: target
+      )
+    end
+  end
+
+  desc "Runs SwiftGen for all targets."
+  lane :swiftgen do
+    TARGETS.each do |target|
+      swiftgen_target(
+        target: target
+      )
+    end
+  end
+
+  # PRIVATE
+
+  desc "Lints a target directory with options:"
+  desc ":target - The target directory to lint."
+  desc ":config_file - The path to the swiftlint config file relative to the target (or the root if no target is provided)."
+  private_lane :lint_source_for_target do |options|
+    swiftlint(
+      mode: :lint,
+      strict: true,
+      config_file: options[:config_file],
+      path: options[:target]
     )
   end
+
+  desc "Lints SwiftGen configs for a taget with options:"
+  desc ":target - The target directory to lint."
+  private_lane :swiftgen_lint_target do |options|
+    Dir.chdir("../" + options[:target]) do
+      sh SWIFTGEN + " config lint"
+    end
+  end
+
+  desc "Runs SwiftGen for the provided target with options:"
+  desc ":target - The target to run SwiftGen on."
+  private_lane :swiftgen_target do |options|
+    Dir.chdir("../" + options[:target]) do
+      sh SWIFTGEN
+    end
+  end
+
 end
