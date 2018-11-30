@@ -1,0 +1,35 @@
+# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+targets:
+  BestPractices:
+    type: application
+    platform: iOS
+    sources: 
+      - BestPractices/Source
+      - BestPractices/Supporting Files
+    dependencies:
+      - target: Core
+      - target: ReactiveExtensions
+      - target: Presentations
+      - carthage: ReactiveCocoa
+      - carthage: ReactiveSwift
+      - carthage: Result
+      - carthage: SnapKit
+    scheme:
+      testTargets:
+        - BestPracticesTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: BestPractices/Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  BestPracticesTests:
+    platform: iOS
+    type: bundle.unit-test
+    settings:
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
+    sources: 
+      - BestPractices/Tests
+      - Shared/Tests
+    dependencies:
+      - target: BestPractices
+      - carthage: Quick
+      - carthage: Nimble

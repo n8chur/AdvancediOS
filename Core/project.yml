@@ -1,0 +1,28 @@
+# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+targets:
+  Core:
+    type: framework
+    platform: iOS
+    sources: 
+      - Core/Source
+      - Core/Supporting Files
+      - Core/Resources
+    scheme:
+      testTargets: 
+        - CoreTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Core/Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  CoreTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - Core/Tests
+      - Shared/Tests
+    dependencies:
+      - target: Core
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

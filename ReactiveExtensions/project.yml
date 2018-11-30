@@ -1,0 +1,30 @@
+# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+targets:
+  ReactiveExtensions:
+    type: framework
+    platform: iOS
+    sources: 
+      - ReactiveExtensions/Source
+      - ReactiveExtensions/Supporting Files
+    dependencies:
+      - carthage: ReactiveSwift
+      - carthage: Result
+    scheme:
+      testTargets: 
+        - ReactiveExtensionsTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: ReactiveExtensions/Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  ReactiveExtensionsTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - ReactiveExtensions/Tests
+      - Shared/Tests
+    dependencies:
+      - target: ReactiveExtensions
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

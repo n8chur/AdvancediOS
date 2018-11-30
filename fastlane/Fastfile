@@ -9,9 +9,16 @@ SWIFTGEN = "mint run SwiftGen/SwiftGen@" + SWIFTGEN_VERSION + " swiftgen"
 XCODEGEN_VERSION = "2.0.0"
 XCODEGEN = "mint run yonaskolb/XcodeGen@" + XCODEGEN_VERSION + " xcodegen"
 
-APPLICATION_NAME = "BestPractices"
 CORE_NAME = "Core"
-TARGETS = [ APPLICATION_NAME, CORE_NAME ]
+REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
+PRESENTATIONS_NAME = "Presentations"
+APPLICATION_NAME = "BestPractices"
+TARGETS = [
+  CORE_NAME,
+  REACTIVE_EXTENSIONS_NAME,
+  PRESENTATIONS_NAME,
+  APPLICATION_NAME
+]
 
 platform :ios do
 
@@ -22,6 +29,22 @@ platform :ios do
   lane :bootstrap do
     carthage_bootstrap
     generate_project
+  end
+
+  desc "Generates the project file using Xcodegen."
+  lane :generate_project do
+    Dir.chdir("..") do
+      sh XCODEGEN + " --spec project.yml"
+    end
+  end
+
+  desc "Runs SwiftGen for all targets."
+  lane :swiftgen do
+    TARGETS.each do |target|
+      swiftgen_target(
+        target: target
+      )
+    end
   end
 
   desc "Runs a carthage bootstrap leveraging Rome for caching."
@@ -39,13 +62,6 @@ platform :ios do
   lane :carthage_update do
     Dir.chdir("..") do
       sh "bundle exec carthage update --platform ios --no-build"
-    end
-  end
-
-  desc "Generates the project file using Xcodegen."
-  lane :generate_project do
-    Dir.chdir("..") do
-      sh XCODEGEN + " --spec project.yml"
     end
   end
 
@@ -79,15 +95,6 @@ platform :ios do
   lane :lint_swiftgen do
     TARGETS.each do |target|
       swiftgen_lint_target(
-        target: target
-      )
-    end
-  end
-
-  desc "Runs SwiftGen for all targets."
-  lane :swiftgen do
-    TARGETS.each do |target|
-      swiftgen_target(
         target: target
       )
     end
