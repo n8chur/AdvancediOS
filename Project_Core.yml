@@ -1,4 +1,4 @@
-# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+name: Core
 targets:
   Core:
     type: framework
@@ -19,7 +19,6 @@ targets:
     type: bundle.unit-test
     sources: 
       - Core/Tests
-      - Shared/Tests
     dependencies:
       - target: Core
       - carthage: Quick

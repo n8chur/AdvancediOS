@@ -1,28 +1,31 @@
-# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+include:
+  - Project_ReactiveExtensions.yml
+name: Presentations
 targets:
-  ReactiveExtensions:
+  Presentations:
     type: framework
     platform: iOS
     sources: 
-      - ReactiveExtensions/Source
-      - ReactiveExtensions/Supporting Files
+      - Presentations/Source
+      - Presentations/Supporting Files
     dependencies:
+      - target: ReactiveExtensions
       - carthage: ReactiveSwift
       - carthage: Result
     scheme:
       testTargets: 
-        - ReactiveExtensionsTests
+        - PresentationsTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: ReactiveExtensions/Scripts/swiftlint-check.sh
+      - path: Presentations/Scripts/swiftlint-check.sh
         name: Swift Lint Check
-  ReactiveExtensionsTests:
+  PresentationsTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - ReactiveExtensions/Tests
-      - Shared/Tests
+      - Presentations/Tests
     dependencies:
+      - target: Presentations
       - target: ReactiveExtensions
       - carthage: Quick
       - carthage: Nimble

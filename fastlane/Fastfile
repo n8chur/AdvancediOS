@@ -31,10 +31,12 @@ platform :ios do
     generate_project
   end
 
-  desc "Generates the project file using Xcodegen."
-  lane :generate_project do
-    Dir.chdir("..") do
-      sh XCODEGEN + " --spec project.yml"
+  desc "Generates all target's project files using Xcodegen."
+  lane :generate_projects do
+    TARGETS.each do |target|
+      generate_target_project(
+        target: target
+      )
     end
   end
 
@@ -70,7 +72,8 @@ platform :ios do
     TARGETS.each do |target|
       scan(
         devices: [TEST_DEVICE],
-        scheme: target
+        scheme: target,
+        project: target + ".xcodeproj"
       )
     end
   end
@@ -101,6 +104,15 @@ platform :ios do
   end
 
   # PRIVATE
+
+  desc "Generates the target project file using Xcodegen with options:"
+  desc ":target - The target project to build. If undefined the root project will be built. (default nil)"
+  private_lane :generate_target_project do |options|
+    Dir.chdir("..") do
+      project = options[:target] ? "_" + options[:target] : ""
+      sh XCODEGEN + " --spec Project" + project + ".yml"
+    end
+  end
 
   desc "Lints a target directory with options:"
   desc ":target - The target directory to lint."

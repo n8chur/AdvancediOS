@@ -1,4 +1,20 @@
-# Since this file is imported by the project.yml at the repository's root all paths should be relative to the root.
+include:
+  - Project_Core.yml
+  - Project_ReactiveExtensions.yml
+  - Project_Presentations.yml
+name: BestPractices
+# In a production application the Team ID would be set here.
+# settings:
+#  DEVELOPMENT_TEAM: "XXX"
+options:
+  bundleIdPrefix: com.bestpractices
+  deploymentTarget:
+    iOS: "12.0"
+  createIntermediateGroups: true
+settings:
+  # These values are read in the appropriate Info.plist files.
+  BEST_PRACTICES_VERSION: "0.1.0"
+  BEST_PRACTICES_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
 targets:
   BestPractices:
     type: application
@@ -28,7 +44,7 @@ targets:
       TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
     sources: 
       - BestPractices/Tests
-      - Shared/Tests
+      - Presentations/Tests/Stubs
     dependencies:
       - target: BestPractices
       - carthage: Quick

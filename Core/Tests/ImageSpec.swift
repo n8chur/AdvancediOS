@@ -8,9 +8,9 @@ class ImageSpec: QuickSpec {
 
         describe("Images") {
             describe("n8churLogo") {
-                it("should load an image") {
-                    let image = Image.n8churLogo.image
-                    expect(image).notTo(beNil())
+                it("should load the correct image name") {
+                    let name = Image.n8churLogo.name
+                    expect(name).to(equal("n8chur Logo"))
                 }
             }
         }
