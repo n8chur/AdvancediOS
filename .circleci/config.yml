@@ -10,7 +10,6 @@ jobs:
 
     environment:
       MINT_LINK_PATH: ~/MintCache/bin
-      MINT_PATH: ~/MintCache/lib/mint
 
     steps:
       - checkout
