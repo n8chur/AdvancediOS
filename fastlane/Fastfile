@@ -4,11 +4,19 @@ default_platform(:ios)
 TEST_DEVICE = "iPhone XS"
 
 SWIFTGEN_VERSION = "6.0.2"
-SWIFTGEN = "mint run SwiftGen/SwiftGen@" + SWIFTGEN_VERSION + " swiftgen"
-SWIFTGEN_FILENAME = "swiftgen.yml"
+SWIFTGEN = "mint run SwiftGen/SwiftGen@#{SWIFTGEN_VERSION} swiftgen"
+SWIFTGEN_CONFIG_FILENAME = "swiftgen.yml"
+# The name of the folder that contains all generated SwiftGen files.
+# This should be the same for all targets.
+SWIFTGEN_GENERATED_FOLDER_NAME = "SwiftGen"
+# The path of the folder containing the SwiftGen generated files folder relative to the target's root directory..
+# This should be the same for all targets.
+SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH = "Source/"
+# The path of the SwiftGen generated files folder relative to the target's root directory.
+SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH = "#{SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH}/#{SWIFTGEN_GENERATED_FOLDER_NAME}"
 
 XCODEGEN_VERSION = "2.0.0"
-XCODEGEN = "mint run yonaskolb/XcodeGen@" + XCODEGEN_VERSION + " xcodegen"
+XCODEGEN = "mint run yonaskolb/XcodeGen@#{XCODEGEN_VERSION} xcodegen"
 
 CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
@@ -92,7 +100,7 @@ platform :ios do
       scan(
         devices: [TEST_DEVICE],
         scheme: target,
-        project: target + "/" + target + ".xcodeproj"
+        project: "#{target}/#{target}.xcodeproj"
       )
     end
   end
@@ -122,6 +130,15 @@ platform :ios do
     end
   end
 
+  desc "Verifies that running SwiftGen does not modify files."
+  lane :verify_swiftgen do
+    TARGETS.each do |target|
+      verify_swiftgen_target(
+        target: target
+      )
+    end
+  end
+
   # PRIVATE
 
   desc "Generates the target project file using Xcodegen with options:"
@@ -130,8 +147,12 @@ platform :ios do
   private_lane :generate_target_project do |options|
     target = options[:target]
     suffix = options[:spec_suffix] ? options[:spec_suffix] : ""
-    Dir.chdir("../" + target) do
-      sh XCODEGEN + " --spec Project" + suffix + ".yml"
+    project_spec_name = "Project#{suffix}.yml"
+
+    UI.message "Generating project for #{target} with spec named #{project_spec_name}..."
+
+    Dir.chdir("../#{target}") do
+      sh "#{XCODEGEN} --spec #{project_spec_name}"
     end
   end
 
@@ -147,13 +168,17 @@ platform :ios do
     )
     
     if is_application == false
+      UI.message "Building internal dependency #{target}..."
+
       Dir.chdir("../") do
         # Build the framework and move the built framework to the Carthage build folder at the root.
         # All targets share the same build folder, so in order to reference the built target it needs to be moved there.
-        sh "bundle exec carthage build --no-skip-current --cache-builds --platform ios --project-directory " + target
-        sh "rsync -a " + target + "/Carthage/Build Carthage"
-        sh "rm -rf " + target + "/Carthage"
+        sh "bundle exec carthage build --no-skip-current --cache-builds --platform ios --project-directory #{target}"
+        sh "rsync -a #{target}/Carthage/Build Carthage"
+        sh "rm -rf #{target}/Carthage"
       end
+    else
+      UI.message "Skipping build of #{target} because it is an application target..."
     end 
   end
 
@@ -161,11 +186,15 @@ platform :ios do
   desc ":target - The target directory to lint."
   desc ":config_file - The path to the swiftlint config file relative to the target (or the root if no target is provided)."
   private_lane :lint_source_for_target do |options|
+    target = options[:target]
+
+    UI.message "Linting source for for #{target}..."
+
     swiftlint(
       mode: :lint,
       strict: true,
       config_file: options[:config_file],
-      path: options[:target]
+      path: target
     )
   end
 
@@ -174,9 +203,15 @@ platform :ios do
   desc "Takes the following options:"
   desc ":target - The target directory to lint."
   private_lane :swiftgen_lint_target do |options|
-    Dir.chdir("../" + options[:target]) do
-      if File.file?(SWIFTGEN_FILENAME)
-        sh SWIFTGEN + " config lint"
+    target = options[:target]
+
+    Dir.chdir("../#{target}") do
+      if File.file?(SWIFTGEN_CONFIG_FILENAME)
+        UI.message "Running SwiftGen lint for #{target}..."
+
+        sh "#{SWIFTGEN} config lint"
+      else
+        UI.message "Skipping SwiftGen lint for #{target}..."
       end
     end
   end
@@ -185,9 +220,48 @@ platform :ios do
   desc "This will do nothing if a switgen.yml file is not found in the root of the target."
   desc ":target - The target to run SwiftGen on."
   private_lane :swiftgen_target do |options|
-    Dir.chdir("../" + options[:target]) do
-      if File.file?(SWIFTGEN_FILENAME)
+    target = options[:target]
+
+    Dir.chdir("../#{target}") do
+      if File.file?(SWIFTGEN_CONFIG_FILENAME)
+        UI.message "Running SwiftGen for #{target}..."
+
         sh SWIFTGEN
+      else
+        UI.message "Skipping SwiftGen for #{target}..."
+      end
+    end
+  end
+
+  desc "Verifies that running SwiftGen does not modify files for a target."
+  desc "This lane does nothing if the target does not have a swiftgen.yml file."
+  desc "Takes the following options:"
+  desc ":target - The target to verify."
+  lane :verify_swiftgen_target do |options|
+    target = options[:target]
+
+    Dir.chdir("../#{target}") do
+      if File.file?(SWIFTGEN_CONFIG_FILENAME)
+        UI.message "Running SwiftGen verification for #{target}..."
+        dir = Dir.mktmpdir
+        begin
+          sh "cp -r #{SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH} #{dir}"
+
+          swiftgen_target(
+            target: target
+          )
+          
+          begin
+            sh "diff -r #{SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH} #{dir}/#{SWIFTGEN_GENERATED_FOLDER_NAME}"
+          rescue => ex
+            sh "cp -fr #{dir}/#{SWIFTGEN_GENERATED_FOLDER_NAME} #{SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH}"
+            UI.user_error!("Running SwiftGen causes mutations to generated files: \n#{ex}\n\nPlease run `fastlane swiftgen` and commit changes.")
+          end
+        ensure
+          FileUtils.remove_entry dir
+        end
+      else 
+        UI.message "Skipping SwiftGen verification for #{target}..."
       end
     end
   end
