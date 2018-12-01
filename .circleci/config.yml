@@ -23,7 +23,6 @@ jobs:
           name: Setup Project
           command: |
             brew bundle
-            bundle install --path .bundle
             bundle check --path .bundle || bundle install --retry=3 --path .bundle
             mint install yonaskolb/XcodeGen@2.0.0 # XXX: REMOVE
             mint install SwiftGen/SwiftGen@6.0.2 # XXX: REMOVE
