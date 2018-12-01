@@ -5,6 +5,7 @@ TEST_DEVICE = "iPhone XS"
 
 SWIFTGEN_VERSION = "6.0.2"
 SWIFTGEN = "mint run SwiftGen/SwiftGen@" + SWIFTGEN_VERSION + " swiftgen"
+SWIFTGEN_FILENAME = "swiftgen.yml"
 
 XCODEGEN_VERSION = "2.0.0"
 XCODEGEN = "mint run yonaskolb/XcodeGen@" + XCODEGEN_VERSION + " xcodegen"
@@ -174,17 +175,20 @@ platform :ios do
   desc ":target - The target directory to lint."
   private_lane :swiftgen_lint_target do |options|
     Dir.chdir("../" + options[:target]) do
-      if File.file?("swiftgen.yml")
+      if File.file?(SWIFTGEN_FILENAME)
         sh SWIFTGEN + " config lint"
       end
     end
   end
 
   desc "Runs SwiftGen for the provided target with options:"
+  desc "This will do nothing if a switgen.yml file is not found in the root of the target."
   desc ":target - The target to run SwiftGen on."
   private_lane :swiftgen_target do |options|
     Dir.chdir("../" + options[:target]) do
-      sh SWIFTGEN
+      if File.file?(SWIFTGEN_FILENAME)
+        sh SWIFTGEN
+      end
     end
   end
 
