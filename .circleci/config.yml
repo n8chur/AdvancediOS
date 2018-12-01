@@ -27,7 +27,7 @@ jobs:
           name: Setup Project
           command: |
             brew bundle
-            bundle install --path --retry=3 .bundle
+            bundle install --retry=3 --path .bundle
             mint install yonaskolb/XcodeGen@2.0.0 # XXX: REMOVE
             mint install SwiftGen/SwiftGen@6.0.2 # XXX: REMOVE
             bundle exec fastlane carthage_bootstrap # XXX: REMOVE
