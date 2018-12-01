@@ -13,48 +13,58 @@ jobs:
 
       - restore_cache:
           keys:
-            - rome
+            - v1-rome-
             - v1-gems-{{ checksum "Gemfile.lock" }}
             - v1-gems-
-            - mint
-      
-      - run: bundle install --path vendor/bundle
+            - v1-mint-
+            - v1-brew-
 
       - run:
           name: Setup Project
-          command: brew bundle && bundle install
+          command: |
+            brew bundle
+            bundle install --path .bundle
+            bundle check --path .bundle || bundle install --retry=3 --path .bundle
+            mint install yonaskolb/XcodeGen@2.0.0 # XXX: REMOVE
+            mint install SwiftGen/SwiftGen@6.0.2 # XXX: REMOVE
+            bundle exec fastlane carthage_bootstrap # XXX: REMOVE
 
-      - run:
-          name: Bootstrap Project
-          command: bundle exec fastlane bootstrap
+      # - run:
+      #     name: Bootstrap Project
+      #     command: bundle exec fastlane bootstrap
 
-      - run:
-          name: Verify SwiftGen Causes No Changes
-          command: bundle exec fastlane verify_swiftgen
+      # - run:
+      #     name: Verify SwiftGen Causes No Changes
+      #     command: bundle exec fastlane verify_swiftgen
 
-      - run:
-          name: Lint project
-          command: bundle exec fastlane lint
+      # - run:
+      #     name: Lint project
+      #     command: bundle exec fastlane lint
 
-      - run:
-          name: Build and run tests
-          command: bundle exec fastlane test
+      # - run:
+      #     name: Build and run tests
+      #     command: bundle exec fastlane test
 
       - save_cache:
-          key: rome
+          key: v1-rome-
           paths:
             - RomeCache
 
       - save_cache:
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - .bundle
 
       - save_cache:
-          key: mint
+          key: v1-mint-
           paths:
             - /usr/local/lib/mint
             - /usr/local/bin
+
+      - save_cache:
+          key: v1-brew-
+          paths:
+            - /usr/local/Homebrew
 
       - store_test_results:
           path: fastlane/test_output

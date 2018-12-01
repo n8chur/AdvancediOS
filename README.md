@@ -19,9 +19,8 @@ This project is mostly intended to be used as a playground to experiment with ne
 
 1. Setup the project:
 ```
-$ brew bundle
-$ bundle install
-$ fastlane bootstrap
+$ brew bundle && bundle install
+$ bundle exec fastlane bootstrap
 ```
 2. Open `BestPractices/BestPractices.xcodeproj`
 

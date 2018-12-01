@@ -79,10 +79,10 @@ platform :ios do
   desc "Runs a carthage bootstrap leveraging Rome for caching."
   lane :carthage_bootstrap do
     Dir.chdir("..") do
-      sh "bundle exec carthage checkout"
-      sh "bundle exec rome download --platform iOS"
-      sh "bundle exec rome list --missing --platform ios | awk '{print $1}' | xargs carthage build --platform ios --cache-builds"
-      sh "bundle exec rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
+      sh "carthage checkout"
+      sh "rome download --platform iOS"
+      sh "rome list --missing --platform ios | awk '{print $1}' | xargs carthage build --platform ios --cache-builds"
+      sh "rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
     end
   end
 
@@ -90,7 +90,7 @@ platform :ios do
   desc "This does not rebuild any depencies. Run the carthage_bootstrap afterwards to rebuild."
   lane :carthage_update do
     Dir.chdir("..") do
-      sh "bundle exec carthage update --platform ios --no-build"
+      sh "carthage update --platform ios --no-build"
     end
   end
 
@@ -173,7 +173,7 @@ platform :ios do
       Dir.chdir("../") do
         # Build the framework and move the built framework to the Carthage build folder at the root.
         # All targets share the same build folder, so in order to reference the built target it needs to be moved there.
-        sh "bundle exec carthage build --no-skip-current --cache-builds --platform ios --project-directory #{target}"
+        sh "carthage build --no-skip-current --cache-builds --platform ios --project-directory #{target}"
         sh "rsync -a #{target}/Carthage/Build Carthage"
         sh "rm -rf #{target}/Carthage"
       end
