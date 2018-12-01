@@ -11,7 +11,8 @@ jobs:
     environment:
       ENV: CI
       BUNDLE_PATH: vendor/bundle
-      MINT_PATH: MintCache
+      MINT_PATH: MintCache/mint/lib
+      MINT_LINK_PATH: MintCache/bin
 
     steps:
       - checkout
