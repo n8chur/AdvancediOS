@@ -9,7 +9,7 @@ jobs:
     shell: /bin/bash --login -eo pipefail
 
     environment:
-      MINT_LINK_PATH: ~/MintCache/bin
+      MINT_PATH: ~/MintCache/lib/mint
 
     steps:
       - checkout
