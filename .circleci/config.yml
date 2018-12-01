@@ -14,22 +14,22 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-rome-
+      # - restore_cache:
+      #     keys:
+      #       - v1-rome-
 
-      - restore_cache:
-          keys:
-            - v2-gems-{{ checksum "Gemfile.lock" }}
-            - v2-gems-
+      # - restore_cache:
+      #     keys:
+      #       - v2-gems-{{ checksum "Gemfile.lock" }}
+      #       - v2-gems-
 
-      - restore_cache:
-          keys:
-            - v2-mint-
+      # - restore_cache:
+      #     keys:
+      #       - v2-mint-
               
-      - restore_cache:
-          keys:
-            - v2-brew-
+      # - restore_cache:
+      #     keys:
+      #       - v2-brew-
 
       - run:
           name: Setup Project
