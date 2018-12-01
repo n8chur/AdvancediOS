@@ -1,5 +1,5 @@
 strings:
-  inputs: odijf/Supporting Files/Base.lproj/Localizable.strings
+  inputs: Supporting Files/Base.lproj/Localizable.strings
   outputs:
     - templateName: structured-swift4
       output: Source/SwiftGen/Strings.swift
