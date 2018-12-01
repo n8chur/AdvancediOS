@@ -1,0 +1,33 @@
+include:
+  - ../Shared/Project.yml
+name: ReactiveExtensions
+options:
+  carthageBuildPath: "../Carthage/Build"
+targets:
+  ReactiveExtensions:
+    type: framework
+    platform: iOS
+    sources: 
+      - Source
+      - Supporting Files
+    dependencies:
+      - carthage: ReactiveSwift
+      - carthage: Result
+    scheme:
+      testTargets: 
+        - ReactiveExtensionsTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  ReactiveExtensionsTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - Tests
+    dependencies:
+      - target: ReactiveExtensions
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

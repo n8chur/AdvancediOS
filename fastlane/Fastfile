@@ -5,13 +5,22 @@ TEST_DEVICE = "iPhone XS"
 
 SWIFTGEN_VERSION = "6.0.2"
 SWIFTGEN = "mint run SwiftGen/SwiftGen@" + SWIFTGEN_VERSION + " swiftgen"
+SWIFTGEN_FILENAME = "swiftgen.yml"
 
 XCODEGEN_VERSION = "2.0.0"
 XCODEGEN = "mint run yonaskolb/XcodeGen@" + XCODEGEN_VERSION + " xcodegen"
 
-APPLICATION_NAME = "BestPractices"
 CORE_NAME = "Core"
-TARGETS = [ APPLICATION_NAME, CORE_NAME ]
+REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
+PRESENTATIONS_NAME = "Presentations"
+APPLICATION_NAME = "BestPractices"
+# Targets must be ordered such that they each element only depends on those before it, and none after it.
+TARGETS = [
+  CORE_NAME,
+  REACTIVE_EXTENSIONS_NAME,
+  PRESENTATIONS_NAME,
+  APPLICATION_NAME
+]
 
 platform :ios do
 
@@ -21,7 +30,42 @@ platform :ios do
   desc "This builds all dependencies and generates the project file."
   lane :bootstrap do
     carthage_bootstrap
-    generate_project
+    generate_projects
+    build_internal_dependencies
+  end
+
+  desc "Generates all target's project files using Xcodegen."
+  lane :generate_projects do
+    TARGETS.each do |target|
+      generate_target_project(
+        target: target
+      )
+    end
+
+    # Generation Application project that is used by the workspace.
+    generate_target_project(
+      target: APPLICATION_NAME,
+      spec_suffix: "_For_Workspace"
+    )
+  end
+
+  desc "Builds all internal dependencies."
+  desc "This must be run after all projects have been generated."
+  lane :build_internal_dependencies do
+    TARGETS.each do |target|
+      build_internal_dependency(
+        target: target
+      )
+    end
+  end
+
+  desc "Runs SwiftGen for all targets."
+  lane :swiftgen do
+    TARGETS.each do |target|
+      swiftgen_target(
+        target: target
+      )
+    end
   end
 
   desc "Runs a carthage bootstrap leveraging Rome for caching."
@@ -42,19 +86,13 @@ platform :ios do
     end
   end
 
-  desc "Generates the project file using Xcodegen."
-  lane :generate_project do
-    Dir.chdir("..") do
-      sh XCODEGEN + " --spec project.yml"
-    end
-  end
-
   desc "Runs all unit test targets."
   lane :test do
     TARGETS.each do |target|
       scan(
         devices: [TEST_DEVICE],
-        scheme: target
+        scheme: target,
+        project: target + "/" + target + ".xcodeproj"
       )
     end
   end
@@ -84,16 +122,40 @@ platform :ios do
     end
   end
 
-  desc "Runs SwiftGen for all targets."
-  lane :swiftgen do
-    TARGETS.each do |target|
-      swiftgen_target(
-        target: target
-      )
+  # PRIVATE
+
+  desc "Generates the target project file using Xcodegen with options:"
+  desc ":target - The target project to build."
+  desc ":spec_suffix - The suffix to use when generating the project (e.g. Project<suffix>.yml). (default '')"
+  private_lane :generate_target_project do |options|
+    target = options[:target]
+    suffix = options[:spec_suffix] ? options[:spec_suffix] : ""
+    Dir.chdir("../" + target) do
+      sh XCODEGEN + " --spec Project" + suffix + ".yml"
     end
   end
 
-  # PRIVATE
+  desc "Builds the target with Carthage and adds the built framework to Carthage/Build/iOS."
+  desc "This does nothing if the target is an Application target."
+  desc "options:"
+  desc ":target - The target to build."
+  private_lane :build_internal_dependency do |options|
+    target = options[:target]
+
+    is_application = is_application_target?(
+      target: target
+    )
+    
+    if is_application == false
+      Dir.chdir("../") do
+        # Build the framework and move the built framework to the Carthage build folder at the root.
+        # All targets share the same build folder, so in order to reference the built target it needs to be moved there.
+        sh "bundle exec carthage build --no-skip-current --cache-builds --platform ios --project-directory " + target
+        sh "rsync -a " + target + "/Carthage/Build Carthage"
+        sh "rm -rf " + target + "/Carthage"
+      end
+    end 
+  end
 
   desc "Lints a target directory with options:"
   desc ":target - The target directory to lint."
@@ -107,20 +169,33 @@ platform :ios do
     )
   end
 
-  desc "Lints SwiftGen configs for a taget with options:"
+  desc "Lints SwiftGen configs for a taget with."
+  desc "This will do nothing if a switgen.yml file is not found in the root of the target."
+  desc "Takes the following options:"
   desc ":target - The target directory to lint."
   private_lane :swiftgen_lint_target do |options|
     Dir.chdir("../" + options[:target]) do
-      sh SWIFTGEN + " config lint"
+      if File.file?(SWIFTGEN_FILENAME)
+        sh SWIFTGEN + " config lint"
+      end
     end
   end
 
   desc "Runs SwiftGen for the provided target with options:"
+  desc "This will do nothing if a switgen.yml file is not found in the root of the target."
   desc ":target - The target to run SwiftGen on."
   private_lane :swiftgen_target do |options|
     Dir.chdir("../" + options[:target]) do
-      sh SWIFTGEN
+      if File.file?(SWIFTGEN_FILENAME)
+        sh SWIFTGEN
+      end
     end
+  end
+
+  desc "Determines whether the provided target is an application target with options:"
+  desc ":target - The target name to test against."
+  private_lane :is_application_target? do |options|
+    options[:target] == APPLICATION_NAME
   end
 
 end

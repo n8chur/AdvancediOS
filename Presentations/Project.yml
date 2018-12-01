@@ -1,0 +1,35 @@
+include:
+  - ../Shared/Project.yml
+name: Presentations
+options:
+  carthageBuildPath: "../Carthage/Build"
+targets:
+  Presentations:
+    type: framework
+    platform: iOS
+    sources: 
+      - Source
+      - Supporting Files
+    dependencies:
+      - carthage: ReactiveExtensions
+      - carthage: ReactiveCocoa
+      - carthage: ReactiveSwift
+      - carthage: Result
+    scheme:
+      testTargets: 
+        - PresentationsTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  PresentationsTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - Tests
+    dependencies:
+      - target: Presentations
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

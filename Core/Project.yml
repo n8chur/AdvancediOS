@@ -1,0 +1,31 @@
+include:
+  - ../Shared/Project.yml
+name: Core
+options:
+  carthageBuildPath: "../Carthage/Build"
+targets:
+  Core:
+    type: framework
+    platform: iOS
+    sources: 
+      - Source
+      - Supporting Files
+      - Resources
+    scheme:
+      testTargets: 
+        - CoreTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  CoreTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - Tests
+    dependencies:
+      - target: Core
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

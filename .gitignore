@@ -25,19 +25,19 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
-# Carthage
+## Carthage
 Carthage/Checkouts
 Carthage/Build
 
-# fastlane
+## fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 fastlane/README.md
 
-# XcodeGen
-BestPractices.xcodeproj
+## XcodeGen
+*.xcodeproj
 
 # Rome local cache
 # Note that this should be a remote S3 bucket in a production project
