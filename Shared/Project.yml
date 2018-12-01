@@ -1,0 +1,6 @@
+options:
+  bundleIdPrefix: com.bestpractices
+  deploymentTarget:
+    iOS: "12.0"
+  createIntermediateGroups: true
+  carthageBuildPath: "../Carthage/Build"

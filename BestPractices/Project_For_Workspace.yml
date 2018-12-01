@@ -1,0 +1,8 @@
+include:
+  - Project.yml
+name: BestPractices_For_Workspace
+options:
+  # When building from the workspace we do not want to copy Carthage frameworks so that all dependencies
+  # are built by the project files added to the workspace instead.
+  # This script disables the copy-frameworks phase completely.
+  carthageExecutablePath: Scripts/carthage-no-copy-frameworks.sh
