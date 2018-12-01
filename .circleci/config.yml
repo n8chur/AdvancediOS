@@ -8,16 +8,20 @@ jobs:
     # This should set the approprate ruby version from the .ruby-version file
     shell: /bin/bash --login -eo pipefail
 
+    environment:
+      MINT_LINK_PATH: ~/MintCache/bin
+      MINT_PATH: ~/MintCache/lib/mint
+
     steps:
       - checkout
 
       - restore_cache:
           keys:
             - v1-rome-
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-            - v1-gems-
-            - v1-mint-
-            - v1-brew-
+            - v2-gems-{{ checksum "Gemfile.lock" }}
+            - v2-gems-
+            - v2-mint-
+            - v2-brew-
 
       - run:
           name: Setup Project
@@ -50,20 +54,19 @@ jobs:
             - RomeCache
 
       - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - .bundle
 
       - save_cache:
-          key: v1-mint-
+          key: v2-mint-
           paths:
-            - /usr/local/lib/mint
-            - /usr/local/bin
+            - ~/MintCache
 
       - save_cache:
-          key: v1-brew-
+          key: v2-brew-
           paths:
-            - /usr/local/Homebrew
+            - /usr/local/Cellar
 
       - store_test_results:
           path: fastlane/test_output
