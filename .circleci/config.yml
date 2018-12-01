@@ -9,10 +9,9 @@ jobs:
     shell: /bin/bash --login -eo pipefail
 
     environment:
-      ENV: CI
-      BUNDLE_PATH: vendor/bundle
-      MINT_PATH: MintCache/mint/lib
-      MINT_LINK_PATH: MintCache/bin
+      BUNDLE_PATH: ~/vendor/bundle
+      MINT_PATH: ~/MintCache/lib/mint
+      MINT_LINK_PATH: ~/MintCache/bin
 
     steps:
       - checkout
@@ -52,12 +51,12 @@ jobs:
       - save_cache:
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - ~/vendor/bundle
 
       - save_cache:
           key: mint
           paths:
-            - MintCache
+            - ~/MintCache
 
       - store_test_results:
           path: fastlane/test_output
