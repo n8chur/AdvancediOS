@@ -14,22 +14,18 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     keys:
-      #       - v1-rome-
+      - restore_cache:
+          keys:
+            - v1-rome-
 
-      # - restore_cache:
-      #     keys:
-      #       - v2-gems-{{ checksum "Gemfile.lock" }}
-      #       - v2-gems-
+      - restore_cache:
+          keys:
+            - v2-gems-{{ checksum "Gemfile.lock" }}
+            - v2-gems-
 
-      # - restore_cache:
-      #     keys:
-      #       - v2-mint-
-              
-      # - restore_cache:
-      #     keys:
-      #       - v2-brew-
+      - restore_cache:
+          keys:
+            - v2-mint-
 
       - run:
           name: Setup Project
@@ -70,11 +66,6 @@ jobs:
           key: v2-mint-
           paths:
             - ~/MintCache
-
-      - save_cache:
-          key: v2-brew-
-          paths:
-            - /usr/local/Cellar
 
       - store_test_results:
           path: fastlane/test_output
