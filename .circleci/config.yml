@@ -8,11 +8,6 @@ jobs:
     # This should set the approprate ruby version from the .ruby-version file
     shell: /bin/bash --login -eo pipefail
 
-    environment:
-      BUNDLE_PATH: ~/vendor/bundle
-      MINT_PATH: ~/MintCache/lib/mint
-      MINT_LINK_PATH: ~/MintCache/bin
-
     steps:
       - checkout
 
@@ -22,6 +17,8 @@ jobs:
             - v1-gems-{{ checksum "Gemfile.lock" }}
             - v1-gems-
             - mint
+      
+      - run: bundle install --path vendor/bundle
 
       - run:
           name: Setup Project
@@ -51,12 +48,13 @@ jobs:
       - save_cache:
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/vendor/bundle
+            - vendor/bundle
 
       - save_cache:
           key: mint
           paths:
-            - ~/MintCache
+            - /usr/local/lib/mint
+            - /usr/local/bin
 
       - store_test_results:
           path: fastlane/test_output
