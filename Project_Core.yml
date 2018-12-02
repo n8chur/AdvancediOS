@@ -1,28 +1,26 @@
 include:
-  - ../Shared/Project.yml
+  - Project_Shared.yml
 name: Core
-options:
-  carthageBuildPath: "../Carthage/Build"
 targets:
   Core:
     type: framework
     platform: iOS
     sources: 
-      - Source
-      - Supporting Files
-      - Resources
+      - Core/Source
+      - Core/Supporting Files
+      - Core/Resources
     scheme:
       testTargets: 
         - CoreTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   CoreTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - Tests
+      - Core/Tests
     dependencies:
       - target: Core
       - carthage: Quick

@@ -1,15 +1,13 @@
 include:
-  - ../Shared/Project.yml
+  - Project_Shared.yml
 name: ReactiveExtensions
-options:
-  carthageBuildPath: "../Carthage/Build"
 targets:
   ReactiveExtensions:
     type: framework
     platform: iOS
     sources: 
-      - Source
-      - Supporting Files
+      - ReactiveExtensions/Source
+      - ReactiveExtensions/Supporting Files
     dependencies:
       - carthage: ReactiveSwift
       - carthage: Result
@@ -18,13 +16,13 @@ targets:
         - ReactiveExtensionsTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   ReactiveExtensionsTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - Tests
+      - ReactiveExtensions/Tests
     dependencies:
       - target: ReactiveExtensions
       - carthage: Quick

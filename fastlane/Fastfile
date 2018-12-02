@@ -22,7 +22,6 @@ CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
 PRESENTATIONS_NAME = "Presentations"
 APPLICATION_NAME = "BestPractices"
-# Targets must be ordered such that they each element only depends on those before it, and none after it.
 TARGETS = [
   CORE_NAME,
   REACTIVE_EXTENSIONS_NAME,
@@ -39,7 +38,6 @@ platform :ios do
   lane :bootstrap do
     carthage_bootstrap
     generate_projects
-    build_internal_dependencies
   end
 
   desc "Generates all target's project files using Xcodegen."
@@ -50,21 +48,11 @@ platform :ios do
       )
     end
 
-    # Generation Application project that is used by the workspace.
+    # Additionally generate a project that's used for the workspace
     generate_target_project(
       target: APPLICATION_NAME,
-      spec_suffix: "_For_Workspace"
+      spec_suffix: "_ForWorkspace"
     )
-  end
-
-  desc "Builds all internal dependencies."
-  desc "This must be run after all projects have been generated."
-  lane :build_internal_dependencies do
-    TARGETS.each do |target|
-      build_internal_dependency(
-        target: target
-      )
-    end
   end
 
   desc "Runs SwiftGen for all targets."
@@ -94,13 +82,14 @@ platform :ios do
     end
   end
 
-  desc "Runs all unit test targets."
+  desc "Runs all unit test targets in the Application project."
+  desc "This will run the tests for the application as well as all internal dependencies."
   lane :test do
     TARGETS.each do |target|
       scan(
         devices: [TEST_DEVICE],
         scheme: target,
-        project: "#{target}/#{target}.xcodeproj"
+        project: "#{target}.xcodeproj"
       )
     end
   end
@@ -147,39 +136,13 @@ platform :ios do
   private_lane :generate_target_project do |options|
     target = options[:target]
     suffix = options[:spec_suffix] ? options[:spec_suffix] : ""
-    project_spec_name = "Project#{suffix}.yml"
+    project_spec_name = "Project_#{target}#{suffix}.yml"
 
     UI.message "Generating project for #{target} with spec named #{project_spec_name}..."
 
-    Dir.chdir("../#{target}") do
+    Dir.chdir("..") do
       sh "#{XCODEGEN} --spec #{project_spec_name}"
     end
-  end
-
-  desc "Builds the target with Carthage and adds the built framework to Carthage/Build/iOS."
-  desc "This does nothing if the target is an Application target."
-  desc "options:"
-  desc ":target - The target to build."
-  private_lane :build_internal_dependency do |options|
-    target = options[:target]
-
-    is_application = is_application_target?(
-      target: target
-    )
-    
-    if is_application == false
-      UI.message "Building internal dependency #{target}..."
-
-      Dir.chdir("../") do
-        # Build the framework and move the built framework to the Carthage build folder at the root.
-        # All targets share the same build folder, so in order to reference the built target it needs to be moved there.
-        sh "carthage build --no-skip-current --cache-builds --platform ios --project-directory #{target}"
-        sh "rsync -a #{target}/Carthage/Build Carthage"
-        sh "rm -rf #{target}/Carthage"
-      end
-    else
-      UI.message "Skipping build of #{target} because it is an application target..."
-    end 
   end
 
   desc "Lints a target directory with options:"

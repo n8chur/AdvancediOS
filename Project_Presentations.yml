@@ -1,17 +1,16 @@
 include:
-  - ../Shared/Project.yml
+  - Project_Shared.yml
+  - Project_ReactiveExtensions.yml
 name: Presentations
-options:
-  carthageBuildPath: "../Carthage/Build"
 targets:
   Presentations:
     type: framework
     platform: iOS
     sources: 
-      - Source
-      - Supporting Files
+      - Presentations/Source
+      - Presentations/Supporting Files
     dependencies:
-      - carthage: ReactiveExtensions
+      - target: ReactiveExtensions
       - carthage: ReactiveCocoa
       - carthage: ReactiveSwift
       - carthage: Result
@@ -20,13 +19,13 @@ targets:
         - PresentationsTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   PresentationsTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - Tests
+      - Presentations/Tests
     dependencies:
       - target: Presentations
       - carthage: Quick
