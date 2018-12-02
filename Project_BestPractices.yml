@@ -1,5 +1,7 @@
 include:
-  - ../Shared/Project.yml
+  - Project_Core.yml
+  - Project_ReactiveExtensions.yml
+  - Project_Presentations.yml
 name: BestPractices
 # In a production application the Team ID would be set here.
 # settings:
@@ -8,17 +10,22 @@ settings:
   # These values are read in the appropriate Info.plist files.
   BEST_PRACTICES_VERSION: "0.1.0"
   BEST_PRACTICES_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
+options:
+  bundleIdPrefix: com.bestpractices
+  deploymentTarget:
+    iOS: "12.0"
+  createIntermediateGroups: true
 targets:
   BestPractices:
     type: application
     platform: iOS
     sources: 
-      - Source
-      - Supporting Files
+      - BestPractices/Source
+      - BestPractices/Supporting Files
     dependencies:
-      - carthage: Core
-      - carthage: ReactiveExtensions
-      - carthage: Presentations
+      - target: Core
+      - target: ReactiveExtensions
+      - target: Presentations
       - carthage: ReactiveCocoa
       - carthage: ReactiveSwift
       - carthage: Result
@@ -28,7 +35,7 @@ targets:
         - BestPracticesTests
       gatherCoverageData: true
     prebuildScripts:
-      - path: Scripts/swiftlint-check.sh
+      - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
   BestPracticesTests:
     platform: iOS
@@ -36,8 +43,8 @@ targets:
     settings:
       TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
     sources: 
-      - Tests
-      - ../Presentations/Tests/Stubs
+      - BestPractices/Tests
+      - Presentations/Tests/Stubs
     dependencies:
       - target: BestPractices
       - carthage: Quick

@@ -2,24 +2,11 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:BestPractices/BestPractices_For_Workspace.xcodeproj">
+      location = "group:BestPractices_Dev.xcodeproj">
    </FileRef>
    <Group
       location = "container:"
       name = "Frameworks">
-      <Group
-         location = "container:"
-         name = "Internal">
-         <FileRef
-            location = "group:Core/Core.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:Presentations/Presentations.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:ReactiveExtensions/ReactiveExtensions.xcodeproj">
-         </FileRef>
-      </Group>
       <Group
          location = "container:"
          name = "Carthage">
@@ -30,13 +17,13 @@
             location = "group:Carthage/Checkouts/Quick/Quick.xcodeproj">
          </FileRef>
          <FileRef
-            location = "group:Carthage/Checkouts/Result/Result.xcodeproj">
+            location = "group:Carthage/Checkouts/ReactiveCocoa/ReactiveCocoa.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:Carthage/Checkouts/ReactiveSwift/ReactiveSwift.xcodeproj">
          </FileRef>
          <FileRef
-            location = "group:Carthage/Checkouts/ReactiveCocoa/ReactiveCocoa.xcodeproj">
+            location = "group:Carthage/Checkouts/Result/Result.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:Carthage/Checkouts/SnapKit/SnapKit.xcodeproj">
