@@ -1,5 +1,3 @@
-brew "carthage"
-
 brew "mint"
 
 tap "blender/homebrew-tap"

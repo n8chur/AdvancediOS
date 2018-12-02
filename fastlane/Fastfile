@@ -18,6 +18,9 @@ SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH = "#{SWIFTGEN_GENERATED_CONTAINING_FOLDE
 XCODEGEN_VERSION = "2.0.0"
 XCODEGEN = "mint run yonaskolb/XcodeGen@#{XCODEGEN_VERSION} xcodegen"
 
+CARTHAGE_VERSION = "0.31.2"
+CARTHAGE = "mint run Carthage/Carthage@#{CARTHAGE_VERSION} carthage"
+
 CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
 PRESENTATIONS_NAME = "Presentations"
@@ -66,9 +69,9 @@ platform :ios do
   desc "Runs a carthage bootstrap leveraging Rome for caching."
   lane :carthage_bootstrap do
     Dir.chdir("..") do
-      sh "carthage checkout"
+      sh "#{CARTHAGE} checkout"
       sh "rome download --platform iOS"
-      sh "rome list --missing --platform ios | awk '{print $1}' | xargs carthage build --platform ios --cache-builds"
+      sh "rome list --missing --platform ios | awk '{print $1}' | xargs #{CARTHAGE} build --platform ios --cache-builds"
       sh "rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
     end
   end
@@ -77,7 +80,7 @@ platform :ios do
   desc "This does not rebuild any depencies. Run the carthage_bootstrap afterwards to rebuild."
   lane :carthage_update do
     Dir.chdir("..") do
-      sh "carthage update --platform ios --no-build"
+      sh "#{CARTHAGE} update --platform ios --no-build"
     end
   end
 
