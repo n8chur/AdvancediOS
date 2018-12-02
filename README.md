@@ -27,8 +27,5 @@ $ bundle exec fastlane bootstrap
 ### Notes
 
 - Run `$ fastlane` for a list of commands.
-- There are project files generated for each dependency and the application target which can be found in their corresponding folder (e.g. `BestPractices.xcodeproj`, `Core/Core.xcodeproj`, etc.).
-- `BestPractices.xcodeproj` would be used to build the application for deployment.
-- There are project files for each internal dependency which could be used if you're only working within a single framework during development.
--- Note that unit tests for internal dependencies must be run in their corresponding project file. They cannot be run from projects that depend on them.
-- `BestPractices.xcworkspace` is useful when debugging issues in Carthage dependencies since the Carthage dependency's project is added instead of using pre-built framework.
+- `BestPractices.xcodeproj` should be used for general development for building a release build.
+- `BestPractices_Dev.xcworkspace` is only useful when debugging issues in Carthage dependencies since the Carthage dependency's project is added instead of using pre-built framework.

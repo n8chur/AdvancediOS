@@ -1,6 +1,8 @@
+# This project should only be used by the _Dev workspace which is only useful for debugging issues in 
+# external dependencies.
 include:
   - Project_BestPractices.yml
-name: BestPractices_ForWorkspace
+name: BestPractices_Dev
 options:
   # When building from the workspace we do not want to copy Carthage frameworks so that all dependencies
   # are built by the project files added to the workspace instead.

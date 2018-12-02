@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:BestPractices_ForWorkspace.xcodeproj">
+      location = "group:BestPractices_Dev.xcodeproj">
    </FileRef>
    <Group
       location = "container:"

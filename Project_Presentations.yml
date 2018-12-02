@@ -1,6 +1,3 @@
-include:
-  - Project_Shared.yml
-  - Project_ReactiveExtensions.yml
 name: Presentations
 targets:
   Presentations:

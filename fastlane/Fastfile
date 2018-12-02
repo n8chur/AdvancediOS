@@ -40,18 +40,17 @@ platform :ios do
     generate_projects
   end
 
-  desc "Generates all target's project files using Xcodegen."
+  desc "Generates all project files."
   lane :generate_projects do
-    TARGETS.each do |target|
-      generate_target_project(
-        target: target
-      )
-    end
+    # Generate the application project.
+    generate_target_project(
+      target: APPLICATION_NAME
+    )
 
-    # Additionally generate a project that's used for the workspace
+    # Additionally generate a project that's used for the development workspace.
     generate_target_project(
       target: APPLICATION_NAME,
-      spec_suffix: "_ForWorkspace"
+      suffix: "_Dev"
     )
   end
 
@@ -89,7 +88,7 @@ platform :ios do
       scan(
         devices: [TEST_DEVICE],
         scheme: target,
-        project: "#{target}.xcodeproj"
+        project: "#{APPLICATION_NAME}.xcodeproj"
       )
     end
   end
@@ -130,12 +129,12 @@ platform :ios do
 
   # PRIVATE
 
-  desc "Generates the target project file using Xcodegen with options:"
+  desc "Generates a project from a spec defined as 'Project_<target><suffix>.yml' with options:"
   desc ":target - The target project to build."
-  desc ":spec_suffix - The suffix to use when generating the project (e.g. Project<suffix>.yml). (default '')"
+  desc ":suffix - The suffix to use when generating the project. (default '')"
   private_lane :generate_target_project do |options|
     target = options[:target]
-    suffix = options[:spec_suffix] ? options[:spec_suffix] : ""
+    suffix = options[:suffix] ? options[:suffix] : ""
     project_spec_name = "Project_#{target}#{suffix}.yml"
 
     UI.message "Generating project for #{target} with spec named #{project_spec_name}..."
@@ -200,7 +199,7 @@ platform :ios do
   desc "This lane does nothing if the target does not have a swiftgen.yml file."
   desc "Takes the following options:"
   desc ":target - The target to verify."
-  lane :verify_swiftgen_target do |options|
+  private_lane :verify_swiftgen_target do |options|
     target = options[:target]
 
     Dir.chdir("../#{target}") do
@@ -227,12 +226,6 @@ platform :ios do
         UI.message "Skipping SwiftGen verification for #{target}..."
       end
     end
-  end
-
-  desc "Determines whether the provided target is an application target with options:"
-  desc ":target - The target name to test against."
-  private_lane :is_application_target? do |options|
-    options[:target] == APPLICATION_NAME
   end
 
 end
