@@ -19,9 +19,8 @@ This project is mostly intended to be used as a playground to experiment with ne
 
 1. Setup the project:
 ```
-$ brew bundle
-$ bundle install
-$ fastlane bootstrap
+$ brew bundle && bundle install
+$ bundle exec fastlane bootstrap
 ```
 2. Open `BestPractices/BestPractices.xcodeproj`
 
@@ -29,5 +28,6 @@ $ fastlane bootstrap
 
 - Run `$ fastlane` for a list of commands.
 - There are project files generated for each dependency and the application target which can be found in their corresponding folder (e.g. `BestPractices/BestPractices.xcodeproj`, `Core/Core.xcodeproj`, etc.).
-- `BestPractices.xcworkspace` exists mainly to debug issues occurring within dependencies while running the application. It is preferable to use `BestPractices/BestPractices.xccodeproj` for general application development since it would be the project used when building the application for deployment. 
+- `BestPractices/BestPractices.xcodeproj` would be used to build the application for deployment.
+- `BestPractices.xcworkspace` can be used to develop features that cross multiple internal dependencies or to debug issues occurring within dependencies while running the application.
     - Note that although the application's unit tests will run while using the workspace, all dependency's unit tests will not. Use the dependency's corresponding project file instead.

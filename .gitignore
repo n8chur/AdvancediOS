@@ -42,3 +42,6 @@ fastlane/README.md
 # Rome local cache
 # Note that this should be a remote S3 bucket in a production project
 RomeCache
+
+# Bundler
+.bundle

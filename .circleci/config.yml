@@ -8,21 +8,32 @@ jobs:
     # This should set the approprate ruby version from the .ruby-version file
     shell: /bin/bash --login -eo pipefail
 
+    environment:
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+      MINT_PATH: ~/MintCache/lib/mint
+
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - rome
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-            - v1-gems-
-            - mint
-      
-      - run: bundle install --path vendor/bundle
+            - v1-rome-
+
+      - restore_cache:
+          keys:
+            - v2-gems-{{ checksum "Gemfile.lock" }}
+            - v2-gems-
+
+      - restore_cache:
+          keys:
+            - v2-mint-
 
       - run:
           name: Setup Project
-          command: brew bundle && bundle install
+          command: |
+            brew bundle
+            bundle install --retry=3 --path .bundle
 
       - run:
           name: Bootstrap Project
@@ -41,20 +52,19 @@ jobs:
           command: bundle exec fastlane test
 
       - save_cache:
-          key: rome
+          key: v1-rome-
           paths:
             - RomeCache
 
       - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - .bundle
 
       - save_cache:
-          key: mint
+          key: v2-mint-
           paths:
-            - /usr/local/lib/mint
-            - /usr/local/bin
+            - ~/MintCache
 
       - store_test_results:
           path: fastlane/test_output
