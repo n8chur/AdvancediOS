@@ -1,5 +1,3 @@
-include:
-  - Project_Shared.yml
 name: Core
 targets:
   Core:
