@@ -11,9 +11,9 @@ struct LabelStyle: UILabelStyle {
     init(theme: Theme) {
         switch theme {
         case .light:
-            textColor = .black
+            textColor = ColorType.Light.bodyText
         case .dark:
-            textColor = .white
+            textColor = ColorType.Dark.bodyText
         }
 
         backgroundColor = .clear

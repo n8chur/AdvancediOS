@@ -10,9 +10,9 @@ struct BackgroundViewStyle: UIViewStyle {
     init(theme: Theme) {
         switch theme {
         case .light:
-            backgroundColor = .white
+            backgroundColor = ColorType.Light.viewBackground
         case .dark:
-            backgroundColor = .black
+            backgroundColor = ColorType.Dark.viewBackground
         }
     }
 

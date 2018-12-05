@@ -11,9 +11,9 @@ struct TabBarStyle: UITabBarStyle {
     init(theme: Theme) {
         switch theme {
         case .light:
-            barTintColor = nil
+            barTintColor = ColorType.Light.tabBarTint
         case .dark:
-            barTintColor = .black
+            barTintColor = ColorType.Dark.tabBarTint
         }
 
         backgroundColor = nil
