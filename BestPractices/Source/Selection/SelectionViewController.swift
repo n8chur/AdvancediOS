@@ -2,6 +2,7 @@ import UIKit
 import Presentations
 import ReactiveCocoa
 import ReactiveSwift
+import Core
 
 class SelectionViewController: UIViewController, ViewController {
 
@@ -9,12 +10,15 @@ class SelectionViewController: UIViewController, ViewController {
 
     let viewModel: SelectionViewModel
 
+    let themeProvider: ThemeProvider
+
     private(set) lazy var selectionView: SelectionView = {
         return SelectionView(frame: UIScreen.main.bounds)
     }()
 
-    required init(viewModel: SelectionViewModel) {
+    required init(viewModel: SelectionViewModel, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
+        self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,6 +35,8 @@ class SelectionViewController: UIViewController, ViewController {
 
         viewModel.input <~ selectionView.textField.reactive.continuousTextValues
         viewModel.isActive <~ reactive.isAppeared
+
+        themeProvider.bindToStyleable(self) { SelectionViewControllerStyle(theme: $0) }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -47,12 +53,14 @@ class SelectionViewController: UIViewController, ViewController {
 
 }
 
-protocol SelectionViewControllerFactoryProtocol { }
+protocol SelectionViewControllerFactoryProtocol {
+    var themeProvider: ThemeProvider { get }
+}
 
 extension SelectionViewControllerFactoryProtocol {
 
     func makeSelectionViewController(viewModel: SelectionViewModel) -> SelectionViewController {
-        return SelectionViewController(viewModel: viewModel)
+        return SelectionViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }

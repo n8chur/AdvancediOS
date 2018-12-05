@@ -1,13 +1,17 @@
 import UIKit
 import ReactiveSwift
 import Presentations
+import Core
 
 class TabBarController: UITabBarController {
 
     let viewModel: ViewModel
 
-    required init(viewModel: ViewModel, viewControllers: [UIViewController]) {
+    let themeProvider: ThemeProvider
+
+    required init(viewModel: ViewModel, themeProvider: ThemeProvider, viewControllers: [UIViewController]) {
         self.viewModel = viewModel
+        self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
 
@@ -18,6 +22,8 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
 
         viewModel.isActive <~ reactive.isAppeared
+
+        themeProvider.bindToStyleable(self) { TabBarControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)

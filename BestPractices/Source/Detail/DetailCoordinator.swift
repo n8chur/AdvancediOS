@@ -53,7 +53,11 @@ extension DetailCoordinator: SelectionPresenter {
 
     func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
         let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)
-        return self.navigationController.makeCancellablePresentationContext(of: viewController, viewModel: viewModel)
+        let navigationController = factory.viewController.makeSingleViewNavigationController(rootViewController: viewController)
+        let presentation = self.navigationController.makeModalPresentation(of: navigationController)
+        let context = ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: true, dismissAnimated: true)
+        context.addCancelBarButtonItem(to: viewController)
+        return context
     }
 
 }

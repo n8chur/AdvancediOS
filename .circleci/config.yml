@@ -18,6 +18,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - v1-rome-{{ checksum "Cartfile.resolved" }}
             - v1-rome-
 
       - restore_cache:
@@ -27,6 +28,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - v2-mint-{{ checksum "Fastlane/Mintfile" }}
             - v2-mint-
 
       - run:
@@ -52,7 +54,7 @@ jobs:
           command: bundle exec fastlane test
 
       - save_cache:
-          key: v1-rome-
+          key: v1-rome-{{ checksum "Cartfile.resolved" }}
           paths:
             - RomeCache
 
@@ -62,7 +64,7 @@ jobs:
             - .bundle
 
       - save_cache:
-          key: v2-mint-
+          key: v2-mint-{{ checksum "Fastlane/Mintfile" }}
           paths:
             - ~/MintCache
 

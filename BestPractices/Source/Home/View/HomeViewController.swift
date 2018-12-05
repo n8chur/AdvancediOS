@@ -2,6 +2,7 @@ import UIKit
 import Presentations
 import ReactiveCocoa
 import ReactiveSwift
+import Core
 
 class HomeViewController: UIViewController, ViewController {
 
@@ -9,14 +10,17 @@ class HomeViewController: UIViewController, ViewController {
 
     let viewModel: HomeViewModel
 
+    let themeProvider: ThemeProvider
+
     private let uiScheduler = UIScheduler()
 
     private(set) lazy var homeView: HomeView = {
         return HomeView(frame: UIScreen.main.bounds)
     }()
 
-    required init(viewModel: HomeViewModel) {
+    required init(viewModel: HomeViewModel, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
+        self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -35,6 +39,8 @@ class HomeViewController: UIViewController, ViewController {
         homeView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail)
 
         viewModel.isActive <~ reactive.isAppeared
+
+        themeProvider.bindToStyleable(self) { HomeViewControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)
@@ -45,12 +51,14 @@ class HomeViewController: UIViewController, ViewController {
 
 }
 
-protocol HomeViewControllerFactoryProtocol: DetailViewControllerFactoryProtocol { }
+protocol HomeViewControllerFactoryProtocol: DetailViewControllerFactoryProtocol {
+    var themeProvider: ThemeProvider { get }
+}
 
 extension HomeViewControllerFactoryProtocol {
 
     func makeHomeViewController(viewModel: HomeViewModel) -> HomeViewController {
-        return HomeViewController(viewModel: viewModel)
+        return HomeViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }

@@ -6,3 +6,12 @@ xcassets:
     params:
       enumName: Image
       publicAccess: true
+colors:
+  inputs: Resources/Colors.txt
+  outputs:
+    templateName: swift4
+    output: Source/SwiftGen/Colors.swift
+    params:
+      enumName: Color
+      colorAliasName: ColorType
+      publicAccess: true

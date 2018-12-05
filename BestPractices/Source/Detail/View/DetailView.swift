@@ -23,6 +23,8 @@ class DetailView: UIView {
         return label
     }()
 
+    var interitemSpacingConstraints: [Constraint] = []
+
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
@@ -44,13 +46,15 @@ class DetailView: UIView {
         addSubview(button)
         button.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(title.snp.bottom).offset(10)
+            interitemSpacingConstraints.append(
+                make.top.equalTo(title.snp.bottom).constraint)
         }
 
         addSubview(selectionResult)
         selectionResult.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(button.snp.bottom).offset(10)
+            interitemSpacingConstraints.append(
+                make.top.equalTo(button.snp.bottom).constraint)
         }
     }
 

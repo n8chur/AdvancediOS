@@ -50,6 +50,20 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "selection.submit.title")
     }
   }
+
+  internal enum Settings {
+    internal enum ThemeSwitch {
+      /// Dark Mode
+      internal static let title = L10n.tr("Localizable", "settings.theme_switch.title")
+    }
+  }
+
+  internal enum SettingsNavigation {
+    internal enum TabBarItem {
+      /// Settings
+      internal static let title = L10n.tr("Localizable", "settings_navigation.tab_bar_item.title")
+    }
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name
