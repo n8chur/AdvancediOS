@@ -3,8 +3,7 @@ default_platform(:ios)
 
 TEST_DEVICE = "iPhone XS"
 
-SWIFTGEN_VERSION = "6.0.2"
-SWIFTGEN = "mint run SwiftGen/SwiftGen@#{SWIFTGEN_VERSION} swiftgen"
+SWIFTGEN = "mint run SwiftGen swiftgen"
 SWIFTGEN_CONFIG_FILENAME = "swiftgen.yml"
 # The name of the folder that contains all generated SwiftGen files.
 # This should be the same for all targets.
@@ -15,11 +14,9 @@ SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH = "Source/"
 # The path of the SwiftGen generated files folder relative to the target's root directory.
 SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH = "#{SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH}/#{SWIFTGEN_GENERATED_FOLDER_NAME}"
 
-XCODEGEN_VERSION = "2.0.0"
-XCODEGEN = "mint run yonaskolb/XcodeGen@#{XCODEGEN_VERSION} xcodegen"
+XCODEGEN = "mint run XcodeGen xcodegen"
 
-CARTHAGE_VERSION = "0.31.2"
-CARTHAGE = "mint run Carthage/Carthage@#{CARTHAGE_VERSION} carthage"
+CARTHAGE = "mint run Carthage carthage"
 
 CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
@@ -41,6 +38,7 @@ platform :ios do
   desc "Bootstraps the project."
   desc "This builds all dependencies and generates the project file."
   lane :bootstrap do
+    sh "mint bootstrap"
     carthage_bootstrap
     generate_projects
   end

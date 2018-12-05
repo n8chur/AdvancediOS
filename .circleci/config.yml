@@ -62,7 +62,7 @@ jobs:
             - .bundle
 
       - save_cache:
-          key: v2-mint-
+          key: v2-mint-{{ checksum "Fastlane/Mintfile" }}
           paths:
             - ~/MintCache
 
