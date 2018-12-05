@@ -1,5 +1,6 @@
 import Themer
 import UIKit
+import Core
 
 struct TabBarChildNavigationStyle: Style {
     typealias Styleable = TabBarChildNavigationController
@@ -14,14 +15,7 @@ struct TabBarChildNavigationStyle: Style {
 
     func apply(to styleable: TabBarChildNavigationController) {
         navigationBar.apply(to: styleable.navigationBar)
-
-        switch theme {
-        case .light:
-            styleable.statusBarStyle = .default
-        case .dark:
-            styleable.statusBarStyle = .lightContent
-        }
-
+        styleable.statusBarStyle = theme.statusBarStyle
         styleable.setNeedsStatusBarAppearanceUpdate()
     }
 

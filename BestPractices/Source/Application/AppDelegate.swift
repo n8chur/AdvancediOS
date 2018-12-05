@@ -1,4 +1,5 @@
 import UIKit
+import Core
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

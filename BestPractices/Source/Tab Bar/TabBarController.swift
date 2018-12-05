@@ -1,6 +1,7 @@
 import UIKit
 import ReactiveSwift
 import Presentations
+import Core
 
 class TabBarController: UITabBarController {
 

@@ -1,5 +1,6 @@
 import Themer
 import UIKit
+import Core
 
 struct SelectionStyle: Style {
     typealias Styleable = SelectionViewController

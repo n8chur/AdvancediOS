@@ -1,5 +1,6 @@
 import Themer
 import UIKit
+import Core
 
 struct SingleViewNavigationStyle: Style {
     typealias Styleable = SingleViewNavigationController
@@ -14,14 +15,7 @@ struct SingleViewNavigationStyle: Style {
 
     func apply(to styleable: SingleViewNavigationController) {
         navigationBar.apply(to: styleable.navigationBar)
-
-        switch theme {
-        case .light:
-            styleable.statusBarStyle = .default
-        case .dark:
-            styleable.statusBarStyle = .lightContent
-        }
-
+        styleable.statusBarStyle = theme.statusBarStyle
         styleable.setNeedsStatusBarAppearanceUpdate()
     }
 

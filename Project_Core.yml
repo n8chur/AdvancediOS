@@ -7,6 +7,8 @@ targets:
       - Core/Source
       - Core/Supporting Files
       - Core/Resources
+    dependencies:
+      - target: Themer
     scheme:
       testTargets: 
         - CoreTests

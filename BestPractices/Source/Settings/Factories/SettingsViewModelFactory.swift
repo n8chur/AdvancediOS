@@ -1,3 +1,5 @@
+import Core
+
 /// A factory for creating view models for settings flow.
 ///
 /// This class' purpose is mainly to clean up dependency injection by taking that reponsibility from classes that should

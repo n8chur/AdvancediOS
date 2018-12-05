@@ -3,6 +3,7 @@ import Presentations
 import ReactiveCocoa
 import ReactiveSwift
 import Result
+import Core
 
 class SettingsViewController: UIViewController, ViewController {
 

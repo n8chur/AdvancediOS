@@ -2,6 +2,7 @@ import UIKit
 import Presentations
 import ReactiveCocoa
 import ReactiveSwift
+import Core
 
 class SelectionViewController: UIViewController, ViewController {
 

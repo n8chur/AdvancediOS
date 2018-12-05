@@ -1,5 +1,6 @@
 import Themer
 import UIKit
+import Core
 
 struct SettingsStyle: Style {
     typealias Styleable = SettingsViewController

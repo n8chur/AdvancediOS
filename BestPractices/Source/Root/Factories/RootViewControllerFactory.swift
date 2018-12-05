@@ -1,4 +1,5 @@
 import Presentations
+import Core
 
 /// A factory for creating view controllers for the root of the application.
 ///

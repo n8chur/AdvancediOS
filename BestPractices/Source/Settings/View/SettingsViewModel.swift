@@ -1,6 +1,7 @@
 import ReactiveSwift
 import Result
 import Presentations
+import Core
 
 class SettingsViewModel: ViewModel {
 

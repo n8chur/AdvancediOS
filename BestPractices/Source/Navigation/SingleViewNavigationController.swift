@@ -1,5 +1,6 @@
 import UIKit
 import ReactiveSwift
+import Core
 
 class SingleViewNavigationController: UINavigationController {
 
