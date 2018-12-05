@@ -6,6 +6,10 @@ targets:
     sources: 
       - Themer/Source
       - Themer/Supporting Files
+    dependencies:
+      - carthage: ReactiveCocoa
+      - carthage: ReactiveSwift
+      - carthage: Result
     scheme:
       testTargets: 
         - ThemerTests
