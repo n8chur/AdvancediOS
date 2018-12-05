@@ -17,7 +17,7 @@ class RootViewControllerFactory {
     }
 
     func makeDetailViewControllerFactory() -> DetailViewControllerFactory {
-        return DetailViewControllerFactory()
+        return DetailViewControllerFactory(themeProvider: themeProvider)
     }
 
     func makeSettingsViewControllerFactory() -> SettingsViewControllerFactory {

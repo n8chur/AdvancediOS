@@ -10,12 +10,15 @@ class DetailViewController: UIViewController, ViewController {
 
     let viewModel: DetailViewModel
 
+    let themeProvider: ThemeProvider
+
     private(set) lazy var detailView: DetailView = {
         return DetailView(frame: UIScreen.main.bounds)
     }()
 
-    required init(viewModel: DetailViewModel) {
+    required init(viewModel: DetailViewModel, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
+        self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,6 +37,8 @@ class DetailViewController: UIViewController, ViewController {
         detailView.button.reactive.pressed = CocoaAction(viewModel.presentSelection)
 
         viewModel.isActive <~ reactive.isAppeared
+
+        themeProvider.bindStyle(for: self)
     }
 
     @available(*, unavailable)
@@ -44,12 +49,14 @@ class DetailViewController: UIViewController, ViewController {
 
 }
 
-protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol { }
+protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol {
+    var themeProvider: ThemeProvider { get }
+}
 
 extension DetailViewControllerFactoryProtocol {
 
     func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {
-        return DetailViewController(viewModel: viewModel)
+        return DetailViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }
