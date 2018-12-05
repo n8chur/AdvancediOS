@@ -9,17 +9,17 @@ public extension Theme {
     public var color: ColorSet {
         switch self {
         case .light: return ColorSet(
-            bodyText: Color.black,
-            inputText: Color.black,
-            viewBackground: Color.white,
+            bodyText: Color.lightContent.color,
+            inputText: Color.lightContent.color,
+            viewBackground: Color.lightBackground.color,
             navigationBarTint: nil,
             tabBarTint: nil)
         case .dark: return ColorSet(
-            bodyText: Color.white,
-            inputText: Color.white,
-            viewBackground: Color.black,
-            navigationBarTint: Color.black,
-            tabBarTint: Color.black)
+            bodyText: Color.darkContent.color,
+            inputText: Color.darkContent.color,
+            viewBackground: Color.darkBackground.color,
+            navigationBarTint: Color.darkBackground.color,
+            tabBarTint: Color.darkBackground.color)
         }
     }
 

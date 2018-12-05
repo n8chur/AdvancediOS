@@ -6,7 +6,9 @@ targets:
     sources: 
       - Core/Source
       - Core/Supporting Files
-      - Core/Resources
+      - path: Core/Resources
+        excludes:
+          - "*.txt"
     dependencies:
       - target: Themer
     scheme:
