@@ -30,7 +30,7 @@ class RootViewControllerFactory {
             detailNavigationController,
             settingsNavigationController,
         ]
-        return TabBarController(viewModel: viewModel, viewControllers: viewControllers)
+        return TabBarController(viewModel: viewModel, themeProvider: themeProvider, viewControllers: viewControllers)
     }
 
 }

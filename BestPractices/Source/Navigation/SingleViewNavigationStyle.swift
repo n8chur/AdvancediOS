@@ -4,16 +4,13 @@ import UIKit
 struct SingleViewNavigationStyle: Style {
     typealias Styleable = SingleViewNavigationController
 
-    let background: BackgroundViewStyle
     let navigationBar: NavigationBarStyle
 
     init(theme: Theme) {
-        background = BackgroundViewStyle(theme: theme)
         navigationBar = NavigationBarStyle(theme: theme)
     }
 
     func apply(to styleable: SingleViewNavigationController) {
-        background.apply(to: styleable.view)
         navigationBar.apply(to: styleable.navigationBar)
     }
 
