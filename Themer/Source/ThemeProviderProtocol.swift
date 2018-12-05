@@ -8,16 +8,16 @@ public protocol ThemeProviderProtocol {
 }
 
 public extension ThemeProviderProtocol {
-    public func bindStyle<S: StyleApplicable & AnyObject>(for view: S) where S.ThemeType == ThemeType {
+    public func bindStyle<S: StyleApplicable & AnyObject>(for styleable: S) where S.ThemeType == ThemeType {
         theme.producer
-            .take(duringLifetimeOf: view)
-            .startWithValues { [weak view] theme in
-                guard let view = view else {
+            .take(duringLifetimeOf: styleable)
+            .startWithValues { [weak styleable] theme in
+                guard let styleable = styleable else {
                     return
                 }
 
-                let style = view.makeStyleWithTheme(theme)
-                style.apply(to: view)
+                let style = styleable.makeStyleWithTheme(theme)
+                style.apply(to: styleable)
         }
     }
 }

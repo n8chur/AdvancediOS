@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol UILabelStyle: UIViewStyle where View: UILabel {
+public protocol UILabelStyle: UIViewStyle where Styleable: UILabel {
     var textColor: UIColor { get }
 }
 

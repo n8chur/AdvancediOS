@@ -1,14 +1,14 @@
 /// A style that can be applied to a view.
 public protocol Style {
-    associatedtype View
-    func apply(to view: View)
+    associatedtype Styleable
+    func apply(to styleable: Styleable)
 }
 
 /// A struct or class that can have a style applied to it.
 ///
 /// This is typically a UIView or UIViewController subclass.
 public protocol StyleApplicable {
-    associatedtype StyleType: Style where StyleType.View == Self
+    associatedtype StyleType: Style where StyleType.Styleable == Self
 
     /// The theme type of the style.
     ///

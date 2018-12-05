@@ -36,7 +36,7 @@ class SettingsViewController: UIViewController, ViewController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: settingsView)
+        themeProvider.bindStyle(for: self)
     }
 
     @available(*, unavailable)

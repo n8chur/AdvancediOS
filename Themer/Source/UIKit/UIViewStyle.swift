@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol UIViewStyle: Style where View: UIView {
+public protocol UIViewStyle: Style where Styleable: UIView {
     var backgroundColor: UIColor? { get }
 }
 

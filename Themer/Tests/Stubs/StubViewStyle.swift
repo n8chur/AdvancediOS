@@ -1,7 +1,7 @@
 import Themer
 
 struct StubViewStyle: Style {
-    typealias View = StubView
+    typealias Styleable = StubView
 
     let themeName: String
 
@@ -14,8 +14,8 @@ struct StubViewStyle: Style {
         }
     }
 
-    func apply(to view: StubView) {
-        view.themeName = themeName
+    func apply(to styleable: StubView) {
+        styleable.themeName = themeName
     }
 
 }
