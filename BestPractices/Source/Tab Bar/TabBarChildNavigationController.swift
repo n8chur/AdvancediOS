@@ -7,6 +7,8 @@ class TabBarChildNavigationController: UINavigationController {
 
     let themeProvider: ThemeProvider
 
+    var statusBarStyle: UIStatusBarStyle = .default
+
     required init(viewModel: TabBarChildViewModel, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
         self.themeProvider = themeProvider
@@ -22,6 +24,10 @@ class TabBarChildNavigationController: UINavigationController {
         viewModel.isActive <~ reactive.isAppeared
 
         themeProvider.bindStyle(for: self)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return statusBarStyle
     }
 
     @available(*, unavailable)

@@ -5,6 +5,8 @@ class SingleViewNavigationController: UINavigationController {
 
     let themeProvider: ThemeProvider
 
+    var statusBarStyle: UIStatusBarStyle = .default
+
     required init(rootViewController: UIViewController, themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider
 
@@ -17,6 +19,10 @@ class SingleViewNavigationController: UINavigationController {
         super.viewDidLoad()
 
         themeProvider.bindStyle(for: self)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return statusBarStyle
     }
 
     @available(*, unavailable)
