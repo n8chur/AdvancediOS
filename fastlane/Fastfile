@@ -1,9 +1,33 @@
 # Fastlane Constants
 default_platform(:ios)
 
+# Parse Mintfile to get repo name with version numbers to run mint commands.
+def mint_repo_map(repo_names) 
+  repo_map = {}
+
+  File.readlines('Mintfile').each do |line|
+    repo_names.each do |repo_name|
+      if line.start_with?(repo_name)
+        repo_map[repo_name] = line.chomp("\n")
+      end
+    end
+  end
+
+  return repo_map
+end
+SWIFTGEN_MINT_REPO = "SwiftGen/SwiftGen"
+XCODEGEN_MINT_REPO = "yonaskolb/XcodeGen"
+CARTHAGE_MINT_REPO = "Carthage/Carthage"
+MINT_REPOS = [
+  SWIFTGEN_MINT_REPO,
+  XCODEGEN_MINT_REPO,
+  CARTHAGE_MINT_REPO,
+]
+MINT_REPO_MAP = mint_repo_map(MINT_REPOS)
+
 TEST_DEVICE = "iPhone XS"
 
-SWIFTGEN = "mint run SwiftGen swiftgen"
+SWIFTGEN = "mint run #{MINT_REPO_MAP[SWIFTGEN_MINT_REPO]} swiftgen"
 SWIFTGEN_CONFIG_FILENAME = "swiftgen.yml"
 # The name of the folder that contains all generated SwiftGen files.
 # This should be the same for all targets.
@@ -14,9 +38,9 @@ SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH = "Source/"
 # The path of the SwiftGen generated files folder relative to the target's root directory.
 SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH = "#{SWIFTGEN_GENERATED_CONTAINING_FOLDER_RELATIVE_PATH}/#{SWIFTGEN_GENERATED_FOLDER_NAME}"
 
-XCODEGEN = "mint run XcodeGen xcodegen"
+XCODEGEN = "mint run #{MINT_REPO_MAP[XCODEGEN_MINT_REPO]} xcodegen"
 
-CARTHAGE = "mint run Carthage carthage"
+CARTHAGE = "mint run #{MINT_REPO_MAP[CARTHAGE_MINT_REPO]} carthage"
 
 CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
