@@ -25,14 +25,3 @@ struct SettingsViewControllerStyle: Style {
     }
 
 }
-
-extension SettingsViewController: StyleApplicable {
-
-    typealias StyleType = SettingsViewControllerStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> SettingsViewControllerStyle {
-        return SettingsViewControllerStyle(theme: theme)
-    }
-
-}

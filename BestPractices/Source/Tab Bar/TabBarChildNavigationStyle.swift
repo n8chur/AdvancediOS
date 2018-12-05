@@ -20,14 +20,3 @@ struct TabBarChildNavigationStyle: Style {
     }
 
 }
-
-extension TabBarChildNavigationController: StyleApplicable {
-
-    typealias StyleType = TabBarChildNavigationStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> TabBarChildNavigationStyle {
-        return TabBarChildNavigationStyle(theme: theme)
-    }
-
-}

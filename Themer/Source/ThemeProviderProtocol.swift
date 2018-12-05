@@ -14,10 +14,11 @@ public protocol ThemeProviderProtocol {
 
 public extension ThemeProviderProtocol {
 
-    /// Binds the provided styleable's style to itself.
+    /// Binds the provided styleable (typically a UIViewController) to a style.
     ///
-    /// This will cause the style to update the styleable whenever the theme changes.
-    public func bindStyle<S: StyleApplicable & AnyObject>(for styleable: S) where S.ThemeType == ThemeType {
+    /// A new style is created using the provided closure whenever the theme changes, and
+    /// is then applied to the styleable.
+    public func bindToStyleable<StyleType: Style, Styleable: AnyObject>(_ styleable: Styleable, makeStyle: @escaping (ThemeType) -> StyleType) where StyleType.Styleable == Styleable {
         theme.producer
             .take(duringLifetimeOf: styleable)
             .startWithValues { [weak styleable] theme in
@@ -25,7 +26,7 @@ public extension ThemeProviderProtocol {
                     return
                 }
 
-                let style = styleable.makeStyleWithTheme(theme)
+                let style = makeStyle(theme)
                 style.apply(to: styleable)
         }
     }

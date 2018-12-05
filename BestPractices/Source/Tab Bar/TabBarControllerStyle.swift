@@ -16,14 +16,3 @@ struct TabBarControllerStyle: Style {
     }
 
 }
-
-extension TabBarController: StyleApplicable {
-
-    typealias StyleType = TabBarControllerStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> TabBarControllerStyle {
-        return TabBarControllerStyle(theme: theme)
-    }
-
-}

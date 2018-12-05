@@ -40,7 +40,7 @@ class HomeViewController: UIViewController, ViewController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { HomeViewControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)

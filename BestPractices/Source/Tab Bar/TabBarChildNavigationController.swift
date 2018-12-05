@@ -24,7 +24,7 @@ class TabBarChildNavigationController: UINavigationController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { TabBarChildNavigationStyle(theme: $0) }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

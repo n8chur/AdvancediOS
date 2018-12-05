@@ -23,7 +23,7 @@ class TabBarController: UITabBarController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { TabBarControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)

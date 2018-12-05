@@ -13,7 +13,7 @@ class ThemeProviderProtocolSpec: QuickSpec {
 
                 expect(view.themeName).to(beNil())
 
-                themeProvider.bindStyle(for: view)
+                themeProvider.bindToStyleable(view) { StubViewStyle(theme: $0) }
 
                 expect(view.themeName).to(equal("light"))
 

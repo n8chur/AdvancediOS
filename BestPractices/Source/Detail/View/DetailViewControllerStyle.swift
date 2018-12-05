@@ -34,14 +34,3 @@ struct DetailViewControllerStyle: Style {
     }
 
 }
-
-extension DetailViewController: StyleApplicable {
-
-    typealias StyleType = DetailViewControllerStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> DetailViewControllerStyle {
-        return DetailViewControllerStyle(theme: theme)
-    }
-
-}

@@ -2,7 +2,7 @@ import Themer
 import UIKit
 import Core
 
-struct SelectionStyle: Style {
+struct SelectionViewControllerStyle: Style {
     typealias Styleable = SelectionViewController
 
     let theme: Theme
@@ -27,17 +27,6 @@ struct SelectionStyle: Style {
         view.interitemSpacingConstraints.forEach { constraint in
             constraint.update(offset: theme.layout.interitemSpacing)
         }
-    }
-
-}
-
-extension SelectionViewController: StyleApplicable {
-
-    typealias StyleType = SelectionStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> SelectionStyle {
-        return SelectionStyle(theme: theme)
     }
 
 }

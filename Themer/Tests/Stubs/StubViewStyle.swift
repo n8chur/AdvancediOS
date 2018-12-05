@@ -23,14 +23,3 @@ struct StubViewStyle: Style {
 class StubView {
     var themeName: String?
 }
-
-extension StubView: StyleApplicable {
-
-    typealias StyleType = StubViewStyle
-    typealias ThemeType = StubTheme
-
-    func makeStyleWithTheme(_ theme: StubTheme) -> StubViewStyle {
-        return StubViewStyle(theme: theme)
-    }
-
-}

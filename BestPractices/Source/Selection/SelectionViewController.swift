@@ -36,7 +36,7 @@ class SelectionViewController: UIViewController, ViewController {
         viewModel.input <~ selectionView.textField.reactive.continuousTextValues
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { SelectionViewControllerStyle(theme: $0) }
     }
 
     override func viewWillAppear(_ animated: Bool) {

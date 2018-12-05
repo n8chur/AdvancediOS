@@ -20,14 +20,3 @@ struct SingleViewNavigationStyle: Style {
     }
 
 }
-
-extension SingleViewNavigationController: StyleApplicable {
-
-    typealias StyleType = SingleViewNavigationStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> SingleViewNavigationStyle {
-        return SingleViewNavigationStyle(theme: theme)
-    }
-
-}

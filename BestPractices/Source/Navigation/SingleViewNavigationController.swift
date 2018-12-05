@@ -19,7 +19,7 @@ class SingleViewNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { SingleViewNavigationStyle(theme: $0) }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

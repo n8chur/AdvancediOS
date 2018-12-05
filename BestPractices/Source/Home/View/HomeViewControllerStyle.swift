@@ -31,14 +31,3 @@ struct HomeViewControllerStyle: Style {
     }
 
 }
-
-extension HomeViewController: StyleApplicable {
-
-    typealias StyleType = HomeViewControllerStyle
-    typealias ThemeType = Theme
-
-    func makeStyleWithTheme(_ theme: Theme) -> HomeViewControllerStyle {
-        return HomeViewControllerStyle(theme: theme)
-    }
-
-}

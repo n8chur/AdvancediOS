@@ -39,7 +39,7 @@ class DetailViewController: UIViewController, ViewController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindStyle(for: self)
+        themeProvider.bindToStyleable(self) { DetailViewControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)

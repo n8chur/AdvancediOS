@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
 
         let themeProvider = ThemeProvider()
-        themeProvider.bindStyle(for: window)
+        themeProvider.bindToStyleable(window) { WindowStyle(theme: $0) }
 
         let viewModelFactory = RootViewModelFactory(themeProvider: themeProvider)
         let viewControllerFactory = RootViewControllerFactory(themeProvider: themeProvider)
