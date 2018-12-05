@@ -18,3 +18,9 @@
 
 /* The title of submit button on the selection view. */
 "selection.submit.title" = "Submit";
+
+/* The title of the switch that enables dark mode. */
+"settings.theme_switch.title" = "Dark Mode";
+
+/* The title of the tab bar item for the settings navigation flow. */
+"settings_navigation.tab_bar_item.title" = "Settings";

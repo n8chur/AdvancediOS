@@ -11,8 +11,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
 
-        let viewModelFactory = RootViewModelFactory()
-        let viewControllerFactory = RootViewControllerFactory()
+        let themeProvider = ThemeProvider()
+
+        let viewModelFactory = RootViewModelFactory(themeProvider: themeProvider)
+        let viewControllerFactory = RootViewControllerFactory(themeProvider: themeProvider)
         let factory = RootCoordinatorFactory(viewModel: viewModelFactory, viewController: viewControllerFactory)
         let coordinator = RootCoordinator(factory: factory)
         self.coordinator = coordinator

@@ -1,0 +1,26 @@
+name: Themer
+targets:
+  Themer:
+    type: framework
+    platform: iOS
+    sources: 
+      - Themer/Source
+      - Themer/Supporting Files
+    scheme:
+      testTargets: 
+        - ThemerTests
+      gatherCoverageData: true
+    prebuildScripts:
+      - path: Shared/Scripts/swiftlint-check.sh
+        name: Swift Lint Check
+  ThemerTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - Themer/Tests
+    dependencies:
+      - target: Themer
+      - carthage: Quick
+      - carthage: Nimble
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

@@ -28,4 +28,11 @@ class RootCoordinatorFactory {
         return DetailCoordinator(factory: factory)
     }
 
+    func makeSettingsCoordinator() -> SettingsCoordinator {
+        let viewModel = self.viewModel.makeSettingsViewModelFactory()
+        let viewController = self.viewController.makeSettingsViewControllerFactory()
+        let factory = SettingsCoordinatorFactory(viewModel: viewModel, viewController: viewController)
+        return SettingsCoordinator(factory: factory)
+    }
+
 }

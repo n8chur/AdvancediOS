@@ -4,12 +4,22 @@
 /// not have knowledge of each of its view model's dependencies.
 class RootViewModelFactory {
 
+    let themeProvider: ThemeProvider
+
+    init(themeProvider: ThemeProvider) {
+        self.themeProvider = themeProvider
+    }
+
     func makeHomeViewModelFactory() -> HomeViewModelFactory {
         return HomeViewModelFactory()
     }
 
     func makeDetailViewModelFactory() -> DetailViewModelFactory {
         return DetailViewModelFactory()
+    }
+
+    func makeSettingsViewModelFactory() -> SettingsViewModelFactory {
+        return SettingsViewModelFactory(themeProvider: themeProvider)
     }
 
     func makeRootTabBarViewModel() -> RootTabBarViewModel {
