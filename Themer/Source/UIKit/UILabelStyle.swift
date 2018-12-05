@@ -5,9 +5,9 @@ public protocol UILabelStyle: UIViewStyle where Styleable: UILabel {
 }
 
 public extension UILabelStyle {
-    public func apply(to view: UILabel) {
-        view.textColor = textColor
+    public func apply(to styleable: UILabel) {
+        styleable.textColor = textColor
 
-        apply(to: view as UIView)
+        apply(to: styleable as UIView)
     }
 }

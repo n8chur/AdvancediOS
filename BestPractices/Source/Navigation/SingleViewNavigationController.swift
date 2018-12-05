@@ -1,25 +1,20 @@
 import UIKit
 import ReactiveSwift
 
-class TabBarChildNavigationController: UINavigationController {
-
-    let viewModel: TabBarChildViewModel
+class SingleViewNavigationController: UINavigationController {
 
     let themeProvider: ThemeProvider
 
-    required init(viewModel: TabBarChildViewModel, themeProvider: ThemeProvider) {
-        self.viewModel = viewModel
+    required init(rootViewController: UIViewController, themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
+
+        self.viewControllers = [ rootViewController ]
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tabBarItem.reactive.title <~ viewModel.tabBarItemTitle
-
-        viewModel.isActive <~ reactive.isAppeared
 
         themeProvider.bindStyle(for: self)
     }
@@ -38,14 +33,14 @@ class TabBarChildNavigationController: UINavigationController {
 
 }
 
-protocol TabBarChildNavigationControllerFactoryProtocol {
+protocol SingleViewNavigationControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
 }
 
-extension TabBarChildNavigationControllerFactoryProtocol {
+extension SingleViewNavigationControllerFactoryProtocol {
 
-    func makeTabBarChildNavigationController(viewModel: TabBarChildViewModel) -> TabBarChildNavigationController {
-        return TabBarChildNavigationController(viewModel: viewModel, themeProvider: themeProvider)
+    func makeSingleViewNavigationController(rootViewController: UIViewController) -> SingleViewNavigationController {
+        return SingleViewNavigationController(rootViewController: rootViewController, themeProvider: themeProvider)
     }
 
 }

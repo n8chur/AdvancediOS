@@ -1,9 +1,9 @@
-protocol DetailNavigationControllerFactory: DetailViewControllerFactoryProtocol { }
+protocol DetailNavigationControllerFactory: TabBarChildNavigationControllerFactoryProtocol, DetailViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }
 
 extension DetailNavigationControllerFactory {
 
     func makeDetailNavigationController(navigationModel: DetailNavigationModel) -> TabBarChildNavigationController {
-        return TabBarChildNavigationController(navigationModel: navigationModel)
+        return makeTabBarChildNavigationController(viewModel: navigationModel)
     }
 
 }

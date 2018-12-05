@@ -1,9 +1,9 @@
-protocol HomeNavigationControllerFactory: HomeViewControllerFactoryProtocol { }
+protocol HomeNavigationControllerFactory: TabBarChildNavigationControllerFactoryProtocol, HomeViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }
 
 extension HomeNavigationControllerFactory {
 
     func makeHomeNavigationController(navigationModel: HomeNavigationModel) -> TabBarChildNavigationController {
-        return TabBarChildNavigationController(navigationModel: navigationModel)
+        return makeTabBarChildNavigationController(viewModel: navigationModel)
     }
 
 }

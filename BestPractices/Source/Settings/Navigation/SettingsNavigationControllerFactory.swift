@@ -1,9 +1,9 @@
-protocol SettingsNavigationControllerFactory: SettingsViewControllerFactoryProtocol { }
+protocol SettingsNavigationControllerFactory: TabBarChildNavigationControllerFactoryProtocol, SettingsViewControllerFactoryProtocol { }
 
 extension SettingsNavigationControllerFactory {
 
     func makeSettingsNavigationController(navigationModel: SettingsNavigationModel) -> TabBarChildNavigationController {
-        return TabBarChildNavigationController(navigationModel: navigationModel)
+        return makeTabBarChildNavigationController(viewModel: navigationModel)
     }
 
 }

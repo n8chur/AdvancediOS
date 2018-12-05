@@ -5,7 +5,7 @@ public protocol UIViewStyle: Style where Styleable: UIView {
 }
 
 public extension UIViewStyle {
-    public func apply(to view: UIView) {
-        view.backgroundColor = backgroundColor
+    public func apply(to styleable: UIView) {
+        styleable.backgroundColor = backgroundColor
     }
 }

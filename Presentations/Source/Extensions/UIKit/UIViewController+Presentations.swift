@@ -36,20 +36,6 @@ public extension UIViewController {
         return presentation
     }
 
-    /// Wraps the provided view controller in a navigation controller, adds a cancel button to the navigation item's
-    /// left bar button item that calls the presentation's dismiss command.
-    ///
-    /// If a result view model is provided the view controller will be dismissed when its result signal sends a value.
-    /// Result values begin being capturtued immediately but will not cause a dismissal until the present action has
-    /// completed.
-    public func makeCancellablePresentationContext<ViewModel: ResultViewModel>(of viewController: UIViewController, viewModel: ViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) -> DismissablePresentationContext {
-        let navigationController = UINavigationController(rootViewController: viewController)
-        let presentation = makeModalPresentation(of: navigationController)
-        let context = ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
-        context.addCancelBarButtonItem(to: viewController)
-        return context
-    }
-
 }
 
 public extension DismissablePresentationContext {

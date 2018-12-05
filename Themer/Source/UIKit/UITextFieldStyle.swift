@@ -5,9 +5,9 @@ public protocol UITextFieldStyle: UIViewStyle where Styleable: UITextField {
 }
 
 public extension UITextFieldStyle {
-    public func apply(to view: UITextField) {
-        view.textColor = textColor
+    public func apply(to styleable: UITextField) {
+        styleable.textColor = textColor
 
-        apply(to: view as UIView)
+        apply(to: styleable as UIView)
     }
 }

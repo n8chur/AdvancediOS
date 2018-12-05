@@ -22,6 +22,7 @@ public protocol StyleApplicable {
 
 public extension StyleApplicable {
 
+    /// Applys the provided style to the receiver.
     public func applyStyle(_ style: StyleType) {
         style.apply(to: self)
     }
