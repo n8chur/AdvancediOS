@@ -11,6 +11,8 @@ class SelectionView: UIView {
         return button
     }()
 
+    var interitemSpacingConstraints: [Constraint] = []
+
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
@@ -26,7 +28,8 @@ class SelectionView: UIView {
         addSubview(submitButton)
         submitButton.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(textField.snp.bottom).offset(10)
+            interitemSpacingConstraints.append(
+                make.top.equalTo(textField.snp.bottom).constraint)
         }
     }
 

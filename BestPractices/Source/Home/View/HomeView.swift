@@ -23,6 +23,8 @@ class HomeView: UIView {
         return button
     }()
 
+    var interitemSpacingConstraints: [Constraint] = []
+
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
@@ -38,13 +40,15 @@ class HomeView: UIView {
         addSubview(label)
         label.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(imageView.snp.bottom).offset(10)
+            interitemSpacingConstraints.append(
+                make.top.equalTo(imageView.snp.bottom).constraint)
         }
 
         addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(label.snp.bottom).offset(10)
+            interitemSpacingConstraints.append(
+                make.top.equalTo(label.snp.bottom).constraint)
         }
     }
 

@@ -11,7 +11,6 @@ class SettingsView: UIView {
             themeSwitchTitle,
             themeSwitch,
         ])
-        stackView.spacing = 10
         return stackView
     }()
 

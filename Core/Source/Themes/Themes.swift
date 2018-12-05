@@ -29,6 +29,11 @@ public extension Theme {
         case .dark: return .lightContent
         }
     }
+
+    public var layout: Layout {
+        return Layout(
+            interitemSpacing: 10)
+    }
 }
 
 public struct ColorSet {
@@ -37,4 +42,8 @@ public struct ColorSet {
     public let viewBackground: UIColor?
     public let navigationBarTint: UIColor?
     public let tabBarTint: UIColor?
+}
+
+public struct Layout {
+    public let interitemSpacing: CGFloat
 }

@@ -14,8 +14,10 @@ struct SelectionStyle: Style {
     }
 
     func apply(to styleable: SelectionViewController) {
-        background.apply(to: styleable.selectionView)
-        textField.apply(to: styleable.selectionView.textField)
+        let view = styleable.selectionView
+
+        background.apply(to: view)
+        textField.apply(to: view.textField)
     }
 
 }
