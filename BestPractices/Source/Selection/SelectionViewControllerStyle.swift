@@ -5,12 +5,16 @@ import Core
 struct SelectionStyle: Style {
     typealias Styleable = SelectionViewController
 
+    let theme: Theme
     let background: BackgroundViewStyle
     let textField: TextFieldStyle
+    let submitButton: ButtonStyle
 
     init(theme: Theme) {
+        self.theme = theme
         background = BackgroundViewStyle(theme: theme)
         textField = TextFieldStyle(theme: theme)
+        submitButton = ButtonStyle(theme: theme)
     }
 
     func apply(to styleable: SelectionViewController) {
@@ -18,6 +22,11 @@ struct SelectionStyle: Style {
 
         background.apply(to: view)
         textField.apply(to: view.textField)
+        submitButton.apply(to: view.submitButton)
+
+        view.interitemSpacingConstraints.forEach { constraint in
+            constraint.update(offset: theme.layout.interitemSpacing)
+        }
     }
 
 }

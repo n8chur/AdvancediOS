@@ -9,17 +9,16 @@ class UITextFieldStyleSpec: QuickSpec {
 
         describe("UITextFieldStyle") {
             it("should update appropriate values") {
-                let color: UIColor = .red
-                let style = StubUITextFieldStyle(color: color)
+                let textColor: UIColor = .red
+                let style = StubUITextFieldStyle(
+                    textColor: textColor)
                 let textField = UITextField()
 
-                expect(textField.textColor).notTo(equal(color))
-                expect(textField.backgroundColor).to(beNil())
+                expect(textField.textColor).notTo(equal(textColor))
 
                 style.apply(to: textField)
 
-                expect(textField.textColor).to(equal(color))
-                expect(textField.backgroundColor).to(equal(color))
+                expect(textField.textColor).to(equal(textColor))
             }
         }
 

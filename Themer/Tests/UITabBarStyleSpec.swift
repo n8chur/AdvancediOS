@@ -10,15 +10,14 @@ class UITabBarStyleSpec: QuickSpec {
         describe("UITabBarStyle") {
             it("should update appropriate values") {
                 let color: UIColor = .red
-                let style = StubUITabBarStyle(color: color)
+                let style = StubUITabBarStyle(
+                    barTintColor: color)
                 let tabBar = UITabBar()
 
-                expect(tabBar.backgroundColor).to(beNil())
                 expect(tabBar.barTintColor).to(beNil())
 
                 style.apply(to: tabBar)
 
-                expect(tabBar.backgroundColor).to(equal(color))
                 expect(tabBar.barTintColor).to(equal(color))
             }
         }

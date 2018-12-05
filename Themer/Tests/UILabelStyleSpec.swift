@@ -9,17 +9,16 @@ class UILabelStyleSpec: QuickSpec {
 
         describe("UILabelStyle") {
             it("should update appropriate values") {
-                let color: UIColor = .red
-                let style = StubUILabelStyle(color: color)
+                let textColor: UIColor = .red
+                let style = StubUILabelStyle(
+                    textColor: textColor)
                 let label = UILabel()
 
-                expect(label.textColor).notTo(equal(color))
-                expect(label.backgroundColor).notTo(equal(color))
+                expect(label.textColor).notTo(equal(textColor))
 
                 style.apply(to: label)
 
-                expect(label.textColor).to(equal(color))
-                expect(label.backgroundColor).to(equal(color))
+                expect(label.textColor).to(equal(textColor))
             }
         }
 

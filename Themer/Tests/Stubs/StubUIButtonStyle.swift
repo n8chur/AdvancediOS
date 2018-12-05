@@ -1,10 +1,12 @@
 import Themer
 import UIKit
 
-struct StubUIViewStyle: UIViewStyle {
+struct StubUIButtonStyle: UIButtonStyle {
 
-    typealias View = UIView
+    typealias View = UIButton
 
+    let titleColor: UIColor?
+    let contentEdgeInsets: UIEdgeInsets
     let backgroundColor: UIColor?
     let cornerRadius: CGFloat
     let borderWidth: CGFloat

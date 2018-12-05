@@ -19,12 +19,18 @@ public struct Color {
   public let rgbaValue: UInt32
   public var color: ColorType { return ColorType(named: self) }
 
-  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#111111"></span>
-  /// Alpha: 100% <br/> (0x111111ff)
-  public static let darkBackground = Color(rgbaValue: 0x111111ff)
+  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#15b7ed"></span>
+  /// Alpha: 100% <br/> (0x15b7edff)
+  public static let darkActionColor = Color(rgbaValue: 0x15b7edff)
+  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#000000"></span>
+  /// Alpha: 100% <br/> (0x000000ff)
+  public static let darkBackground = Color(rgbaValue: 0x000000ff)
   /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#d3d3d3"></span>
   /// Alpha: 100% <br/> (0xd3d3d3ff)
   public static let darkContent = Color(rgbaValue: 0xd3d3d3ff)
+  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#11a4d6"></span>
+  /// Alpha: 100% <br/> (0x11a4d6ff)
+  public static let lightActionColor = Color(rgbaValue: 0x11a4d6ff)
   /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#ffffff"></span>
   /// Alpha: 100% <br/> (0xffffffff)
   public static let lightBackground = Color(rgbaValue: 0xffffffff)
