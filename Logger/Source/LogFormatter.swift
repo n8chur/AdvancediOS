@@ -1,5 +1,10 @@
 import CocoaLumberjackSwift
 
+/// Formats DDLog messages.
+///
+/// Prefixes all messages with the flag name.
+///
+/// Additionally adds the file name, line number, and calling function name to errors.
 class LogFormatter: NSObject, DDLogFormatter {
 
     func format(message logMessage: DDLogMessage) -> String? {

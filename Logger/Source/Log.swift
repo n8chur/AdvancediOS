@@ -24,31 +24,27 @@ public struct Log {
 
 }
 
+/// A logger intended to be used as a singleton.
 public struct Logger {
 
-    public static let shared: Logger = {
-        let ttyLogger = DDOSLogger.sharedInstance!
-
-        let fileLogger: DDFileLogger = DDFileLogger()
-        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-
-        return Logger(ttyLogger: ttyLogger, fileLogger: fileLogger)
-    }()
+    public static let shared = Logger()
 
     private let fileLogger: DDFileLogger
 
-    private init(ttyLogger: DDAbstractLogger, fileLogger: DDFileLogger) {
-        self.fileLogger = fileLogger
-
+    private init() {
         let logFormatter = LogFormatter()
 
-        ttyLogger.logFormatter = logFormatter
+        fileLogger = DDFileLogger()
+        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         fileLogger.logFormatter = logFormatter
-
-        DDLog.add(ttyLogger)
         DDLog.add(fileLogger, with: .info)
 
+        let ttyLogger = DDOSLogger.sharedInstance!
+        ttyLogger.logFormatter = logFormatter
+        DDLog.add(ttyLogger)
+
+        // Do not show verbose or debug logs in non-debug builds.
         #if DEBUG
             dynamicLogLevel = .all
         #else
@@ -66,6 +62,9 @@ public struct Logger {
         }
     }
 
+    /// Returns an array of all existing log files.
+    ///
+    /// This could be used to upload log files for a support ticket or a crash report.
     public var logFileURLs: [URL] {
         return fileLogger.logFileManager.unsortedLogFilePaths
             .map { URL.init(fileURLWithPath: $0, isDirectory: false) }
