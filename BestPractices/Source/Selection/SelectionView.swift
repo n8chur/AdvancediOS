@@ -34,7 +34,8 @@ class SelectionView: UIView {
 
         textField.snp.makeConstraints { make in
             // Make the textfield as wide as will fit in the stack view.
-            make.width.equalTo(CGFloat.greatestFiniteMagnitude).priority(.high)
+            // Do not make required so it can inset based on layout margins.
+            make.width.equalTo(stackView).priority(.high)
         }
     }
 
