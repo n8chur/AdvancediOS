@@ -37,7 +37,8 @@ public extension Theme {
             interitemSpacing: 10,
             buttonContentEdgeInsets: UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 20),
             buttonBorderWidth: 1,
-            buttonCornerRadius: 12)
+            buttonCornerRadius: 12,
+            contentLayoutMargins: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
     }
 }
 
@@ -55,4 +56,5 @@ public struct Layout {
     public let buttonContentEdgeInsets: UIEdgeInsets
     public let buttonBorderWidth: CGFloat
     public let buttonCornerRadius: CGFloat
+    public let contentLayoutMargins: UIEdgeInsets
 }

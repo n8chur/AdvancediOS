@@ -11,25 +11,30 @@ class SelectionView: UIView {
         return button
     }()
 
-    var interitemSpacingConstraints: [Constraint] = []
+    private(set) lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            textField,
+            submitButton,
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
 
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-
-        addSubview(textField)
-        textField.snp.makeConstraints { make in
+        addSubview(stackView)
+        stackView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
 
-        addSubview(submitButton)
-        submitButton.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            interitemSpacingConstraints.append(
-                make.top.equalTo(textField.snp.bottom).constraint)
+        textField.snp.makeConstraints { make in
+            // Make the textfield as wide as will fit in the stack view.
+            make.width.equalTo(CGFloat.greatestFiniteMagnitude).priority(.high)
         }
     }
 

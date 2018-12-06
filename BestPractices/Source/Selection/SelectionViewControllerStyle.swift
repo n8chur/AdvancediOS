@@ -24,9 +24,8 @@ struct SelectionViewControllerStyle: Style {
         textField.apply(to: view.textField)
         submitButton.apply(to: view.submitButton)
 
-        view.interitemSpacingConstraints.forEach { constraint in
-            constraint.update(offset: theme.layout.interitemSpacing)
-        }
+        view.stackView.spacing = theme.layout.interitemSpacing
+        view.stackView.layoutMargins = theme.layout.contentLayoutMargins
     }
 
 }

@@ -25,9 +25,7 @@ struct HomeViewControllerStyle: Style {
         label.apply(to: view.label)
         detailButton.apply(to: view.detailButton)
 
-        view.interitemSpacingConstraints.forEach { constraint in
-            constraint.update(offset: theme.layout.interitemSpacing)
-        }
+        view.stackView.spacing = theme.layout.interitemSpacing
     }
 
 }
