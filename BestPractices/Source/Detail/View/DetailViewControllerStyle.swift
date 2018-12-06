@@ -25,12 +25,9 @@ struct DetailViewControllerStyle: Style {
         background.apply(to: view)
         title.apply(to: view.title)
         selectionResult.apply(to: view.selectionResult)
-
         button.apply(to: view.button)
 
-        view.interitemSpacingConstraints.forEach { constraint in
-            constraint.update(offset: theme.layout.interitemSpacing)
-        }
+        view.stackView.spacing = theme.layout.interitemSpacing
     }
 
 }

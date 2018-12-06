@@ -23,38 +23,25 @@ class DetailView: UIView {
         return label
     }()
 
-    var interitemSpacingConstraints: [Constraint] = []
+    private(set) lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            title,
+            button,
+            selectionResult,
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
 
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-
-        addSubview(title)
-        title.snp.makeConstraints { make in
+        addSubview(stackView)
+        stackView.snp.makeConstraints { make in
             make.center.equalTo(self)
-            // Allow label to expand up to leading/trailing margins.
-            make.leading.greaterThanOrEqualTo(self.snp.leadingMargin)
-            make.trailing.lessThanOrEqualTo(self.snp.trailingMargin)
-            // Allow label to expand up to bottom and bottom of safe area.
-            make.top.greaterThanOrEqualTo(self.safeAreaLayoutGuide.snp.top)
-            make.bottom.lessThanOrEqualTo(self.safeAreaLayoutGuide.snp.bottom)
-        }
-
-        addSubview(button)
-        button.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            interitemSpacingConstraints.append(
-                make.top.equalTo(title.snp.bottom).constraint)
-        }
-
-        addSubview(selectionResult)
-        selectionResult.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            interitemSpacingConstraints.append(
-                make.top.equalTo(button.snp.bottom).constraint)
         }
     }
 

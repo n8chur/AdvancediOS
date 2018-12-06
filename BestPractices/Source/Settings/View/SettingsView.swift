@@ -19,8 +19,6 @@ class SettingsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-
         addSubview(themeSwitchStack)
         themeSwitchStack.snp.makeConstraints { make in
             make.center.equalTo(self)

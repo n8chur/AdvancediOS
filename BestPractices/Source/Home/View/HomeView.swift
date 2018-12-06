@@ -23,32 +23,25 @@ class HomeView: UIView {
         return button
     }()
 
-    var interitemSpacingConstraints: [Constraint] = []
+    private(set) lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            imageView,
+            label,
+            detailButton,
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
 
     let requiresConstraintBasedLayout = true
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .white
-
-        addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        addSubview(stackView)
+        stackView.snp.makeConstraints { make in
             make.center.equalTo(self.snp.center)
-        }
-
-        addSubview(label)
-        label.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            interitemSpacingConstraints.append(
-                make.top.equalTo(imageView.snp.bottom).constraint)
-        }
-
-        addSubview(detailButton)
-        detailButton.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            interitemSpacingConstraints.append(
-                make.top.equalTo(label.snp.bottom).constraint)
         }
     }
 
