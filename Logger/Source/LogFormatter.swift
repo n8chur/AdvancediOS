@@ -7,9 +7,17 @@ import CocoaLumberjackSwift
 /// Additionally adds the file name, line number, and calling function name to errors.
 class LogFormatter: NSObject, DDLogFormatter {
 
+    let contextManager: Logger.ContextManager
+
+    init(contextManager: Logger.ContextManager) {
+        self.contextManager = contextManager
+    }
+
     func format(message logMessage: DDLogMessage) -> String? {
-        let name = flagName(logMessage.flag)
-        let prefix = "\(name): "
+        let flagName = flagIdentifier(logMessage.flag)
+        let contextIdentifier = contextManager.identifier(for: logMessage.context)
+        let prefix = "[\(contextIdentifier)] \(flagName): "
+
         switch logMessage.flag {
         case .error:
             return "\(prefix)<\(logMessage.fileName):\(logMessage.line):\(String(describing: logMessage.function))> \(logMessage.message)"
@@ -18,7 +26,7 @@ class LogFormatter: NSObject, DDLogFormatter {
         }
     }
 
-    private func flagName(_ logFlag: DDLogFlag) -> String {
+    private func flagIdentifier(_ logFlag: DDLogFlag) -> String {
         switch logFlag {
         case .verbose:  return "V"
         case .info:     return "I"

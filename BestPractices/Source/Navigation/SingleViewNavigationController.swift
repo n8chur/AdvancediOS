@@ -1,6 +1,7 @@
 import UIKit
 import ReactiveSwift
 import Core
+import Logger
 
 class SingleViewNavigationController: UINavigationController {
 
@@ -12,6 +13,8 @@ class SingleViewNavigationController: UINavigationController {
         self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
+
+        self.delegate = self
 
         self.viewControllers = [ rootViewController ]
     }
@@ -37,6 +40,14 @@ class SingleViewNavigationController: UINavigationController {
 
     @available(*, unavailable)
     override init(rootViewController: UIViewController) { fatalError("\(#function) not implemented.") }
+
+}
+
+extension SingleViewNavigationController: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        Log.info(Logger.Context.application, "Showing \(NSStringFromClass(type(of: viewController)))")
+    }
 
 }
 

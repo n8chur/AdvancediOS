@@ -10,7 +10,7 @@ public class ThemeProvider: ThemeProviderProtocol {
     public init() {
         theme.signal
             .take(duringLifetimeOf: self)
-            .logValue(.info) { "Theme changed: \($0)" }
+            .logValue(.info, .core) { "Theme changed: \($0)" }
             .observeCompleted { }
     }
 }
