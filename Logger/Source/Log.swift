@@ -85,9 +85,9 @@ public struct Logger {
         fileLogger.logFormatter = logFormatter
         DDLog.add(fileLogger, with: .info)
 
-        let ttyLogger = DDOSLogger.sharedInstance!
-        ttyLogger.logFormatter = logFormatter
-        DDLog.add(ttyLogger)
+        let osLogger = DDOSLogger()
+        osLogger.logFormatter = logFormatter
+        DDLog.add(osLogger)
 
         // Do not show verbose or debug logs in non-debug builds.
         #if DEBUG
