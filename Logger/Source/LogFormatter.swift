@@ -14,9 +14,9 @@ class LogFormatter: NSObject, DDLogFormatter {
     }
 
     func format(message logMessage: DDLogMessage) -> String? {
-        let flagName = flagIdentifier(logMessage.flag)
+        let name = flagName(logMessage.flag)
         let contextIdentifier = contextManager.identifier(for: logMessage.context)
-        let prefix = "[\(contextIdentifier)] \(flagName): "
+        let prefix = "[\(contextIdentifier)] \(name): "
 
         switch logMessage.flag {
         case .error:
@@ -26,7 +26,7 @@ class LogFormatter: NSObject, DDLogFormatter {
         }
     }
 
-    private func flagIdentifier(_ logFlag: DDLogFlag) -> String {
+    private func flagName(_ logFlag: DDLogFlag) -> String {
         switch logFlag {
         case .verbose:  return "V"
         case .info:     return "I"
