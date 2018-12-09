@@ -1,6 +1,6 @@
 cache:
   local: RomeCache
 repositoryMap:
-  - CocoaLumberjack:
-    - name: CocoaLumberjack
-    - name: CocoaLumberjackSwift
+  - XCGLogger:
+    - name: XCGLogger
+    - name: ObjcExceptionBridging
