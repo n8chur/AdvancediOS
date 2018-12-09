@@ -1,11 +1,11 @@
-import CocoaLumberjackSwift
+import XCGLogger
 
-/// Formats DDLog messages.
+/// Formats XCGLogger messages.
 ///
 /// Prefixes all messages with the flag name.
-///
-/// Additionally adds the file name, line number, and calling function name to errors.
-class LogFormatter: NSObject, DDLogFormatter {
+class LogFormatter: LogFormatterProtocol {
+
+    static let userInfoKey = "Context"
 
     let contextManager: Logger.ContextManager
 
@@ -13,28 +13,16 @@ class LogFormatter: NSObject, DDLogFormatter {
         self.contextManager = contextManager
     }
 
-    func format(message logMessage: DDLogMessage) -> String? {
-        let name = flagName(logMessage.flag)
-        let contextIdentifier = contextManager.identifier(for: logMessage.context)
-        let prefix = "[\(contextIdentifier)] \(name): "
-
-        switch logMessage.flag {
-        case .error:
-            return "\(prefix)<\(logMessage.fileName):\(logMessage.line):\(String(describing: logMessage.function))> \(logMessage.message)"
-        default:
-            return "\(prefix)\(logMessage.message)"
+    func format(logDetails: inout LogDetails, message: inout String) -> String {
+        guard let context = logDetails.userInfo[LogFormatter.userInfoKey] as? Logger.Context else {
+            return message
         }
+        message = "<\(context.identifier)> \(message): "
+        return message
     }
 
-    private func flagName(_ logFlag: DDLogFlag) -> String {
-        switch logFlag {
-        case .verbose:  return "V"
-        case .info:     return "I"
-        case .debug:    return "D"
-        case .warning:  return "W"
-        case .error:    return "E"
-        default:        return "?"
-        }
+    var debugDescription: String {
+        return "\(type(of: self)): "
     }
 
 }

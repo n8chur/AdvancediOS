@@ -2,8 +2,7 @@
 
 # Shared
 github "ReactiveCocoa/ReactiveCocoa" ~> 8.0
-# The latest release is very old, use master until a new release is made (>3.4.2).
-github "CocoaLumberjack/CocoaLumberjack" "master"
+github "DaveWoodCom/XCGLogger" ~> 6.1
 
 # Application
 github "SnapKit/SnapKit" ~> 4.2

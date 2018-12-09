@@ -1,4 +1,4 @@
-github "CocoaLumberjack/CocoaLumberjack" "354ddbdcb7df3e2bbbde134b307449de7e3012fa"
+github "DaveWoodCom/XCGLogger" "6.1.0"
 github "Quick/Nimble" "v7.3.1"
 github "Quick/Quick" "v1.3.2"
 github "ReactiveCocoa/ReactiveCocoa" "8.0.2"
