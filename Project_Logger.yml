@@ -1,31 +1,30 @@
-name: Core
+name: Logger
 targets:
-  Core:
+  Logger:
     type: framework
     platform: iOS
     sources: 
-      - Core/Source
-      - Core/Supporting Files
-      - path: Core/Resources
-        excludes:
-          - "*.txt"
+      - Logger/Source
+      - Logger/Supporting Files
     dependencies:
-      - target: Themer
-      - target: Logger
+      - carthage: CocoaLumberjack
+      - carthage: CocoaLumberjackSwift
+      - carthage: ReactiveSwift
+      - carthage: Result
     scheme:
       testTargets: 
-        - CoreTests
+        - LoggerTests
       gatherCoverageData: true
     prebuildScripts:
       - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
-  CoreTests:
+  LoggerTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - Core/Tests
+      - Logger/Tests
     dependencies:
-      - target: Core
+      - target: Logger
       - carthage: Quick
       - carthage: Nimble
     settings:
