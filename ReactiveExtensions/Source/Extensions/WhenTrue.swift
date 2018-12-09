@@ -3,8 +3,8 @@ import Result
 
 public extension SignalProducer where Value == Bool, Error == NoError {
 
-    /// Returns a signal producer that will subscribe to the trueSignalProducer when the reciever sends true, and will
-    /// subscribe to the falseSignalProducer when the reciever sends false.
+    /// Returns a signal producer that will subscribe to the trueSignalProducer when the receiver sends true, and will
+    /// subscribe to the falseSignalProducer when the receiver sends false.
     ///
     /// When the active signal sends a new value, the signal that was previously subscribed to will be disposed of.
     ///
