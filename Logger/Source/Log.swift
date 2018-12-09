@@ -80,7 +80,7 @@ public struct Logger {
             let fileLogLevel: XCGLogger.Level = .info
         #endif
 
-        let contextFormatter = LogFormatter(contextManager: contextManager)
+        let contextFormatter = ContextFormatter(contextManager: contextManager)
         let systemFormatters = [ contextFormatter ]
         let systemDestination = Logger.makeSystemDestination(owner: log, outputLevel: systemLogLevel, formatters: systemFormatters)
         log.add(destination: systemDestination)
@@ -157,7 +157,7 @@ public struct Logger {
     }
 
     public func log(_ level: LogLevel, _ context: Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: Int = #line) {
-        let userInfo = [ LogFormatter.userInfoKey: context]
+        let userInfo = [ ContextFormatter.userInfoKey: context]
         switch level {
         case .verbose: log.verbose(function, fileName: file, lineNumber: line, userInfo: userInfo, closure: message)
         case .debug: log.debug(function, fileName: file, lineNumber: line, userInfo: userInfo, closure: message)
