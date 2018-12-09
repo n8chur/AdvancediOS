@@ -2,24 +2,24 @@ import CocoaLumberjackSwift
 
 public struct Log {
 
-    public func verbose(_ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        Logger.shared.log(.verbose, message, file: file, function: function, line: line)
+    public func verbose(_ context: Logger.Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        Logger.shared.log(.verbose, context, message, file: file, function: function, line: line)
     }
 
-    static public func debug(_ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        Logger.shared.log(.debug, message, file: file, function: function, line: line)
+    static public func debug(_ context: Logger.Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        Logger.shared.log(.debug, context, message, file: file, function: function, line: line)
     }
 
-    static public func info(_ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        Logger.shared.log(.info, message, file: file, function: function, line: line)
+    static public func info(_ context: Logger.Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        Logger.shared.log(.info, context, message, file: file, function: function, line: line)
     }
 
-    static public func warn(_ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        Logger.shared.log(.warn, message, file: file, function: function, line: line)
+    static public func warn(_ context: Logger.Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        Logger.shared.log(.warn, context, message, file: file, function: function, line: line)
     }
 
-    static public func error(_ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        Logger.shared.log(.error, message, file: file, function: function, line: line)
+    static public func error(_ context: Logger.Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        Logger.shared.log(.error, context, message, file: file, function: function, line: line)
     }
 
 }
@@ -27,12 +27,57 @@ public struct Log {
 /// A logger intended to be used as a singleton.
 public struct Logger {
 
+    /// A logging context.
+    /// This must be created through a Logger's ContextManager.
+    public struct Context {
+        public typealias Identifier = String
+        public typealias Index = Int
+
+        let index: Index
+        public let identifier: Identifier
+    }
+
+    public class ContextManager {
+
+        private var list: [Context] = []
+
+        /// Retuns an existing Context for the provided identifier if it exists,
+        /// otherwise creates a new Context and returns it.
+        public func context(_ identifier: Context.Identifier) -> Context {
+            if let context = list.first(where: { $0.identifier == identifier }) {
+                return context
+            }
+
+            var index = 0
+            if let maxIndex = list.map({ $0.index }).sorted().last {
+                index = maxIndex + 1
+            }
+
+            let context = Context(index: index, identifier: identifier)
+            list.append(context)
+
+            return context
+        }
+
+        func identifier(for index: Context.Index) -> String {
+            guard let context = list.first(where: { $0.index == index }) else {
+                fatalError("Context requested at an index that does not exist")
+            }
+
+            return context.identifier
+        }
+
+    }
+
     public static let shared = Logger()
+
+    /// The context manager reponsible for creating new contexts for logging.
+    public let contextManager = ContextManager()
 
     private let fileLogger: DDFileLogger
 
     private init() {
-        let logFormatter = LogFormatter()
+        let logFormatter = LogFormatter(contextManager: contextManager)
 
         fileLogger = DDFileLogger()
         fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
@@ -52,13 +97,13 @@ public struct Logger {
         #endif
     }
 
-    public func log(_ level: LogLevel, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+    public func log(_ level: LogLevel, _ context: Context, _ message: @autoclosure () -> String, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
         switch level {
-        case .verbose: DDLogVerbose(message, file: file, function: function, line: line)
-        case .debug: DDLogDebug(message, file: file, function: function, line: line)
-        case .info: DDLogInfo(message, file: file, function: function, line: line)
-        case .warn: DDLogWarn(message, file: file, function: function, line: line)
-        case .error: DDLogError(message, file: file, function: function, line: line)
+        case .verbose: DDLogVerbose(message, context: context.index, file: file, function: function, line: line)
+        case .debug: DDLogDebug(message, context: context.index, file: file, function: function, line: line)
+        case .info: DDLogInfo(message, context: context.index, file: file, function: function, line: line)
+        case .warn: DDLogWarn(message, context: context.index, file: file, function: function, line: line)
+        case .error: DDLogError(message, context: context.index, file: file, function: function, line: line)
         }
     }
 

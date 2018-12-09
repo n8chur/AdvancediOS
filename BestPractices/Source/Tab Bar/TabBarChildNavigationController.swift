@@ -1,6 +1,7 @@
 import UIKit
 import ReactiveSwift
 import Core
+import Logger
 
 class TabBarChildNavigationController: UINavigationController {
 
@@ -15,6 +16,8 @@ class TabBarChildNavigationController: UINavigationController {
         self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
+
+        self.delegate = self
     }
 
     override func viewDidLoad() {
@@ -42,6 +45,14 @@ class TabBarChildNavigationController: UINavigationController {
 
     @available(*, unavailable)
     override init(rootViewController: UIViewController) { fatalError("\(#function) not implemented.") }
+
+}
+
+extension TabBarChildNavigationController: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        Log.info(Logger.Context.application, "Showing \(NSStringFromClass(type(of: viewController)))")
+    }
 
 }
 

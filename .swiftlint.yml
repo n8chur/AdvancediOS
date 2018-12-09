@@ -2,5 +2,6 @@ disabled_rules:
   - line_length
   - trailing_comma
   - generic_type_name
+  - nesting
 excluded:
   - Carthage
