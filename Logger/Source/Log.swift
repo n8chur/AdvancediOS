@@ -73,17 +73,17 @@ public struct Logger {
 
     private init() {
         #if DEBUG
-            let systemLogLevel: XCGLogger.Level  = .verbose
+            let osLogLogLevel: XCGLogger.Level  = .verbose
             let fileLogLevel: XCGLogger.Level = .debug
         #else
-            let systemLogLevel: XCGLogger.Level = .info
+            let osLogLogLevel: XCGLogger.Level = .info
             let fileLogLevel: XCGLogger.Level = .info
         #endif
 
         let contextFormatter = ContextFormatter(contextManager: contextManager)
-        let systemFormatters = [ contextFormatter ]
-        let systemDestination = Logger.makeSystemDestination(owner: log, outputLevel: systemLogLevel, formatters: systemFormatters)
-        log.add(destination: systemDestination)
+        let osLogFormatters = [ contextFormatter ]
+        let osLogDestination = Logger.makeOSLogDestination(owner: log, outputLevel: osLogLogLevel, formatters: osLogFormatters)
+        log.add(destination: osLogDestination)
 
         let ansiColorLogFormatter = Logger.makeColorFormatter()
         let fileFormatters: [LogFormatterProtocol] = [
@@ -131,8 +131,8 @@ public struct Logger {
         return destination
     }
 
-    private static func makeSystemDestination(owner: XCGLogger, outputLevel: XCGLogger.Level, formatters: [LogFormatterProtocol]? = nil) -> AppleSystemLogDestination {
-        let destination = AppleSystemLogDestination(owner: owner, identifier: "Logger.systemDestination")
+    private static func makeOSLogDestination(owner: XCGLogger, outputLevel: XCGLogger.Level, formatters: [LogFormatterProtocol]? = nil) -> OSLogDestination {
+        let destination = OSLogDestination(owner: owner, identifier: "Logger.systemDestination")
         destination.outputLevel = outputLevel
         destination.showLogIdentifier = false
         destination.showFunctionName = true
@@ -140,7 +140,8 @@ public struct Logger {
         destination.showLevel = true
         destination.showFileName = true
         destination.showLineNumber = true
-        destination.showDate = true
+        // Do not include date since it's already printed in os_log
+        destination.showDate = false
         destination.formatters = formatters
         return destination
     }
