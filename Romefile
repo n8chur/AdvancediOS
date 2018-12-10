@@ -4,7 +4,3 @@ repositoryMap:
   - XCGLogger:
     - name: XCGLogger
     - name: ObjcExceptionBridging
-  - ReactiveCocoa:
-    - name: ReactiveSwift
-    - name: ReactiveCocoa
-    - name: Result
