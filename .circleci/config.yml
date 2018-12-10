@@ -18,6 +18,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - v1-rome-{{ checksum "Cartfile.resolved" }}-{{ checksum "Romefile" }}
             - v1-rome-{{ checksum "Cartfile.resolved" }}
             - v1-rome-
 
@@ -54,7 +55,7 @@ jobs:
           command: bundle exec fastlane test
 
       - save_cache:
-          key: v1-rome-{{ checksum "Cartfile.resolved" }}
+          key: v1-rome-{{ checksum "Cartfile.resolved" }}-{{ checksum "Romefile" }}
           paths:
             - RomeCache
 

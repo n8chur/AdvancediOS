@@ -97,7 +97,7 @@ platform :ios do
     Dir.chdir("..") do
       sh "#{CARTHAGE} checkout"
       sh "rome download --platform iOS"
-      sh "rome list --missing --platform ios | awk '{print $1}' | xargs #{CARTHAGE} build --platform ios --cache-builds"
+      sh "rome list --missing --platform ios | awk '{print $1}' | xargs #{CARTHAGE} build --platform ios"
       sh "rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
     end
   end
