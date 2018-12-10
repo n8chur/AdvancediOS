@@ -7,8 +7,8 @@ targets:
       - Logger/Source
       - Logger/Supporting Files
     dependencies:
-      - carthage: CocoaLumberjack
-      - carthage: CocoaLumberjackSwift
+      - carthage: XCGLogger
+      - carthage: ObjcExceptionBridging
       - carthage: ReactiveSwift
       - carthage: Result
     scheme:
