@@ -2,7 +2,7 @@ import UIKit
 import ReactiveSwift
 import Result
 
-/// A dismissable presentation (e.g. navigation push, modal presentation, etc.).
+/// A dismissible presentation (e.g. navigation push, modal presentation, etc.).
 ///
 /// Presentation are single use. After the present command has been executed, a new presentation will need to be created
 /// to start a another presentation.
@@ -14,21 +14,21 @@ public class DismissablePresentation {
     public let viewController: UIViewController
 
     /// The action that begins executing the producer returned from the present producer (provided by the MakePresent
-    /// closure at intialization time). The action's execution signal completes when the signal producer's signal
+    /// closure at initialization time). The action's execution signal completes when the signal producer's signal
     /// completes.
     ///
     /// This action is only enabled when the view controller has not yet been presented.
     public let present: Action<Bool, Never, NoError>
 
     /// The action that begins executing the producer returned from the dismiss producer (provided by the MakeDismiss
-    /// closure at intialization time). The action's execution signal completes when the signal producer's signal
+    /// closure at initialization time). The action's execution signal completes when the signal producer's signal
     /// completes.
     ///
     /// This action is only enabled after presentation completes.
     public let dismiss: Action<Bool, Never, NoError>
 
     /// Sends () and then completes when the view controller dismisses (either through the the dismiss action or a value
-    /// is sent along the didDismiss signal provided at intialization).
+    /// is sent along the didDismiss signal provided at initialization).
     ///
     /// This action will be disabled while the
     public let didDismiss: Signal<(), NoError>

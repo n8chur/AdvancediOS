@@ -10,7 +10,7 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
 
     weak var detailPresenter: DetailPresenter?
 
-    /// Example text that will be updated asynchonously when isActive becomes true.
+    /// Example text that will be updated asynchronously when isActive becomes true.
     let testText: Property<String?>
     let image = Property(value: Image.n8churLogo.image)
     let presentDetailTitle = Property(value: L10n.Home.PresentDetail.title)
