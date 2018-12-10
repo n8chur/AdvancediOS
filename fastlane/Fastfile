@@ -47,7 +47,7 @@ CORE_NAME = "Core"
 REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
 PRESENTATIONS_NAME = "Presentations"
 THEMER_NAME = "Themer"
-APPLICATION_NAME = "BestPractices"
+APPLICATION_NAME = "Application"
 TARGETS = [
   LOGGER_NAME,
   CORE_NAME,

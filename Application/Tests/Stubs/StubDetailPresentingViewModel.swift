@@ -1,7 +1,7 @@
 import ReactiveSwift
 import Result
 
-@testable import BestPractices
+@testable import Application
 
 class StubDetailPresentingViewModel: DetailPresentingViewModel {
 

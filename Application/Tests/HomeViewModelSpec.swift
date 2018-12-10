@@ -4,7 +4,7 @@ import ReactiveSwift
 import Result
 import Core
 
-@testable import BestPractices
+@testable import Application
 
 class HomeViewModelSpec: QuickSpec {
     override func spec() {
