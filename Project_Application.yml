@@ -4,26 +4,27 @@ include:
   - Project_ReactiveExtensions.yml
   - Project_Presentations.yml
   - Project_Themer.yml
-name: BestPractices
+name: Application
 # In a production application the Team ID would be set here.
 # settings:
 #  DEVELOPMENT_TEAM: "XXX"
 settings:
   # These values are read in the appropriate Info.plist files.
-  BEST_PRACTICES_VERSION: "0.1.0"
-  BEST_PRACTICES_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
+  APPLICATION_VERSION: "0.1.0"
+  APPLICATION_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
+  APPLICATION_NAME: AdvancediOS
 options:
-  bundleIdPrefix: com.bestpractices
+  bundleIdPrefix: com.advancedios
   deploymentTarget:
     iOS: "12.0"
   createIntermediateGroups: true
 targets:
-  BestPractices:
+  Application:
     type: application
     platform: iOS
     sources: 
-      - BestPractices/Source
-      - BestPractices/Supporting Files
+      - Application/Source
+      - Application/Supporting Files
     dependencies:
       - target: Core
       - target: ReactiveExtensions
@@ -36,20 +37,20 @@ targets:
       - carthage: SnapKit
     scheme:
       testTargets:
-        - BestPracticesTests
+        - ApplicationTests
       gatherCoverageData: true
     prebuildScripts:
       - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
-  BestPracticesTests:
+  ApplicationTests:
     platform: iOS
     type: bundle.unit-test
     settings:
-      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/BestPractices.app/BestPractices"
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Application.app/Application"
     sources: 
-      - BestPractices/Tests
+      - Application/Tests
       - Presentations/Tests/Stubs
     dependencies:
-      - target: BestPractices
+      - target: Application
       - carthage: Quick
       - carthage: Nimble

@@ -1,12 +1,12 @@
 # This project should only be used by the _Dev workspace which is only useful for debugging issues in 
 # external dependencies.
 include:
-  - Project_BestPractices.yml
-name: BestPractices_Dev
+  - Project_Application.yml
+name: Application_Dev
 options:
   # When building from the workspace we do not want to copy Carthage frameworks so that all dependencies
   # are built by the project files added to the workspace instead.
   # This script disables the copy-frameworks phase completely.
   # This must be relative to the root since this is imported by the project specs which are located at the 
   # root.
-  carthageExecutablePath: BestPractices/Scripts/carthage-no-copy-frameworks.sh
+  carthageExecutablePath: Application/Scripts/carthage-no-copy-frameworks.sh

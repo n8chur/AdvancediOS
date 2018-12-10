@@ -2,7 +2,7 @@ import ReactiveSwift
 import Result
 import Presentations
 
-@testable import BestPractices
+@testable import Application
 
 class StubDetailPresenter: StubSelectionPresenter {
 

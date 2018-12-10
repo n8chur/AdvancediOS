@@ -3,7 +3,7 @@ import Nimble
 import ReactiveSwift
 import Result
 
-@testable import BestPractices
+@testable import Application
 
 class DetailPresenterSpec: QuickSpec {
     override func spec() {
