@@ -41,7 +41,7 @@ public struct Logger {
 
         private var list: [Context] = []
 
-        /// Retuns an existing Context for the provided identifier if it exists,
+        /// Returns an existing Context for the provided identifier if it exists,
         /// otherwise creates a new Context and returns it.
         public func context(_ identifier: Context.Identifier) -> Context {
             if let context = list.first(where: { $0.identifier == identifier }) {
@@ -71,7 +71,7 @@ public struct Logger {
 
     public static let shared = Logger()
 
-    /// The context manager reponsible for creating new contexts for logging.
+    /// The context manager responsible for creating new contexts for logging.
     public let contextManager = ContextManager()
 
     private let fileLogger: DDFileLogger

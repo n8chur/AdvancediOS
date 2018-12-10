@@ -19,7 +19,7 @@ extension Reactive where Base: UINavigationController {
 
     /// The execution signal sends no values and completes when the view controller has finished popping.
     ///
-    /// This will also pop any view controllers pushed after the view controller bieng popped.
+    /// This will also pop any view controllers pushed after the view controller being popped.
     ///
     /// Calling this on the root view controller does nothing and the action complete immediately.
     public var popViewController: Action<(UIViewController, Bool), Never, NoError> {

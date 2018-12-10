@@ -5,7 +5,7 @@ import ReactiveExtensions
 
 /// A context for a presentation.
 ///
-/// Contains additional information about a presentation in a specific presentation, like whether or not the presenation
+/// Contains additional information about a presentation in a specific presentation, like whether or not the presentation
 /// and dismissal should be animated.
 public class DismissablePresentationContext {
 
@@ -21,7 +21,7 @@ public class DismissablePresentationContext {
 
 }
 
-/// A dismissable presentation that dismisses when the provided result view model's result signal sends a value.
+/// A dismissible presentation that dismisses when the provided result view model's result signal sends a value.
 public class ResultPresentationContext<ViewModel: ResultViewModel>: DismissablePresentationContext {
 
     public let viewModel: ViewModel

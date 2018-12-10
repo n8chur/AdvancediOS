@@ -40,7 +40,7 @@ public extension UIViewController {
 
 public extension DismissablePresentationContext {
 
-    /// Sets the left navigation item to be a cancel button that executes the dimiss action.
+    /// Sets the left navigation item to be a cancel button that executes the dismiss action.
     ///
     /// - Parameter viewController: The view controller to add the navigation item to.
     public func addCancelBarButtonItem(to viewController: UIViewController) {
