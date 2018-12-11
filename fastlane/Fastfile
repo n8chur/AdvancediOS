@@ -156,6 +156,22 @@ platform :ios do
     end
   end
 
+  desc "Verifies that the .xcode-version matches the version used by CircleCI."
+  lane :verify_xcode_version do
+    Dir.chdir("..") do
+      config = YAML.load(File.read(".circleci/config.yml"))
+      circle_ci_version = config["jobs"]["build"]["macos"]["xcode"]
+
+      dot_version = File.open('.xcode-version', &:readline)
+
+      if circle_ci_version == dot_version
+        UI.message "Xcode version declarations match."
+      else
+        UI.user_error!("Xcode versions do not match.\n.xcode-version: #{dot_version}\n.circleci/config.yml: #{circle_ci_version}")
+      end
+    end
+  end
+
   # PRIVATE
 
   desc "Generates a project from a spec defined as 'Project_<target><suffix>.yml' with options:"

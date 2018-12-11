@@ -39,6 +39,10 @@ jobs:
             bundle install --retry=3 --path .bundle
 
       - run:
+          name: Verify Xcode Version Matches
+          command: bundle exec fastlane verify_xcode_version
+
+      - run:
           name: Bootstrap Project
           command: bundle exec fastlane bootstrap
 
