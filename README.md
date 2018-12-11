@@ -1,4 +1,4 @@
-# AdvancediOS
+# AdvancediOS [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/n8chur/AdvancediOS/master/LICENSE.md) [![CircleCI](https://circleci.com/gh/n8chur/AdvancediOS/tree/master.svg?style=svg)](https://circleci.com/gh/n8chur/AdvancediOS/tree/master)
 
 AdvancediOS demonstrates some advanced concepts for iOS application development using a small example application.
 
