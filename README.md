@@ -4,7 +4,7 @@ AdvancediOS demonstrates some advanced concepts for iOS application development 
 
 Advanced concepts include:
 - [Functional Reactive Programming](https://en.wikipedia.org/wiki/Functional_reactive_programming) with [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
-- Project management with [Xcodegen](https://www.github.com/yonaskolb/XcodeGen)
+- Project management with [AdvancediOS](https://www.github.com/n8chur/AdvancediOS)
 - [MVVM application architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel)
 - [Coordinator pattern](https://will.townsend.io/2016/an-ios-coordinator-pattern)
 - [Factory Pattern](https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)) for cleaner [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
@@ -18,7 +18,7 @@ Advanced concepts include:
 - Advanced logging
 - Using internal frameworks for more modular code
 - [Carthage](https://github.com/Carthage/Carthage) for iOS dependency management with caching support using [Rome](https://github.com/blender/Rome)
-- Version pinning of as many tooling dependencies as possible using [Mint](https://github.com/yonaskolb/Mint) and [Bundler](https://bundler.io).
+- Version pinning of as many tooling dependencies as possible using [Mint](https://github.com/n8chur/Mint) and [Bundler](https://bundler.io).
 
 This project is mostly intended to be used as a playground to experiment with new tools, libraries, and design patterns for iOS development.
 
@@ -45,3 +45,7 @@ $ bundle exec fastlane bootstrap
 - Run `$ bundle exec fastlane` for a list of [Fastlane](https://fastlane.tools) lanes that can be run on the repository.
 - `Application.xcodeproj` should be used for general development for building a release build.
 - `Application_Dev.xcworkspace` is only useful when debugging issues in Carthage dependencies since the Carthage dependency's project is added instead of using the pre-built framework.
+
+### Contributions
+
+[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/0)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/0)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/1)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/1)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/2)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/2)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/3)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/3)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/4)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/4)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/5)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/5)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/6)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/6)[![](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/images/7)](https://sourcerer.io/fame/n8chur/n8chur/AdvancediOS/links/7)
