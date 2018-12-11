@@ -44,4 +44,4 @@ $ bundle exec fastlane bootstrap
 
 - Run `$ bundle exec fastlane` for a list of [Fastlane](https://fastlane.tools) lanes that can be run on the repository.
 - `Application.xcodeproj` should be used for general development for building a release build.
-- `Application_Dev.xcworkspace` is only useful when debugging issues in Carthage dependencies since the Carthage dependency's project is added instead of using pre-built framework.
+- `Application_Dev.xcworkspace` is only useful when debugging issues in Carthage dependencies since the Carthage dependency's project is added instead of using the pre-built framework.
