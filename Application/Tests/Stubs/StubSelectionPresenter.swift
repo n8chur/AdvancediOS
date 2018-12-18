@@ -7,7 +7,7 @@ import Presentations
 class StubSelectionPresenter {
 
     let makeSelectionViewModelCall = MutableProperty<SelectionViewModel?>(nil)
-    let selectionPresentationContext = MutableProperty<SelectionViewModel?>(nil)
+    let selectionPresentation = MutableProperty<SelectionViewModel?>(nil)
 
 }
 
@@ -19,9 +19,9 @@ extension StubSelectionPresenter: SelectionPresenter {
         return viewModel
     }
 
-    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
-        selectionPresentationContext.value = viewModel
-        return DismissablePresentationContext.stub()
+    func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
+        selectionPresentation.value = viewModel
+        return DismissablePresentation.stub()
     }
 
 }

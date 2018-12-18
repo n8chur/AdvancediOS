@@ -22,19 +22,19 @@ class HomePresenterSpec: QuickSpec {
                 }
 
                 it("should call the presenter to create a view model") {
-                    presentingViewModel.presentHome.apply().start()
+                    presentingViewModel.presentHome.apply(false).start()
 
                     expect(presenter.makeHomeViewModelCall.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context closure with the same view model") {
-                    presentingViewModel.presentHome.apply().start()
+                    presentingViewModel.presentHome.apply(false).start()
 
-                    expect(presenter.homePresentationContext.value).to(be(presenter.makeHomeViewModelCall.value))
+                    expect(presenter.homePresentation.value).to(be(presenter.makeHomeViewModelCall.value))
                 }
 
                 it("should call the setup block") {
-                    presentingViewModel.presentHome.apply().start()
+                    presentingViewModel.presentHome.apply(false).start()
 
                     expect(presentingViewModel.setupViewModel.value).to(be(presenter.makeHomeViewModelCall.value))
                 }

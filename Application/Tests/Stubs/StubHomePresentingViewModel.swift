@@ -9,7 +9,7 @@ class StubHomePresentingViewModel: HomePresentingViewModel {
 
     weak var homePresenter: HomePresenter?
 
-    private(set) lazy var presentHome: Action<(), Never, NoError> = makePresentHome { [unowned self] viewModel in
+    private(set) lazy var presentHome: Action<Bool, HomeViewModel, NoError> = makePresentHome { [unowned self] viewModel in
         self.setupViewModel.value = viewModel
     }
 

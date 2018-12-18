@@ -22,30 +22,21 @@ class DetailPresenterSpec: QuickSpec {
                 }
 
                 it("should call the presenter to create a view model") {
-                    let viewModel = MutableProperty<DetailViewModel?>(nil)
-                    viewModel <~ presenter.makeDetailViewModelSignal
+                    presentingViewModel.presentDetail.apply(false).start()
 
-                    presentingViewModel.presentDetail.apply().start()
-
-                    expect(viewModel.value).notTo(beNil())
+                    expect(presenter.makeDetailViewModelCall.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context") {
-                    let viewModel = MutableProperty<DetailViewModel?>(nil)
-                    viewModel <~ presenter.detailPresentationContextSignal
+                    presentingViewModel.presentDetail.apply(false).start()
 
-                    presentingViewModel.presentDetail.apply().start()
-
-                    expect(viewModel.value).notTo(beNil())
+                    expect(presenter.detailPresentation.value).notTo(beNil())
                 }
 
                 it("should call the setup block") {
-                    let viewModel = MutableProperty<DetailViewModel?>(nil)
-                    viewModel <~ presentingViewModel.setupViewModelSignal
+                    presentingViewModel.presentDetail.apply(false).start()
 
-                    presentingViewModel.presentDetail.apply().start()
-
-                    expect(viewModel.value).notTo(beNil())
+                    expect(presentingViewModel.setupViewModel.value).notTo(beNil())
                 }
             }
         }

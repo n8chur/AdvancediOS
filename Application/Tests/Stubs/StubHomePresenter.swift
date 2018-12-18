@@ -7,7 +7,7 @@ import Presentations
 class StubHomePresenter: StubDetailPresenter {
 
     let makeHomeViewModelCall = MutableProperty<HomeViewModel?>(nil)
-    let homePresentationContext = MutableProperty<HomeViewModel?>(nil)
+    let homePresentation = MutableProperty<HomeViewModel?>(nil)
 
 }
 
@@ -19,9 +19,9 @@ extension StubHomePresenter: HomePresenter {
         return viewModel
     }
 
-    func homePresentationContext(of viewModel: HomeViewModel) -> DismissablePresentationContext {
-        homePresentationContext.value = viewModel
-        return DismissablePresentationContext.stub()
+    func homePresentation(of viewModel: HomeViewModel) -> DismissablePresentation {
+        homePresentation.value = viewModel
+        return DismissablePresentation.stub()
     }
 
 }
