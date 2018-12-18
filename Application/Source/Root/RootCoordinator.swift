@@ -22,7 +22,11 @@ class RootCoordinator {
         settingsCoordinator = SettingsCoordinator(navigationModelFactory: tabBarModelFactory, navigationControllerFactory: tabBarControllerFactory)
 
         let viewModel = tabBarModelFactory.makeRootTabBarViewModel()
-        tabBarController = tabBarControllerFactory.makeRootTabBarController(viewModel: viewModel, homeNavigationController: homeCoordinator.navigationController, detailNavigationController: detailCoordinator.navigationController, settingsNavigationController: settingsCoordinator.navigationController)
+        tabBarController = tabBarControllerFactory.makeRootTabBarController(
+            withViewModel: viewModel,
+            homeNavigationController: homeCoordinator.navigationController,
+            detailNavigationController: detailCoordinator.navigationController,
+            settingsNavigationController: settingsCoordinator.navigationController)
     }
 
 }

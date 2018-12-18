@@ -1,12 +1,13 @@
 import Presentations
 import Core
+import UIKit
 
 protocol RootTabBarControllerFactoryProtocol: HomeNavigationControllerFactoryProtocol, DetailNavigationControllerFactoryProtocol, SettingsNavigationControllerFactoryProtocol { }
 
 extension RootTabBarControllerFactoryProtocol {
 
     func makeRootTabBarController(
-        viewModel: RootTabBarViewModel,
+        withViewModel viewModel: RootTabBarViewModel,
         homeNavigationController: TabBarChildNavigationController,
         detailNavigationController: TabBarChildNavigationController,
         settingsNavigationController: TabBarChildNavigationController

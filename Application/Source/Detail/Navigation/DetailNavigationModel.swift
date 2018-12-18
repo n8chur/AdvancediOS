@@ -6,15 +6,15 @@ class DetailNavigationModel: TabBarChildViewModel, DetailPresentingViewModel {
 
     let tabBarItemTitle = Property(value: L10n.DetailNavigation.TabBarItem.title)
 
-    private(set) lazy var presentDetail = makePresentDetail(withFactory: detailViewModelFactory)
+    private(set) lazy var presentDetail = makePresentDetail(withFactory: detailFactory)
 
     weak var detailPresenter: DetailPresenter?
 
-    init(detailViewModelFactory: DetailViewModelFactoryProtocol) {
-        self.detailViewModelFactory = detailViewModelFactory
+    init(detailFactory: DetailViewModelFactoryProtocol) {
+        self.detailFactory = detailFactory
     }
 
-    private let detailViewModelFactory: DetailViewModelFactoryProtocol
+    private let detailFactory: DetailViewModelFactoryProtocol
 
 }
 
@@ -23,7 +23,7 @@ protocol DetailNavigationModelFactoryProtocol: DetailViewModelFactoryProtocol { 
 extension DetailNavigationModelFactoryProtocol {
 
     func makeDetailNavigationModel() -> DetailNavigationModel {
-        return DetailNavigationModel(detailViewModelFactory: self)
+        return DetailNavigationModel(detailFactory: self)
     }
 
 }

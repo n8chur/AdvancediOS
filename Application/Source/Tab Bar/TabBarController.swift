@@ -9,7 +9,7 @@ class TabBarController: UITabBarController {
 
     let themeProvider: ThemeProvider
 
-    required init(viewModel: ViewModel, themeProvider: ThemeProvider, viewControllers: [UIViewController]) {
+    init(viewModel: ViewModel, themeProvider: ThemeProvider, viewControllers: [UIViewController]) {
         self.viewModel = viewModel
         self.themeProvider = themeProvider
 
