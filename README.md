@@ -4,7 +4,7 @@ AdvancediOS demonstrates some advanced concepts for iOS application development 
 
 Advanced concepts include:
 - [Functional Reactive Programming](https://en.wikipedia.org/wiki/Functional_reactive_programming) with [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
-- Project management with [AdvancediOS](https://www.github.com/n8chur/AdvancediOS)
+- [XcodeGen](https://www.github.com/yonaskolb/XcodeGen) for generating an Xcode project
 - [MVVM application architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel)
 - [Coordinator pattern](https://will.townsend.io/2016/an-ios-coordinator-pattern)
 - [Factory Pattern](https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)) for cleaner [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
