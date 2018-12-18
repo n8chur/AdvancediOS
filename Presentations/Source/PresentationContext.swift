@@ -4,8 +4,10 @@ import Result
 import ReactiveExtensions
 
 public protocol PresentationContext: class {
+    associatedtype ViewModelType: ViewModel
     associatedtype PresentationType: Presentation
     var presentation: PresentationType { get }
+    var viewModel: ViewModelType { get }
     var presentAnimated: Bool { get }
 }
 
@@ -13,15 +15,19 @@ public protocol PresentationContext: class {
 ///
 /// Contains additional information about a presentation in a specific presentation, like whether or not the presentation
 /// and dismissal should be animated.
-public class DismissablePresentationContext: PresentationContext {
+public class DismissablePresentationContext<PresentedViewModel: ViewModel>: PresentationContext {
+
     public typealias PresentationType = DismissablePresentation
+    public typealias ViewModelType = PresentedViewModel
 
     public let presentation: DismissablePresentation
+    public let viewModel: PresentedViewModel
     public let presentAnimated: Bool
     public let dismissAnimated: Bool
 
-    public init(presentation: DismissablePresentation, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
+    public init(presentation: DismissablePresentation, viewModel: PresentedViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
         self.presentation = presentation
+        self.viewModel = viewModel
         self.presentAnimated = presentAnimated
         self.dismissAnimated = dismissAnimated
     }
@@ -29,14 +35,10 @@ public class DismissablePresentationContext: PresentationContext {
 }
 
 /// A dismissible presentation that dismisses when the provided result view model's result signal sends a value.
-public class ResultPresentationContext<ViewModel: ResultViewModel>: DismissablePresentationContext {
+public class ResultPresentationContext<PresentedViewModel: ResultViewModel>: DismissablePresentationContext<PresentedViewModel> {
 
-    public let viewModel: ViewModel
-
-    public init(presentation: DismissablePresentation, viewModel: ViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
-        self.viewModel = viewModel
-
-        super.init(presentation: presentation, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
+    override public init(presentation: DismissablePresentation, viewModel: PresentedViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
+        super.init(presentation: presentation, viewModel: viewModel, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
 
         let dismiss = presentation.dismiss.apply(dismissAnimated)
             .flatMapError { _ in return SignalProducer<Never, NoError>.empty }

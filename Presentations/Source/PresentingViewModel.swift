@@ -12,35 +12,21 @@ public extension PresentingViewModel {
     /// The returned action should be applied with an Bool that indicates whether or not the presentation should be
     /// animated.
     ///
-    /// - Parameter getPresenter: A closure that should return the presenting view model's presenter. If nil is
-    ///             returned a fatalError will be thrown. This is only optional as a convenience for consumers so that
-    ///             they are not forced to guard unwrapping [weak self] when providing the presenter.
-    /// - Parameter getViewModel: A closure that is has an input of a presenter and should return the view model to be
-    ///             presented. The presented view model is typically created by the presenter.
-    /// - Parameter getPresentation: A closure that has an input of the presenter and the view model to be presented,
-    ///             and should return a presentation of that view model.
-    /// - Parameter getContext: A closure that has an input of the presentation returned from getPresentation, the view
-    ///             model to be presented, and a Bool indicating whether the presentation should be animated, and
-    ///             returns a presentation context.
-    public func makePresent<PresentedViewModel: ViewModel, Presenter, PresentationContextType: PresentationContext>(
-        getPresenter: @escaping () -> Presenter?,
-        getViewModel: @escaping (Presenter) -> PresentedViewModel,
-        getPresentation: @escaping (Presenter, PresentedViewModel) -> PresentationContextType.PresentationType,
-        getContext: @escaping (PresentationContextType.PresentationType, PresentedViewModel, _ animated: Bool) -> PresentationContextType
-    ) -> Action<Bool, PresentedViewModel, NoError> {
-        return Action<Bool, PresentedViewModel, NoError> { (animated: Bool) in
-            return SignalProducer<PresentedViewModel, NoError> { (observer, lifetime) in
-                guard let presenter = getPresenter() else {
-                    fatalError()
+    /// - Parameter context: A closure that returns a presentation context or nil if the context failed to be created.
+    ///             If nil is returned, this action will have no effect.
+    public func makePresentAction<PresentationContextType: PresentationContext>(
+        withContext context: @escaping (_ animated: Bool) -> PresentationContextType?
+    ) -> Action<Bool, PresentationContextType.ViewModelType, NoError> {
+        return Action<Bool, PresentationContextType.ViewModelType, NoError> { (animated: Bool) in
+            return SignalProducer<PresentationContextType.ViewModelType, NoError> { (observer, lifetime) in
+                guard let context = context(animated) else {
+                    observer.sendCompleted()
+                    return
                 }
-
-                let viewModel = getViewModel(presenter)
-                let presentation = getPresentation(presenter, viewModel)
-                let context = getContext(presentation, viewModel, animated)
 
                 context.presentation.present.apply(context.presentAnimated)
                     .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-                    .then(SignalProducer(value: viewModel))
+                    .then(SignalProducer(value: context.viewModel))
                     .take(during: lifetime)
                     .untilDisposal(retain: context)
                     .start(observer)

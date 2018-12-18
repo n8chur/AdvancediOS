@@ -3,10 +3,13 @@ import ReactiveSwift
 import Result
 import Presentations
 
-extension DismissablePresentationContext {
+extension DismissablePresentationContext where PresentedViewModel == StubViewModel {
 
-    static func stub(withPresentation presentation: DismissablePresentation = DismissablePresentation.stub()) -> DismissablePresentationContext {
-        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
+    static func stub(
+        withPresentation presentation: DismissablePresentation = DismissablePresentation.stub()
+    ) -> DismissablePresentationContext<StubViewModel> {
+        let viewModel = StubViewModel()
+        return DismissablePresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: false, dismissAnimated: false)
     }
 
 }
