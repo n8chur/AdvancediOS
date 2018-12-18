@@ -15,10 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let themeProvider = ThemeProvider()
         themeProvider.bindToStyleable(window) { WindowStyle(theme: $0) }
 
-        let viewModelFactory = RootViewModelFactory(themeProvider: themeProvider)
-        let viewControllerFactory = RootViewControllerFactory(themeProvider: themeProvider)
-        let factory = RootCoordinatorFactory(viewModel: viewModelFactory, viewController: viewControllerFactory)
-        let coordinator = RootCoordinator(factory: factory)
+        let tabBarModelFactory = RootTabBarModelFactory(themeProvider: themeProvider)
+        let tabBarControllerFactory = RootTabBarControllerFactory(themeProvider: themeProvider)
+        let coordinator = RootCoordinator(tabBarModelFactory: tabBarModelFactory, tabBarControllerFactory: tabBarControllerFactory)
         self.coordinator = coordinator
 
         window.rootViewController = coordinator.tabBarController

@@ -15,24 +15,24 @@ class DetailCoordinator {
 
     let navigationController: TabBarChildNavigationController
 
-    private let factory: DetailCoordinatorFactory
+    init(navigationModelFactory: DetailNavigationModelFactoryProtocol, navigationControllerFactory: DetailNavigationControllerFactoryProtocol) {
+        self.factory = navigationControllerFactory
 
-    init(factory: DetailCoordinatorFactory) {
-        self.factory = factory
-
-        let navigationModel = factory.navigationModel.makeDetailNavigationModel()
-        navigationController = factory.viewController.makeDetailNavigationController(navigationModel: navigationModel)
+        let navigationModel = navigationModelFactory.makeDetailNavigationModel()
+        navigationController = factory.makeDetailNavigationController(navigationModel: navigationModel)
 
         navigationModel.detailPresenter = self
         navigationModel.presentDetail.apply(false).start()
     }
+
+    private let factory: DetailNavigationControllerFactoryProtocol
 
 }
 
 extension DetailCoordinator: DetailPresenter {
 
     func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
-        let viewController = factory.viewController.makeDetailViewController(viewModel: viewModel)
+        let viewController = factory.makeDetailViewController(viewModel: viewModel)
         return navigationController.makePushPresentation(of: viewController)
     }
 
@@ -41,8 +41,8 @@ extension DetailCoordinator: DetailPresenter {
 extension DetailCoordinator: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
-        let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)
-        let navigationController = factory.viewController.makeSingleViewNavigationController(rootViewController: viewController)
+        let viewController = factory.makeSelectionViewController(viewModel: viewModel)
+        let navigationController = factory.makeSingleViewNavigationController(rootViewController: viewController)
         let presentation = self.navigationController.makeModalPresentation(of: navigationController)
         presentation.addCancelBarButtonItem(to: viewController, animated: true)
         return presentation

@@ -15,24 +15,24 @@ class SettingsCoordinator {
 
     let navigationController: TabBarChildNavigationController
 
-    private let factory: SettingsCoordinatorFactory
+    init(navigationModelFactory: SettingsNavigationModelFactoryProtocol, navigationControllerFactory: SettingsNavigationControllerFactoryProtocol) {
+        self.factory = navigationControllerFactory
 
-    init(factory: SettingsCoordinatorFactory) {
-        self.factory = factory
-
-        let navigationModel = factory.navigationModel.makeSettingsNavigationModel()
-        navigationController = factory.viewController.makeSettingsNavigationController(navigationModel: navigationModel)
+        let navigationModel = navigationModelFactory.makeSettingsNavigationModel()
+        navigationController = navigationControllerFactory.makeSettingsNavigationController(navigationModel: navigationModel)
 
         navigationModel.settingsPresenter = self
         navigationModel.presentSettings.apply(false).start()
     }
+
+    private let factory: SettingsNavigationControllerFactoryProtocol
 
 }
 
 extension SettingsCoordinator: SettingsPresenter {
 
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation {
-        let viewController = factory.viewController.makeSettingsViewController(viewModel: viewModel)
+        let viewController = factory.makeSettingsViewController(viewModel: viewModel)
         return navigationController.makePushPresentation(of: viewController)
     }
 
