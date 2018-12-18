@@ -1,3 +1,5 @@
+// swiftlint:disable function_body_length
+
 import Quick
 import Nimble
 import ReactiveSwift
@@ -41,6 +43,35 @@ class DetailViewModelSpec: QuickSpec {
 
                     expect(viewModel.selectionResult.value).to(equal(selectionValue))
                 }
+
+                it("should be used to set the default value of the selection view model") {
+                    let presenter = StubSelectionPresenter()
+                    viewModel.selectionPresenter = presenter
+
+                    let value = "Test selection input"
+
+                    presenter.selectionPresentation.signal
+                        .skipNil()
+                        .take(first: 1)
+                        .observeValues { viewModel in
+                            viewModel.input.value = value
+                            viewModel.submit.apply().start()
+                    }
+
+                    viewModel.presentSelection.apply(false).start()
+
+                    var defaultValue: String??
+
+                    presenter.selectionPresentation.signal
+                        .skipNil()
+                        .observeValues { viewModel in
+                            defaultValue = viewModel.input.value
+                    }
+
+                    viewModel.presentSelection.apply(false).start()
+
+                    expect(defaultValue).to(equal(value))
+                }
             }
 
             describe("title") {
@@ -52,3 +83,5 @@ class DetailViewModelSpec: QuickSpec {
 
     }
 }
+
+// swiftlint:enable function_body_length
