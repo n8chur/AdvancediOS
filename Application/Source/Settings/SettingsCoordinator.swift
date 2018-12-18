@@ -7,10 +7,8 @@ import Result
 /// The flow coordinator for the settings flow.
 ///
 /// This class is responsible for:
-/// - Instantiating the detail navigation controller
-/// - Handling presentation of views controllers in the navigation controller
-/// - Forwarding view model creation to the view model factory it was initialized with
-/// - Forwarding view controller creation to the view controller factory it was initialized with
+/// - Instantiating the navigation controller
+/// - Generating presentations of view controllers when requested by a view model
 class SettingsCoordinator {
 
     let navigationController: TabBarChildNavigationController

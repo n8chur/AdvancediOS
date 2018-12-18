@@ -6,10 +6,8 @@ import Result
 /// The flow coordinator for the root of the application.
 ///
 /// This class is responsible for:
-/// - Instantiating the root tab bar controller
-/// - Handling presentation of views controllers in the navigation controller
-/// - Forwarding view model creation to the view model factory it was initialized with
-/// - Forwarding view controller creation to the view controller factory it was initialized with
+/// - Instantiating the tab bar controller
+/// - Generating presentations of view controllers when requested by a view model
 class RootCoordinator {
 
     let tabBarController: TabBarController

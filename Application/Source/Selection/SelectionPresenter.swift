@@ -11,6 +11,8 @@ extension SelectionPresentingViewModel {
 
     /// Makes an action that is suitable to be set as the presentSelection action.
     ///
+    /// - Parameter factory: A factory to be used to generate the presented view model.
+    /// - Parameter defaultValue: A closure that provides the default value of the selection input.
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
     func makePresentSelection(
