@@ -4,7 +4,7 @@ import Presentations
 
 protocol SettingsPresentingViewModel: class, PresentingViewModel {
     var settingsPresenter: SettingsPresenter? { get set }
-    var presentSettings: Action<(), Never, NoError> { get }
+    var presentSettings: Action<Bool, SettingsViewModel, NoError> { get }
 }
 
 extension SettingsPresentingViewModel {
@@ -13,35 +13,29 @@ extension SettingsPresentingViewModel {
     ///
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
-    func makePresentSettings(setupViewModel: ((SettingsViewModel) -> Void)? = nil) -> Action<(), Never, NoError> {
+    func makePresentSettings(setupViewModel: ((SettingsViewModel) -> Void)? = nil) -> Action<Bool, SettingsViewModel, NoError> {
         return makePresent(
             getPresenter: { [weak self] in
                 return self?.settingsPresenter
             },
             getViewModel: { (presenter) in
-                return presenter.makeSettingsViewModel()
+                let viewModel = presenter.makeSettingsViewModel()
+
+                setupViewModel?(viewModel)
+
+                return viewModel
             },
-            setupViewModel: setupViewModel,
-            getPresentationProducer: { (presenter, viewModel) in
+            getPresentation: { (presenter, viewModel) in
                 return presenter.settingsPresentation(of: viewModel)
+            },
+            getContext: { (presentation, _, animated) in
+                return DismissablePresentationContext(presentation: presentation, presentAnimated: animated)
             })
     }
 
 }
 
-protocol SettingsPresenter: class, Presenter {
+protocol SettingsPresenter: class {
     func makeSettingsViewModel() -> SettingsViewModel
-    func settingsPresentationContext(of viewModel: SettingsViewModel) -> DismissablePresentationContext
-}
-
-fileprivate extension SettingsPresenter {
-
-    func settingsPresentation(of viewModel: SettingsViewModel) -> SignalProducer<Never, NoError> {
-        return makePresentation(
-            of: viewModel,
-            getContext: { [weak self] viewModel in
-                return self?.settingsPresentationContext(of: viewModel)
-        })
-    }
-
+    func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation
 }

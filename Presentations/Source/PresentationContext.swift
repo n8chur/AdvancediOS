@@ -3,11 +3,18 @@ import ReactiveSwift
 import Result
 import ReactiveExtensions
 
+public protocol PresentationContext: class {
+    associatedtype PresentationType: Presentation
+    var presentation: PresentationType { get }
+    var presentAnimated: Bool { get }
+}
+
 /// A context for a presentation.
 ///
 /// Contains additional information about a presentation in a specific presentation, like whether or not the presentation
 /// and dismissal should be animated.
-public class DismissablePresentationContext {
+public class DismissablePresentationContext: PresentationContext {
+    public typealias PresentationType = DismissablePresentation
 
     public let presentation: DismissablePresentation
     public let presentAnimated: Bool

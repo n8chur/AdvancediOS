@@ -30,14 +30,14 @@ class DetailViewModelSpec: QuickSpec {
 
                     let selectionValue = "Test selection input"
 
-                    presenter.selectionPresentationContext.signal
+                    presenter.selectionPresentation.signal
                         .skipNil()
                         .observeValues { viewModel in
                             viewModel.input.value = selectionValue
                             viewModel.submit.apply().start()
                         }
 
-                    viewModel.presentSelection.apply().start()
+                    viewModel.presentSelection.apply(false).start()
 
                     expect(viewModel.selectionResult.value).to(equal(selectionValue))
                 }

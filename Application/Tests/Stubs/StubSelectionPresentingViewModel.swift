@@ -10,7 +10,7 @@ class StubSelectionPresentingViewModel: SelectionPresentingViewModel {
 
     weak var selectionPresenter: SelectionPresenter?
 
-    private(set) lazy var presentSelection: Action<(), Never, NoError> = makePresentSelection { [unowned self] viewModel in
+    private(set) lazy var presentSelection: Action<Bool, SelectionViewModel, NoError> = makePresentSelection { [unowned self] viewModel in
         self.setupViewModel.value = viewModel
     }
 

@@ -4,7 +4,7 @@ import Presentations
 
 protocol SelectionPresentingViewModel: class, PresentingViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
-    var presentSelection: Action<(), Never, NoError> { get }
+    var presentSelection: Action<Bool, SelectionViewModel, NoError> { get }
 }
 
 extension SelectionPresentingViewModel {
@@ -13,33 +13,29 @@ extension SelectionPresentingViewModel {
     ///
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
-    func makePresentSelection(setupViewModel: ((SelectionViewModel) -> Void)? = nil) -> Action<(), Never, NoError> {
+    func makePresentSelection(setupViewModel: ((SelectionViewModel) -> Void)? = nil) -> Action<Bool, SelectionViewModel, NoError> {
         return makePresent(
             getPresenter: { [weak self] in
                 return self?.selectionPresenter
             },
             getViewModel: { (presenter) in
-                return presenter.makeSelectionViewModel()
+                let viewModel = presenter.makeSelectionViewModel()
+
+                setupViewModel?(viewModel)
+
+                return viewModel
             },
-            setupViewModel: setupViewModel,
-            getPresentationProducer: { (presenter, viewModel) in
+            getPresentation: { (presenter, viewModel) in
                 return presenter.selectionPresentation(of: viewModel)
+            },
+            getContext: { (presentation, viewModel, animated) in
+                return ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: animated)
             })
     }
 
 }
 
-protocol SelectionPresenter: class, Presenter {
+protocol SelectionPresenter: class {
     func makeSelectionViewModel() -> SelectionViewModel
-    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext
-}
-
-fileprivate extension SelectionPresenter {
-
-    func selectionPresentation(of viewModel: SelectionViewModel) -> SignalProducer<Never, NoError> {
-        return makePresentation(of: viewModel) { [weak self] viewModel in
-            return self?.selectionPresentationContext(of: viewModel)
-        }
-    }
-
+    func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation
 }

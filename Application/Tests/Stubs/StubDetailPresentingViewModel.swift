@@ -5,12 +5,12 @@ import Result
 
 class StubDetailPresentingViewModel: DetailPresentingViewModel {
 
-    let (setupViewModelSignal, setupViewModelObserver) = Signal<DetailViewModel, NoError>.pipe()
+    let setupViewModel = MutableProperty<DetailViewModel?>(nil)
 
     weak var detailPresenter: DetailPresenter?
 
     private(set) lazy var presentDetail = makePresentDetail { [unowned self] (viewModel) in
-        self.setupViewModelObserver.send(value: viewModel)
+        self.setupViewModel.value = viewModel
     }
 
     let isActive = MutableProperty<Bool>(false)

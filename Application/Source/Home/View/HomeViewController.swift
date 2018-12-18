@@ -36,7 +36,7 @@ class HomeViewController: UIViewController, ViewController {
         homeView.imageView.reactive.image <~ viewModel.image
         homeView.detailButton.reactive.title <~ viewModel.presentDetailTitle
 
-        homeView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail)
+        homeView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail, input: true)
 
         viewModel.isActive <~ reactive.isAppeared
 

@@ -6,8 +6,8 @@ import Presentations
 
 class StubDetailPresenter: StubSelectionPresenter {
 
-    let (makeDetailViewModelSignal, makeDetailViewModelObserver) = Signal<DetailViewModel, NoError>.pipe()
-    let (detailPresentationContextSignal, detailPresentationContextObserver) = Signal<DetailViewModel, NoError>.pipe()
+    let makeDetailViewModelCall = MutableProperty<DetailViewModel?>(nil)
+    let detailPresentation = MutableProperty<DetailViewModel?>(nil)
 
 }
 
@@ -15,13 +15,13 @@ extension StubDetailPresenter: DetailPresenter {
 
     func makeDetailViewModel() -> DetailViewModel {
         let viewModel = DetailViewModel()
-        makeDetailViewModelObserver.send(value: viewModel)
+        makeDetailViewModelCall.value = viewModel
         return viewModel
     }
 
-    func detailPresentationContext(of viewModel: DetailViewModel) -> DismissablePresentationContext {
-        detailPresentationContextObserver.send(value: viewModel)
-        return DismissablePresentationContext.stub()
+    func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
+        detailPresentation.value = viewModel
+        return DismissablePresentation.stub()
     }
 
 }

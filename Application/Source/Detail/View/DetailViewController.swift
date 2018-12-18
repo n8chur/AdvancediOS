@@ -35,7 +35,7 @@ class DetailViewController: UIViewController, ViewController {
         detailView.button.reactive.title <~ viewModel.presentSelectionTitle
         detailView.selectionResult.reactive.text <~ viewModel.selectionResult
 
-        detailView.button.reactive.pressed = CocoaAction(viewModel.presentSelection)
+        detailView.button.reactive.pressed = CocoaAction(viewModel.presentSelection, input: true)
 
         viewModel.isActive <~ reactive.isAppeared
 

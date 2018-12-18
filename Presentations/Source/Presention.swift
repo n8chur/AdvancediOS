@@ -2,13 +2,17 @@ import UIKit
 import ReactiveSwift
 import Result
 
+public protocol Presentation: class {
+    typealias MakePresent = (_ presentedViewController: UIViewController, _ animated: Bool) -> SignalProducer<Never, NoError>
+    var viewController: UIViewController { get }
+    var present: Action<Bool, Never, NoError> { get }
+}
+
 /// A dismissible presentation (e.g. navigation push, modal presentation, etc.).
 ///
 /// Presentation are single use. After the present command has been executed, a new presentation will need to be created
 /// to start a another presentation.
-public class DismissablePresentation {
-
-    public typealias MakePresent = (_ presentedViewController: UIViewController, _ animated: Bool) -> SignalProducer<Never, NoError>
+public class DismissablePresentation: Presentation {
     public typealias MakeDismiss = (_ presentedViewController: UIViewController, _ animated: Bool) -> SignalProducer<Never, NoError>
 
     public let viewController: UIViewController

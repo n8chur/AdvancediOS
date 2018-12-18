@@ -10,8 +10,8 @@ class StubPresentingViewModel<Presenter: AnyObject>: PresentingViewModel {
 
     let getPresenter = MutableProperty<Presenter?>(nil)
     let getViewModel = MutableProperty<(Presenter, StubViewModel)?>(nil)
-    let setupViewModel = MutableProperty<StubViewModel?>(nil)
-    let getPresentationProducer = MutableProperty<(Presenter, StubViewModel)?>(nil)
+    let getPresentation = MutableProperty<(Presenter, StubViewModel, DismissablePresentation)?>(nil)
+    let getContext = MutableProperty<(DismissablePresentation, StubViewModel, Bool)?>(nil)
 
     private(set) lazy var presentViewModel = makePresent(
         getPresenter: { [unowned self] () -> Presenter? in
@@ -19,17 +19,19 @@ class StubPresentingViewModel<Presenter: AnyObject>: PresentingViewModel {
             self.getPresenter.value = presenter
             return presenter
         },
-        getViewModel: { [unowned self] (presenter) in
+        getViewModel: { [unowned self] presenter -> StubViewModel in
             let viewModel = StubViewModel()
             self.getViewModel.value = (presenter, viewModel)
             return viewModel
         },
-        setupViewModel: { [unowned self] viewModel in
-            self.setupViewModel.value = viewModel
+        getPresentation: { [unowned self] (presenter, viewModel) -> DismissablePresentation in
+            let presentation = DismissablePresentation.stub()
+            self.getPresentation.value = (presenter, viewModel, presentation)
+            return presentation
         },
-        getPresentationProducer: { [unowned self] (presenter, viewModel) in
-            self.getPresentationProducer.value = (presenter, viewModel)
-            return SignalProducer<Never, NoError>.empty
+        getContext: { [unowned self] (presentation, viewModel, animated) -> DismissablePresentationContext in
+            self.getContext.value = (presentation, viewModel, animated)
+            return DismissablePresentationContext.stub(withPresentation: presentation)
         })
 
 }
