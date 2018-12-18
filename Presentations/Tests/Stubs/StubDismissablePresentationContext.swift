@@ -5,8 +5,7 @@ import Presentations
 
 extension DismissablePresentationContext {
 
-    static func stub() -> DismissablePresentationContext {
-        let presentation = DismissablePresentation.stub()
+    static func stub(withPresentation presentation: DismissablePresentation = DismissablePresentation.stub()) -> DismissablePresentationContext {
         return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
     }
 

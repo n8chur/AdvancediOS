@@ -9,7 +9,7 @@ import ReactiveExtensions
 class UIViewControllerPresentationsSpec: QuickSpec {
     override func spec() {
 
-        describe("DismissablePresentationContext.addCancelBarButtonItem(to:)") {
+        describe("DismissablePresentation.addCancelBarButtonItem(to:)") {
             it("should add a cancel button to the navigation item with the dismiss action") {
                 let viewController = UIViewController()
                 let presentedViewController = UINavigationController(rootViewController: viewController)
@@ -27,9 +27,8 @@ class UIViewControllerPresentationsSpec: QuickSpec {
                             .ignoreValues()
                     },
                     didDismiss: Signal.empty)
-                let context = DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
 
-                context.addCancelBarButtonItem(to: viewController)
+                presentation.addCancelBarButtonItem(to: viewController, animated: false)
 
                 guard let cancelButton = viewController.navigationItem.leftBarButtonItem else {
                     fail("cancelButton is not set.")
@@ -44,7 +43,7 @@ class UIViewControllerPresentationsSpec: QuickSpec {
                 // The button's action should be disabled until presentation completes.
                 expect(action.isEnabled.value).to(beFalse())
 
-                presentation.present.apply(context.presentAnimated).start()
+                presentation.present.apply(false).start()
 
                 expect(action.isEnabled.value).to(beTrue())
 

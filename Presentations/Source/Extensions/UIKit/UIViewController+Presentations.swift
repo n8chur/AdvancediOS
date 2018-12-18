@@ -38,14 +38,15 @@ public extension UIViewController {
 
 }
 
-public extension DismissablePresentationContext {
+public extension DismissablePresentation {
 
     /// Sets the left navigation item to be a cancel button that executes the dismiss action.
     ///
     /// - Parameter viewController: The view controller to add the navigation item to.
-    public func addCancelBarButtonItem(to viewController: UIViewController) {
+    /// - Parameter animated: Whether the dismissal should be animated.
+    public func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-        cancelButton.reactive.pressed = CocoaAction(presentation.dismiss, input: dismissAnimated)
+        cancelButton.reactive.pressed = CocoaAction(dismiss, input: animated)
         viewController.navigationItem.leftBarButtonItem = cancelButton
     }
 

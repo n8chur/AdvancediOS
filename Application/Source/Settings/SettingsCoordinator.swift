@@ -24,7 +24,7 @@ class SettingsCoordinator {
         navigationController = factory.viewController.makeSettingsNavigationController(navigationModel: navigationModel)
 
         navigationModel.settingsPresenter = self
-        navigationModel.presentSettings.apply().start()
+        navigationModel.presentSettings.apply(false).start()
     }
 
 }
@@ -35,12 +35,9 @@ extension SettingsCoordinator: SettingsPresenter {
         return factory.viewModel.makeSettingsViewModel()
     }
 
-    func settingsPresentationContext(of viewModel: SettingsViewModel) -> DismissablePresentationContext {
+    func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSettingsViewController(viewModel: viewModel)
-        let presentation = navigationController.makePushPresentation(of: viewController)
-
-        // Do not present/dismiss animated since this is the root view controller.
-        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
+        return navigationController.makePushPresentation(of: viewController)
     }
 
 }

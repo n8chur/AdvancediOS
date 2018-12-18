@@ -24,7 +24,7 @@ class HomeCoordinator {
         navigationController = factory.viewController.makeHomeNavigationController(navigationModel: navigationModel)
 
         navigationModel.homePresenter = self
-        navigationModel.presentHome.apply().start()
+        navigationModel.presentHome.apply(false).start()
     }
 
 }
@@ -35,12 +35,9 @@ extension HomeCoordinator: HomePresenter {
         return factory.viewModel.makeHomeViewModel()
     }
 
-    func homePresentationContext(of viewModel: HomeViewModel) -> DismissablePresentationContext {
+    func homePresentation(of viewModel: HomeViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeHomeViewController(viewModel: viewModel)
-        let presentation = navigationController.makePushPresentation(of: viewController)
-
-        // Do not present/dismiss animated since this is the root view controller.
-        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
+        return navigationController.makePushPresentation(of: viewController)
     }
 
 }
@@ -51,10 +48,9 @@ extension HomeCoordinator: DetailPresenter {
         return factory.viewModel.makeDetailViewModel()
     }
 
-    func detailPresentationContext(of viewModel: DetailViewModel) -> DismissablePresentationContext {
+    func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeDetailViewController(viewModel: viewModel)
-        let presentation = navigationController.makePushPresentation(of: viewController)
-        return DismissablePresentationContext(presentation: presentation)
+        return navigationController.makePushPresentation(of: viewController)
     }
 
 }
@@ -65,13 +61,12 @@ extension HomeCoordinator: SelectionPresenter {
         return factory.viewModel.makeSelectionViewModel()
     }
 
-    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
+    func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)
         let navigationController = factory.viewController.makeSingleViewNavigationController(rootViewController: viewController)
         let presentation = self.navigationController.makeModalPresentation(of: navigationController)
-        let context = ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: true, dismissAnimated: true)
-        context.addCancelBarButtonItem(to: viewController)
-        return context
+        presentation.addCancelBarButtonItem(to: viewController, animated: true)
+        return presentation
     }
 
 }

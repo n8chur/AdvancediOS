@@ -24,7 +24,7 @@ class DetailCoordinator {
         navigationController = factory.viewController.makeDetailNavigationController(navigationModel: navigationModel)
 
         navigationModel.detailPresenter = self
-        navigationModel.presentDetail.apply().start()
+        navigationModel.presentDetail.apply(false).start()
     }
 
 }
@@ -35,12 +35,9 @@ extension DetailCoordinator: DetailPresenter {
         return factory.viewModel.makeDetailViewModel()
     }
 
-    func detailPresentationContext(of viewModel: DetailViewModel) -> DismissablePresentationContext {
+    func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeDetailViewController(viewModel: viewModel)
-        let presentation = navigationController.makePushPresentation(of: viewController)
-
-        // Do not present/dismiss animated since this is the root view controller.
-        return DismissablePresentationContext(presentation: presentation, presentAnimated: false, dismissAnimated: false)
+        return navigationController.makePushPresentation(of: viewController)
     }
 
 }
@@ -51,13 +48,12 @@ extension DetailCoordinator: SelectionPresenter {
         return factory.viewModel.makeSelectionViewModel()
     }
 
-    func selectionPresentationContext(of viewModel: SelectionViewModel) -> DismissablePresentationContext {
+    func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)
         let navigationController = factory.viewController.makeSingleViewNavigationController(rootViewController: viewController)
         let presentation = self.navigationController.makeModalPresentation(of: navigationController)
-        let context = ResultPresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: true, dismissAnimated: true)
-        context.addCancelBarButtonItem(to: viewController)
-        return context
+        presentation.addCancelBarButtonItem(to: viewController, animated: true)
+        return presentation
     }
 
 }

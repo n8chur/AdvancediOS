@@ -17,7 +17,7 @@ class PresentatingViewModelSpec: QuickSpec {
                         let presenter = NSObject()
                         presentingViewModel.presenter = presenter
 
-                        presentingViewModel.presentViewModel.apply().start()
+                        presentingViewModel.presentViewModel.apply(false).start()
 
                         expect(presentingViewModel.getPresenter.value).to(be(presenter))
                         expect(presentingViewModel.getViewModel).notTo(beNil())
@@ -28,15 +28,39 @@ class PresentatingViewModelSpec: QuickSpec {
                         }
 
                         expect(getViewModelPresenter).to(equal(presenter))
-                        expect(presentingViewModel.setupViewModel.value).to(be(getViewModelViewModel))
 
-                        guard let (getPresentationProducerPresenter, getPresentationProducerViewModel) = presentingViewModel.getPresentationProducer.value else {
-                            fail("Failed to get values from getPresentationProducer.")
+                        guard let (getPresentationPresenter, getPresentationViewModel, getPresentationPresentation) = presentingViewModel.getPresentation.value else {
+                            fail("Failed to get values from getPresentation.")
                             return
                         }
 
-                        expect(getPresentationProducerPresenter).to(be(presenter))
-                        expect(getPresentationProducerViewModel).to(be(getViewModelViewModel))
+                        expect(getPresentationPresenter).to(be(presenter))
+                        expect(getPresentationViewModel).to(be(getViewModelViewModel))
+
+                        guard let (getContextPresentation, getContextViewModel, getContextAnimated) = presentingViewModel.getContext.value else {
+                            fail("Failed to get values from getContext.")
+                            return
+                        }
+
+                        expect(getContextPresentation).to(be(getPresentationPresentation))
+                        expect(getContextViewModel).to(be(getPresentationViewModel))
+                        expect(getContextAnimated).to(be(false))
+                    }
+
+                    it("should propogate the appropriate value for animated") {
+                        let presentingViewModel = StubPresentingViewModel<NSObject>()
+
+                        let presenter = NSObject()
+                        presentingViewModel.presenter = presenter
+
+                        presentingViewModel.presentViewModel.apply(true).start()
+
+                        guard let (_, _, animated) = presentingViewModel.getContext.value else {
+                            fail("Failed to get values from getContext.")
+                            return
+                        }
+
+                        expect(animated).to(be(true))
                     }
                 }
             }
