@@ -1,4 +1,5 @@
 import ReactiveSwift
+import Core
 
 class SettingsNavigationModel: TabBarChildViewModel, SettingsPresentingViewModel {
 
@@ -6,20 +7,32 @@ class SettingsNavigationModel: TabBarChildViewModel, SettingsPresentingViewModel
 
     let tabBarItemTitle = Property(value: L10n.SettingsNavigation.TabBarItem.title)
 
-    private(set) lazy var presentSettings = makePresentSettings()
+    private(set) lazy var presentSettings = makePresentSettings(withFactory: settingsFactory)
 
     weak var settingsPresenter: SettingsPresenter?
 
-    init() { }
+    init(settingsFactory: SettingsViewModelFactoryProtocol) {
+        self.settingsFactory = settingsFactory
+    }
+
+    private let settingsFactory: SettingsViewModelFactoryProtocol
 
 }
 
-protocol SettingsNavigationModelFactory: SettingsViewModelFactoryProtocol { }
+protocol SettingsNavigationModelFactoryProtocol: SettingsViewModelFactoryProtocol { }
 
-extension SettingsNavigationModelFactory {
+extension SettingsNavigationModelFactoryProtocol {
 
     func makeSettingsNavigationModel() -> SettingsNavigationModel {
-        return SettingsNavigationModel()
+        return SettingsNavigationModel(settingsFactory: self)
     }
 
+}
+
+class SettingsNavigationModelFactory: SettingsNavigationModelFactoryProtocol {
+    let themeProvider: ThemeProvider
+
+    init(themeProvider: ThemeProvider) {
+        self.themeProvider = themeProvider
+    }
 }

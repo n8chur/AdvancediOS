@@ -20,7 +20,7 @@ class SettingsCoordinator {
     init(factory: SettingsCoordinatorFactory) {
         self.factory = factory
 
-        let navigationModel = factory.viewModel.makeSettingsNavigationModel()
+        let navigationModel = factory.navigationModel.makeSettingsNavigationModel()
         navigationController = factory.viewController.makeSettingsNavigationController(navigationModel: navigationModel)
 
         navigationModel.settingsPresenter = self
@@ -30,10 +30,6 @@ class SettingsCoordinator {
 }
 
 extension SettingsCoordinator: SettingsPresenter {
-
-    func makeSettingsViewModel() -> SettingsViewModel {
-        return factory.viewModel.makeSettingsViewModel()
-    }
 
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSettingsViewController(viewModel: viewModel)

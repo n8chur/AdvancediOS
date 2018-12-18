@@ -15,11 +15,13 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
     let image = Property(value: Image.n8churLogo.image)
     let presentDetailTitle = Property(value: L10n.Home.PresentDetail.title)
 
-    private(set) lazy var presentDetail = makePresentDetail()
+    private(set) lazy var presentDetail = makePresentDetail(withFactory: detailFactory)
 
     private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel.backgroundScheduler")
 
-    init() {
+    init(detailFactory: DetailViewModelFactoryProtocol) {
+        self.detailFactory = detailFactory
+
         let testTextInternalProducer = SignalProducer
             // Add a delay to simulate a network operation.
             .timer(interval: DispatchTimeInterval.milliseconds(50), on: backgroundScheduler)
@@ -34,6 +36,8 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
         testText = Property(initial: nil, then: testTextProducer)
     }
 
+    private let detailFactory: DetailViewModelFactoryProtocol
+
 }
 
 protocol HomeViewModelFactoryProtocol: DetailViewModelFactoryProtocol { }
@@ -41,7 +45,7 @@ protocol HomeViewModelFactoryProtocol: DetailViewModelFactoryProtocol { }
 extension HomeViewModelFactoryProtocol {
 
     func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel()
+        return HomeViewModel(detailFactory: self)
     }
 
 }

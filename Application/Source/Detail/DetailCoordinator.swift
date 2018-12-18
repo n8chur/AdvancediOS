@@ -20,7 +20,7 @@ class DetailCoordinator {
     init(factory: DetailCoordinatorFactory) {
         self.factory = factory
 
-        let navigationModel = factory.viewModel.makeDetailNavigationModel()
+        let navigationModel = factory.navigationModel.makeDetailNavigationModel()
         navigationController = factory.viewController.makeDetailNavigationController(navigationModel: navigationModel)
 
         navigationModel.detailPresenter = self
@@ -31,10 +31,6 @@ class DetailCoordinator {
 
 extension DetailCoordinator: DetailPresenter {
 
-    func makeDetailViewModel() -> DetailViewModel {
-        return factory.viewModel.makeDetailViewModel()
-    }
-
     func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeDetailViewController(viewModel: viewModel)
         return navigationController.makePushPresentation(of: viewController)
@@ -43,10 +39,6 @@ extension DetailCoordinator: DetailPresenter {
 }
 
 extension DetailCoordinator: SelectionPresenter {
-
-    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
-        return factory.viewModel.makeSelectionViewModel(withDefaultValue: defaultValue)
-    }
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)

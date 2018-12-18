@@ -15,7 +15,10 @@ extension HomePresentingViewModel {
     ///
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
-    func makePresentHome(setupViewModel: ((HomeViewModel) -> Void)? = nil) -> Action<Bool, HomeViewModel, NoError> {
+    func makePresentHome(
+        withFactory factory: HomeViewModelFactoryProtocol,
+        setupViewModel: ((HomeViewModel) -> Void)? = nil
+    ) -> Action<Bool, HomeViewModel, NoError> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<HomeViewModel>? in
             guard
                 let self = self,
@@ -23,7 +26,7 @@ extension HomePresentingViewModel {
                     return nil
             }
 
-            let viewModel = presenter.makeHomeViewModel()
+            let viewModel = factory.makeHomeViewModel()
 
             viewModel.detailPresenter = presenter
 
@@ -38,6 +41,5 @@ extension HomePresentingViewModel {
 }
 
 protocol HomePresenter: DetailPresenter {
-    func makeHomeViewModel() -> HomeViewModel
     func homePresentation(of viewModel: HomeViewModel) -> DismissablePresentation
 }

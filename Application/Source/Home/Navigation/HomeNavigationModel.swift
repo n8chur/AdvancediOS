@@ -6,11 +6,15 @@ class HomeNavigationModel: TabBarChildViewModel, HomePresentingViewModel {
 
     let tabBarItemTitle = Property(value: L10n.HomeNavigation.TabBarItem.title)
 
-    private(set) lazy var presentHome = makePresentHome()
+    private(set) lazy var presentHome = makePresentHome(withFactory: homeViewModelFactory)
 
     weak var homePresenter: HomePresenter?
 
-    init() { }
+    init(homeViewModelFactory: HomeViewModelFactoryProtocol) {
+        self.homeViewModelFactory = homeViewModelFactory
+    }
+
+    private let homeViewModelFactory: HomeViewModelFactoryProtocol
 
 }
 
@@ -19,7 +23,9 @@ protocol HomeNavigationModelFactoryProtocol: HomeViewModelFactoryProtocol { }
 extension HomeNavigationModelFactoryProtocol {
 
     func makeHomeNavigationModel() -> HomeNavigationModel {
-        return HomeNavigationModel()
+        return HomeNavigationModel(homeViewModelFactory: self)
     }
 
 }
+
+class HomeNavigationModelFactory: HomeNavigationModelFactoryProtocol { }

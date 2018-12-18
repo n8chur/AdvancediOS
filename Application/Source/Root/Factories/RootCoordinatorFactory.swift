@@ -15,23 +15,23 @@ class RootCoordinatorFactory {
     }
 
     func makeHomeCoordinator() -> HomeCoordinator {
-        let viewModel = self.viewModel.makeHomeViewModelFactory()
+        let navigationModel = self.viewModel.makeHomeNavigationModelFactory()
         let viewController = self.viewController.makeHomeViewControllerFactory()
-        let factory = HomeCoordinatorFactory(viewModel: viewModel, viewController: viewController)
+        let factory = HomeCoordinatorFactory(navigationModel: navigationModel, viewController: viewController)
         return HomeCoordinator(factory: factory)
     }
 
     func makeDetailCoordinator() -> DetailCoordinator {
-        let viewModel = self.viewModel.makeDetailViewModelFactory()
+        let navigationModel = self.viewModel.makeDetailNavigationModelFactory()
         let viewController = self.viewController.makeDetailViewControllerFactory()
-        let factory = DetailCoordinatorFactory(viewModel: viewModel, viewController: viewController)
+        let factory = DetailCoordinatorFactory(navigationModel: navigationModel, viewController: viewController)
         return DetailCoordinator(factory: factory)
     }
 
     func makeSettingsCoordinator() -> SettingsCoordinator {
-        let viewModel = self.viewModel.makeSettingsViewModelFactory()
+        let navigationModel = self.viewModel.makeSettingsNavigationModelFactory()
         let viewController = self.viewController.makeSettingsViewControllerFactory()
-        let factory = SettingsCoordinatorFactory(viewModel: viewModel, viewController: viewController)
+        let factory = SettingsCoordinatorFactory(navigationModel: navigationModel, viewController: viewController)
         return SettingsCoordinator(factory: factory)
     }
 

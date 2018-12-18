@@ -20,7 +20,7 @@ class HomeCoordinator {
     init(factory: HomeCoordinatorFactory) {
         self.factory = factory
 
-        let navigationModel = factory.viewModel.makeHomeNavigationModel()
+        let navigationModel = factory.navigationModel.makeHomeNavigationModel()
         navigationController = factory.viewController.makeHomeNavigationController(navigationModel: navigationModel)
 
         navigationModel.homePresenter = self
@@ -31,10 +31,6 @@ class HomeCoordinator {
 
 extension HomeCoordinator: HomePresenter {
 
-    func makeHomeViewModel() -> HomeViewModel {
-        return factory.viewModel.makeHomeViewModel()
-    }
-
     func homePresentation(of viewModel: HomeViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeHomeViewController(viewModel: viewModel)
         return navigationController.makePushPresentation(of: viewController)
@@ -44,10 +40,6 @@ extension HomeCoordinator: HomePresenter {
 
 extension HomeCoordinator: DetailPresenter {
 
-    func makeDetailViewModel() -> DetailViewModel {
-        return factory.viewModel.makeDetailViewModel()
-    }
-
     func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeDetailViewController(viewModel: viewModel)
         return navigationController.makePushPresentation(of: viewController)
@@ -56,10 +48,6 @@ extension HomeCoordinator: DetailPresenter {
 }
 
 extension HomeCoordinator: SelectionPresenter {
-
-    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
-        return factory.viewModel.makeSelectionViewModel(withDefaultValue: defaultValue)
-    }
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
         let viewController = factory.viewController.makeSelectionViewController(viewModel: viewModel)

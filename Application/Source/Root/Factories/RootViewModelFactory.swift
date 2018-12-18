@@ -12,16 +12,16 @@ class RootViewModelFactory {
         self.themeProvider = themeProvider
     }
 
-    func makeHomeViewModelFactory() -> HomeViewModelFactory {
-        return HomeViewModelFactory()
+    func makeHomeNavigationModelFactory() -> HomeNavigationModelFactory {
+        return HomeNavigationModelFactory()
     }
 
-    func makeDetailViewModelFactory() -> DetailViewModelFactory {
-        return DetailViewModelFactory()
+    func makeDetailNavigationModelFactory() -> DetailNavigationModelFactory {
+        return DetailNavigationModelFactory()
     }
 
-    func makeSettingsViewModelFactory() -> SettingsViewModelFactory {
-        return SettingsViewModelFactory(themeProvider: themeProvider)
+    func makeSettingsNavigationModelFactory() -> SettingsNavigationModelFactory {
+        return SettingsNavigationModelFactory(themeProvider: themeProvider)
     }
 
     func makeRootTabBarViewModel() -> RootTabBarViewModel {

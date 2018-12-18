@@ -6,11 +6,11 @@
 /// not have knowledge of each of its view model's dependencies.
 class HomeCoordinatorFactory {
 
-    let viewModel: HomeViewModelFactory
+    let navigationModel: HomeNavigationModelFactory
     let viewController: HomeViewControllerFactory
 
-    init(viewModel: HomeViewModelFactory, viewController: HomeViewControllerFactory) {
-        self.viewModel = viewModel
+    init(navigationModel: HomeNavigationModelFactory, viewController: HomeViewControllerFactory) {
+        self.navigationModel = navigationModel
         self.viewController = viewController
     }
 

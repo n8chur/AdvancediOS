@@ -6,11 +6,11 @@
 /// not have knowledge of each of its view model's dependencies.
 class SettingsCoordinatorFactory {
 
-    let viewModel: SettingsViewModelFactory
+    let navigationModel: SettingsNavigationModelFactory
     let viewController: SettingsViewControllerFactory
 
-    init(viewModel: SettingsViewModelFactory, viewController: SettingsViewControllerFactory) {
-        self.viewModel = viewModel
+    init(navigationModel: SettingsNavigationModelFactory, viewController: SettingsViewControllerFactory) {
+        self.navigationModel = navigationModel
         self.viewController = viewController
     }
 
