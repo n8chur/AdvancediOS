@@ -13,8 +13,8 @@ class StubSelectionPresenter {
 
 extension StubSelectionPresenter: SelectionPresenter {
 
-    func makeSelectionViewModel() -> SelectionViewModel {
-        let viewModel = SelectionViewModel()
+    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
+        let viewModel = SelectionViewModel(defaultValue: defaultValue)
         makeSelectionViewModelCall.value = viewModel
         return viewModel
     }

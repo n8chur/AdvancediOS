@@ -8,10 +8,12 @@ import Result
 class SelectionViewModelSpec: QuickSpec {
     override func spec() {
 
+        let defaultValue = "Test default value"
+
         var viewModel: SelectionViewModel!
 
         beforeEach {
-            viewModel = SelectionViewModel()
+            viewModel = SelectionViewModel(defaultValue: defaultValue)
         }
 
         describe("SelectionViewModel") {
@@ -20,8 +22,8 @@ class SelectionViewModelSpec: QuickSpec {
             }
 
             describe("input") {
-                it("should initialize as nil") {
-                    expect(viewModel.input.value).to(beNil())
+                it("should initialize as the default value") {
+                    expect(viewModel.input.value).to(equal(defaultValue))
                 }
             }
 
@@ -34,6 +36,9 @@ class SelectionViewModelSpec: QuickSpec {
             describe("submit") {
                 context("when input is nil") {
                     it("should send the value") {
+                        let newValue = "New test value"
+                        viewModel.input.value = newValue
+
                         var submitValue: String??
                         viewModel.submit.apply()
                             .on(value: { value in
@@ -46,7 +51,7 @@ class SelectionViewModelSpec: QuickSpec {
                             return
                         }
 
-                        expect(sentValue).to(beNil())
+                        expect(sentValue).to(equal(newValue))
                     }
                 }
 

@@ -44,8 +44,8 @@ extension DetailCoordinator: DetailPresenter {
 
 extension DetailCoordinator: SelectionPresenter {
 
-    func makeSelectionViewModel() -> SelectionViewModel {
-        return factory.viewModel.makeSelectionViewModel()
+    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
+        return factory.viewModel.makeSelectionViewModel(withDefaultValue: defaultValue)
     }
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {

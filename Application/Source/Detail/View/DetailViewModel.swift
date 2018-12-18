@@ -11,14 +11,21 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let title = Property(value: L10n.Detail.title)
 
     /// The value of the result from a selection presentation.
-    let selectionResult = MutableProperty<String?>(nil)
+    var selectionResult: Property<String?> { return Property(capturing: mutableSelectionResult) }
+
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
-    private(set) lazy var presentSelection = makePresentSelection { [weak self] viewModel in
-        guard let self = self else { fatalError() }
+    private(set) lazy var presentSelection = makePresentSelection(
+        withDefaultValue: { [weak self] in
+            return self?.selectionResult.value
+        },
+        setupViewModel: { [weak self] viewModel in
+            guard let self = self else { fatalError() }
 
-        self.selectionResult <~ viewModel.result
-    }
+            self.mutableSelectionResult <~ viewModel.result
+        })
+
+    private let mutableSelectionResult = MutableProperty<String?>(nil)
 
 }
 

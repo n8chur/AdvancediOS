@@ -14,12 +14,12 @@ public extension PresentingViewModel {
     ///
     /// - Parameter context: A closure that returns a presentation context or nil if the context failed to be created.
     ///             If nil is returned, this action will have no effect.
-    public func makePresentAction<PresentationContextType: PresentationContext>(
-        withContext context: @escaping (_ animated: Bool) -> PresentationContextType?
-    ) -> Action<Bool, PresentationContextType.ViewModelType, NoError> {
-        return Action<Bool, PresentationContextType.ViewModelType, NoError> { (animated: Bool) in
+    public func makePresentAction<Input, PresentationContextType: PresentationContext>(
+        withContext context: @escaping (Input) -> PresentationContextType?
+    ) -> Action<Input, PresentationContextType.ViewModelType, NoError> {
+        return Action<Input, PresentationContextType.ViewModelType, NoError> { input in
             return SignalProducer<PresentationContextType.ViewModelType, NoError> { (observer, lifetime) in
-                guard let context = context(animated) else {
+                guard let context = context(input) else {
                     observer.sendCompleted()
                     return
                 }

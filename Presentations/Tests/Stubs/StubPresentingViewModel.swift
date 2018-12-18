@@ -10,9 +10,9 @@ class StubPresentingViewModel<Presenter: AnyObject>: PresentingViewModel {
 
     let context = MutableProperty<Bool?>(nil)
 
-    private(set) lazy var presentViewModel = makePresentAction { [unowned self] animated -> DismissablePresentationContext<StubViewModel> in
-        self.context.value = animated
-        return DismissablePresentationContext.stub()
-    }
+    private(set) lazy var presentViewModel: Action<Bool, StubViewModel, NoError> = makePresentAction { [unowned self] animated -> DismissablePresentationContext<StubViewModel> in
+            self.context.value = animated
+            return DismissablePresentationContext.stub()
+        }
 
 }

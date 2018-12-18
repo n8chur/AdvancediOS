@@ -4,11 +4,9 @@ import Presentations
 
 class SelectionViewModel: ResultViewModel {
 
-    typealias Result = String?
-
     let isActive = MutableProperty(false)
 
-    private(set) lazy var result = Signal<Result, NoError> { [weak self] (observer, lifetime) in
+    private(set) lazy var result = Signal<String?, NoError> { [weak self] (observer, lifetime) in
         guard let self = self else { fatalError() }
 
         self.submit.values.producer
@@ -23,13 +21,17 @@ class SelectionViewModel: ResultViewModel {
     /// The value of this property will be sent as a value in the submit action's execution signal.
     ///
     /// This should be bound to the input field.
-    let input = MutableProperty<Result>(nil)
+    let input: MutableProperty<String?>
 
     /// Sends the value of input when executed.
-    private(set) lazy var submit = Action<(), Result, NoError> { [weak self] in
+    private(set) lazy var submit = Action<(), String?, NoError> { [weak self] in
         guard let self = self else { fatalError() }
 
         return SignalProducer(value: self.input.value)
+    }
+
+    init(defaultValue: String?) {
+        input = MutableProperty(defaultValue)
     }
 
 }
@@ -38,8 +40,8 @@ protocol SelectionViewModelFactoryProtocol { }
 
 extension SelectionViewModelFactoryProtocol {
 
-    func makeSelectionViewModel() -> SelectionViewModel {
-        return SelectionViewModel()
+    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
+        return SelectionViewModel(defaultValue: defaultValue)
     }
 
 }
