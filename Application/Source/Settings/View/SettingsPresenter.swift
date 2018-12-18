@@ -14,23 +14,21 @@ extension SettingsPresentingViewModel {
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
     func makePresentSettings(setupViewModel: ((SettingsViewModel) -> Void)? = nil) -> Action<Bool, SettingsViewModel, NoError> {
-        return makePresent(
-            getPresenter: { [weak self] in
-                return self?.settingsPresenter
-            },
-            getViewModel: { (presenter) in
-                let viewModel = presenter.makeSettingsViewModel()
+        return makePresentAction { [weak self] animated -> DismissablePresentationContext<SettingsViewModel>? in
+            guard
+                let self = self,
+                let presenter = self.settingsPresenter else {
+                    return nil
+            }
 
-                setupViewModel?(viewModel)
+            let viewModel = presenter.makeSettingsViewModel()
 
-                return viewModel
-            },
-            getPresentation: { (presenter, viewModel) in
-                return presenter.settingsPresentation(of: viewModel)
-            },
-            getContext: { (presentation, _, animated) in
-                return DismissablePresentationContext(presentation: presentation, presentAnimated: animated)
-            })
+            setupViewModel?(viewModel)
+
+            let presentation = presenter.settingsPresentation(of: viewModel)
+
+            return DismissablePresentationContext(presentation: presentation, viewModel: viewModel, presentAnimated: animated)
+        }
     }
 
 }
