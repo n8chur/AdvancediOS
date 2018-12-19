@@ -16,7 +16,8 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
 
     private(set) lazy var presentSelection = makePresentSelection(
-        withDefaultValue: { [weak self] in
+        withFactory: selectionFactory,
+        defaultValue: { [weak self] in
             return self?.selectionResult.value
         },
         setupViewModel: { [weak self] viewModel in
@@ -25,16 +26,23 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
             self.mutableSelectionResult <~ viewModel.result
         })
 
+    init(selectionFactory: SelectionViewModelFactoryProtocol) {
+        self.selectionFactory = selectionFactory
+    }
+
     private let mutableSelectionResult = MutableProperty<String?>(nil)
+    private let selectionFactory: SelectionViewModelFactoryProtocol
 
 }
 
-protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol { }
+protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol {
+    func makeDetailViewModel() -> DetailViewModel
+}
 
 extension DetailViewModelFactoryProtocol {
 
     func makeDetailViewModel() -> DetailViewModel {
-        return DetailViewModel()
+        return DetailViewModel(selectionFactory: self)
     }
 
 }

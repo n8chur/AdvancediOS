@@ -3,11 +3,8 @@
 AdvancediOS demonstrates some advanced concepts for iOS application development using a small example application.
 
 Advanced concepts include:
-- [Functional Reactive Programming](https://en.wikipedia.org/wiki/Functional_reactive_programming) with [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa)
+- A unique application architecture that takes inspiration from [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel), [FRP](https://en.wikipedia.org/wiki/Functional_reactive_programming), [Coordinator Pattern](https://will.townsend.io/2016/an-ios-coordinator-pattern), [Factory Pattern](https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)), [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection), and [Protocol Oriented Programming](https://www.toptal.com/swift/introduction-protocol-oriented-programming-swift)
 - [XcodeGen](https://www.github.com/yonaskolb/XcodeGen) for generating an Xcode project
-- [MVVM application architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel)
-- [Coordinator pattern](https://will.townsend.io/2016/an-ios-coordinator-pattern)
-- [Factory Pattern](https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)) for cleaner [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
 - Type safe code generation for assets, plists, and localized string references using [SwiftGen](https://github.com/SwiftGen/SwiftGen)
 - Linting with [SwiftLint](https://github.com/realm/SwiftLint)
 - Basic localization

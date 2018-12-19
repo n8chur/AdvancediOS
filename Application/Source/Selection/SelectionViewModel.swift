@@ -36,7 +36,9 @@ class SelectionViewModel: ResultViewModel {
 
 }
 
-protocol SelectionViewModelFactoryProtocol { }
+protocol SelectionViewModelFactoryProtocol {
+    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel
+}
 
 extension SelectionViewModelFactoryProtocol {
 

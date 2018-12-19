@@ -50,6 +50,7 @@ targets:
     sources: 
       - Application/Tests
       - Presentations/Tests/Stubs
+      - Themer/Tests/Stubs
     dependencies:
       - target: Application
       - carthage: Quick

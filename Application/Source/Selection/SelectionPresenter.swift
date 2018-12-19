@@ -11,10 +11,13 @@ extension SelectionPresentingViewModel {
 
     /// Makes an action that is suitable to be set as the presentSelection action.
     ///
+    /// - Parameter factory: A factory to be used to generate the presented view model.
+    /// - Parameter defaultValue: A closure that provides the default value of the selection input.
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
     func makePresentSelection(
-        withDefaultValue defaultValue: (() -> String?)? = nil,
+        withFactory factory: SelectionViewModelFactoryProtocol,
+        defaultValue: (() -> String?)? = nil,
         setupViewModel: ((SelectionViewModel) -> Void)? = nil
     ) -> Action<Bool, SelectionViewModel, NoError> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<SelectionViewModel>? in
@@ -25,7 +28,7 @@ extension SelectionPresentingViewModel {
             }
 
             let value = defaultValue?()
-            let viewModel = presenter.makeSelectionViewModel(withDefaultValue: value)
+            let viewModel = factory.makeSelectionViewModel(withDefaultValue: value)
 
             setupViewModel?(viewModel)
 
@@ -38,6 +41,5 @@ extension SelectionPresentingViewModel {
 }
 
 protocol SelectionPresenter: class {
-    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation
 }

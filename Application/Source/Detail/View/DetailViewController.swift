@@ -52,6 +52,8 @@ class DetailViewController: UIViewController, ViewController {
 
 protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
+
+    func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController
 }
 
 extension DetailViewControllerFactoryProtocol {

@@ -11,9 +11,13 @@ extension SettingsPresentingViewModel {
 
     /// Makes an action that is suitable to be set as the presentSettings action.
     ///
+    /// - Parameter factory: A factory to be used to generate the presented view model.
     /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
     ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
-    func makePresentSettings(setupViewModel: ((SettingsViewModel) -> Void)? = nil) -> Action<Bool, SettingsViewModel, NoError> {
+    func makePresentSettings(
+        withFactory factory: SettingsViewModelFactoryProtocol,
+        setupViewModel: ((SettingsViewModel) -> Void)? = nil
+    ) -> Action<Bool, SettingsViewModel, NoError> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<SettingsViewModel>? in
             guard
                 let self = self,
@@ -21,7 +25,7 @@ extension SettingsPresentingViewModel {
                     return nil
             }
 
-            let viewModel = presenter.makeSettingsViewModel()
+            let viewModel = factory.makeSettingsViewModel()
 
             setupViewModel?(viewModel)
 
@@ -34,6 +38,5 @@ extension SettingsPresentingViewModel {
 }
 
 protocol SettingsPresenter: class {
-    func makeSettingsViewModel() -> SettingsViewModel
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation
 }

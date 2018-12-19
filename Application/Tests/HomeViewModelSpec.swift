@@ -12,7 +12,7 @@ class HomeViewModelSpec: QuickSpec {
         var viewModel: HomeViewModel!
 
         beforeEach {
-            viewModel = HomeViewModel()
+            viewModel = HomeViewModel(detailFactory: StubHomeViewModelFactory())
         }
 
         describe("HomeViewModel") {

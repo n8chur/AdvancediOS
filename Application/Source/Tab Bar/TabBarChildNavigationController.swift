@@ -3,19 +3,21 @@ import ReactiveSwift
 import Core
 import Logger
 
-class TabBarChildNavigationController: UINavigationController {
+class TabBarChildNavigationController<ViewModelType: TabBarChildViewModel>: UINavigationController, UINavigationControllerDelegate {
 
-    let viewModel: TabBarChildViewModel
+    let viewModel: ViewModelType
 
     let themeProvider: ThemeProvider
 
     var statusBarStyle: UIStatusBarStyle = .default
 
-    required init(viewModel: TabBarChildViewModel, themeProvider: ThemeProvider) {
+    init(viewModel: ViewModelType, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
         self.themeProvider = themeProvider
 
         super.init(nibName: nil, bundle: nil)
+
+        tabBarItem.reactive.title <~ viewModel.tabBarItemTitle
 
         self.delegate = self
     }
@@ -23,15 +25,17 @@ class TabBarChildNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tabBarItem.reactive.title <~ viewModel.tabBarItemTitle
-
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindToStyleable(self) { TabBarChildNavigationStyle(theme: $0) }
+        themeProvider.bindToStyleable(self) { TabBarChildNavigationStyle<ViewModelType>(theme: $0) }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return statusBarStyle
+    }
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        Log.info(Logger.Context.application, "Showing \(NSStringFromClass(type(of: viewController)))")
     }
 
     @available(*, unavailable)
@@ -45,25 +49,5 @@ class TabBarChildNavigationController: UINavigationController {
 
     @available(*, unavailable)
     override init(rootViewController: UIViewController) { fatalError("\(#function) not implemented.") }
-
-}
-
-extension TabBarChildNavigationController: UINavigationControllerDelegate {
-
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        Log.info(Logger.Context.application, "Showing \(NSStringFromClass(type(of: viewController)))")
-    }
-
-}
-
-protocol TabBarChildNavigationControllerFactoryProtocol {
-    var themeProvider: ThemeProvider { get }
-}
-
-extension TabBarChildNavigationControllerFactoryProtocol {
-
-    func makeTabBarChildNavigationController(viewModel: TabBarChildViewModel) -> TabBarChildNavigationController {
-        return TabBarChildNavigationController(viewModel: viewModel, themeProvider: themeProvider)
-    }
 
 }

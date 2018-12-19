@@ -34,6 +34,8 @@ class SettingsViewModel: ViewModel {
 
 protocol SettingsViewModelFactoryProtocol {
     var themeProvider: ThemeProvider { get }
+
+    func makeSettingsViewModel() -> SettingsViewModel
 }
 
 extension SettingsViewModelFactoryProtocol {
