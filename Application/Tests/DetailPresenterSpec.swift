@@ -24,19 +24,19 @@ class DetailPresenterSpec: QuickSpec {
                 it("should call the presenter to create a view model") {
                     presentingViewModel.presentDetail.apply(false).start()
 
-                    expect(presenter.makeDetailViewModelCall.value).notTo(beNil())
+                    expect(presentingViewModel.factory.makeViewModel.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context") {
                     presentingViewModel.presentDetail.apply(false).start()
 
-                    expect(presenter.detailPresentation.value).notTo(beNil())
+                    expect(presenter.detailPresentation.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
 
                 it("should call the setup block") {
                     presentingViewModel.presentDetail.apply(false).start()
 
-                    expect(presentingViewModel.setupViewModel.value).notTo(beNil())
+                    expect(presentingViewModel.setupViewModel.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
             }
         }

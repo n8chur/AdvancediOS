@@ -53,6 +53,8 @@ class HomeViewController: UIViewController, ViewController {
 
 protocol HomeViewControllerFactoryProtocol: DetailViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
+
+    func makeHomeViewController(viewModel: HomeViewModel) -> HomeViewController
 }
 
 extension HomeViewControllerFactoryProtocol {

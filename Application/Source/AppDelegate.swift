@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarModelFactory = RootTabBarModelFactory(themeProvider: themeProvider)
         let tabBarControllerFactory = RootTabBarControllerFactory(themeProvider: themeProvider)
-        let viewModel = RootTabBarViewModel(factory: tabBarModelFactory)
+        let viewModel = tabBarModelFactory.makeRootTabBarViewModel()
         let root = RootTabBarController(viewModel: viewModel, tabBarControllerFactory: tabBarControllerFactory, themeProvider: themeProvider)
         self.root = root
 

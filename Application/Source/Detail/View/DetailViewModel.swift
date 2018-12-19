@@ -35,7 +35,9 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
 }
 
-protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol { }
+protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol {
+    func makeDetailViewModel() -> DetailViewModel
+}
 
 extension DetailViewModelFactoryProtocol {
 

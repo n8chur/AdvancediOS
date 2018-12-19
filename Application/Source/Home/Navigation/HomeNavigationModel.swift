@@ -18,7 +18,9 @@ class HomeNavigationModel: TabBarChildViewModel, HomePresentingViewModel {
 
 }
 
-protocol HomeNavigationModelFactoryProtocol: HomeViewModelFactoryProtocol { }
+protocol HomeNavigationModelFactoryProtocol: HomeViewModelFactoryProtocol {
+    func makeHomeNavigationModel() -> HomeNavigationModel
+}
 
 extension HomeNavigationModelFactoryProtocol {
 

@@ -25,19 +25,19 @@ class SelectionPresenterSpec: QuickSpec {
                 it("should call the presenter to create a view model") {
                     presentingViewModel.presentSelection.apply(false).start()
 
-                    expect(presenter.makeSelectionViewModelCall.value).notTo(beNil())
+                    expect(presentingViewModel.factory.makeViewModel.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context") {
                     presentingViewModel.presentSelection.apply(false).start()
 
-                    expect(presenter.selectionPresentation.value).to(be(presenter.makeSelectionViewModelCall.value))
+                    expect(presenter.selectionPresentation.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
 
                 it("should call the setup block") {
                     presentingViewModel.presentSelection.apply(false).start()
 
-                    expect(presentingViewModel.setupViewModel.value).to(be(presenter.makeSelectionViewModelCall.value))
+                    expect(presentingViewModel.setupViewModel.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
             }
         }

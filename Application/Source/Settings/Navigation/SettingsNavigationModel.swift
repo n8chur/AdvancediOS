@@ -19,7 +19,9 @@ class SettingsNavigationModel: TabBarChildViewModel, SettingsPresentingViewModel
 
 }
 
-protocol SettingsNavigationModelFactoryProtocol: SettingsViewModelFactoryProtocol { }
+protocol SettingsNavigationModelFactoryProtocol: SettingsViewModelFactoryProtocol {
+    func makeSettingsNavigationModel() -> SettingsNavigationModel
+}
 
 extension SettingsNavigationModelFactoryProtocol {
 

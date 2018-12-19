@@ -18,7 +18,9 @@ class DetailNavigationModel: TabBarChildViewModel, DetailPresentingViewModel {
 
 }
 
-protocol DetailNavigationModelFactoryProtocol: DetailViewModelFactoryProtocol { }
+protocol DetailNavigationModelFactoryProtocol: DetailViewModelFactoryProtocol {
+    func makeDetailNavigationModel() -> DetailNavigationModel
+}
 
 extension DetailNavigationModelFactoryProtocol {
 

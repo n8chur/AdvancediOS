@@ -56,6 +56,8 @@ class SelectionViewController: UIViewController, ViewController {
 
 protocol SelectionViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
+
+    func makeSelectionViewController(viewModel: SelectionViewModel) -> SelectionViewController
 }
 
 extension SelectionViewControllerFactoryProtocol {

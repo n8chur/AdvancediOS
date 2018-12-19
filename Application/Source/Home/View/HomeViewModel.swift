@@ -40,7 +40,9 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
 
 }
 
-protocol HomeViewModelFactoryProtocol: DetailViewModelFactoryProtocol { }
+protocol HomeViewModelFactoryProtocol: DetailViewModelFactoryProtocol {
+    func makeHomeViewModel() -> HomeViewModel
+}
 
 extension HomeViewModelFactoryProtocol {
 

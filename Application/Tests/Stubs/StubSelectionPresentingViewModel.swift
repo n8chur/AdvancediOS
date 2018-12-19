@@ -10,10 +10,23 @@ class StubSelectionPresentingViewModel: SelectionPresentingViewModel {
 
     weak var selectionPresenter: SelectionPresenter?
 
-    private(set) lazy var presentSelection: Action<Bool, SelectionViewModel, NoError> = makePresentSelection { [unowned self] viewModel in
+    private(set) lazy var presentSelection = makePresentSelection(withFactory: factory) { [unowned self] viewModel in
         self.setupViewModel.value = viewModel
     }
 
     let isActive = MutableProperty<Bool>(false)
 
+    let factory = StubSelectionViewModelFactory()
+
+}
+
+class StubSelectionViewModelFactory: SelectionViewModelFactoryProtocol {
+
+    let makeViewModel = MutableProperty<SelectionViewModel?>(nil)
+
+    func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
+        let viewModel = SelectionViewModel(defaultValue: defaultValue)
+        makeViewModel.value = viewModel
+        return viewModel
+    }
 }

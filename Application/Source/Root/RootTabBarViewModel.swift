@@ -18,7 +18,9 @@ class RootTabBarViewModel: ViewModel {
 
 }
 
-protocol RootTabBarModelFactoryProtocol: HomeNavigationModelFactoryProtocol, DetailNavigationModelFactoryProtocol, SettingsNavigationModelFactoryProtocol { }
+protocol RootTabBarModelFactoryProtocol: HomeNavigationModelFactoryProtocol, DetailNavigationModelFactoryProtocol, SettingsNavigationModelFactoryProtocol {
+    func makeRootTabBarViewModel() -> RootTabBarViewModel
+}
 
 extension RootTabBarModelFactoryProtocol {
 
