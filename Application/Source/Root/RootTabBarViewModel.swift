@@ -6,7 +6,15 @@ class RootTabBarViewModel: ViewModel {
 
     let isActive = MutableProperty<Bool>(false)
 
-    init() { }
+    let home: HomeNavigationModel
+    let detail: DetailNavigationModel
+    let settings: SettingsNavigationModel
+
+    init(factory: RootTabBarModelFactoryProtocol) {
+        home = factory.makeHomeNavigationModel()
+        detail = factory.makeDetailNavigationModel()
+        settings = factory.makeSettingsNavigationModel()
+    }
 
 }
 
@@ -15,7 +23,7 @@ protocol RootTabBarModelFactoryProtocol: HomeNavigationModelFactoryProtocol, Det
 extension RootTabBarModelFactoryProtocol {
 
     func makeRootTabBarViewModel() -> RootTabBarViewModel {
-        return RootTabBarViewModel()
+        return RootTabBarViewModel(factory: self)
     }
 
 }

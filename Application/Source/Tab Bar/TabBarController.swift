@@ -3,13 +3,13 @@ import ReactiveSwift
 import Presentations
 import Core
 
-class TabBarController: UITabBarController {
+class TabBarController<ViewModelType: ViewModel>: UITabBarController {
 
-    let viewModel: ViewModel
+    let viewModel: ViewModelType
 
     let themeProvider: ThemeProvider
 
-    init(viewModel: ViewModel, themeProvider: ThemeProvider, viewControllers: [UIViewController]) {
+    init(viewModel: ViewModelType, themeProvider: ThemeProvider, viewControllers: [UIViewController]) {
         self.viewModel = viewModel
         self.themeProvider = themeProvider
 
@@ -23,7 +23,7 @@ class TabBarController: UITabBarController {
 
         viewModel.isActive <~ reactive.isAppeared
 
-        themeProvider.bindToStyleable(self) { TabBarControllerStyle(theme: $0) }
+        themeProvider.bindToStyleable(self) { TabBarControllerStyle<ViewModelType>(theme: $0) }
     }
 
     @available(*, unavailable)

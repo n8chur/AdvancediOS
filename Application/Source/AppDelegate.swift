@@ -6,7 +6,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private var coordinator: RootCoordinator!
+    private var root: RootTabBarController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -17,10 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarModelFactory = RootTabBarModelFactory(themeProvider: themeProvider)
         let tabBarControllerFactory = RootTabBarControllerFactory(themeProvider: themeProvider)
-        let coordinator = RootCoordinator(tabBarModelFactory: tabBarModelFactory, tabBarControllerFactory: tabBarControllerFactory)
-        self.coordinator = coordinator
+        let viewModel = RootTabBarViewModel(factory: tabBarModelFactory)
+        let root = RootTabBarController(viewModel: viewModel, tabBarControllerFactory: tabBarControllerFactory, themeProvider: themeProvider)
+        self.root = root
 
-        window.rootViewController = coordinator.tabBarController
+        window.rootViewController = root
         window.makeKeyAndVisible()
 
         return true
