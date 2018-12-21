@@ -8,6 +8,7 @@ targets:
       - RxExtensions/Supporting Files
     dependencies:
       - carthage: RxSwift
+      - carthage: Action
     scheme:
       testTargets: 
         - RxExtensionsTests

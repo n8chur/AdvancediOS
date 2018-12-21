@@ -11,6 +11,9 @@
          location = "container:"
          name = "Carthage">
          <FileRef
+            location = "group:Carthage/Checkouts/Action/Action.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:Carthage/Checkouts/Nimble/Nimble.xcodeproj">
          </FileRef>
          <FileRef
