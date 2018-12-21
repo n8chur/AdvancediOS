@@ -51,11 +51,17 @@ public class DismissablePresentation: Presentation {
         let canPresent = MutableProperty<Bool>(true)
         let canDismiss = MutableProperty<Bool>(false)
 
-        self.present = Action<Bool, Never, NoError>(enabledIf: canPresent, execute: { animated -> SignalProducer<Never, NoError> in
+        self.present = Action<Bool, Never, NoError>(enabledIf: canPresent, execute: { [weak viewController] animated -> SignalProducer<Never, NoError> in
+            guard let viewController = viewController else {
+                return SignalProducer.empty
+            }
             return present(viewController, animated)
         })
 
-        self.dismiss = Action<Bool, Never, NoError>(enabledIf: canDismiss, execute: { animated -> SignalProducer<Never, NoError> in
+        self.dismiss = Action<Bool, Never, NoError>(enabledIf: canDismiss, execute: { [weak viewController] animated -> SignalProducer<Never, NoError> in
+            guard let viewController = viewController else {
+                return SignalProducer.empty
+            }
             return dismiss(viewController, animated)
         })
 
