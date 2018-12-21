@@ -1,7 +1,7 @@
 import ReactiveSwift
 import Result
 import Presentations
-import ReactiveExtensions
+import RxExtensions
 import Core
 
 class HomeViewModel: ViewModel, DetailPresentingViewModel {

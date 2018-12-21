@@ -1,7 +1,7 @@
 import UIKit
 import ReactiveSwift
 import Result
-import ReactiveExtensions
+import RxExtensions
 
 public protocol PresentationContext: class {
     associatedtype ViewModelType: ViewModel

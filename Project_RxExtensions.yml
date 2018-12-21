@@ -1,29 +1,30 @@
-name: ReactiveExtensions
+name: RxExtensions
 targets:
-  ReactiveExtensions:
+  RxExtensions:
     type: framework
     platform: iOS
     sources: 
-      - ReactiveExtensions/Source
-      - ReactiveExtensions/Supporting Files
+      - RxExtensions/Source
+      - RxExtensions/Supporting Files
     dependencies:
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - carthage: RxSwift
     scheme:
       testTargets: 
-        - ReactiveExtensionsTests
+        - RxExtensionsTests
       gatherCoverageData: true
     prebuildScripts:
       - path: Shared/Scripts/swiftlint-check.sh
         name: Swift Lint Check
-  ReactiveExtensionsTests:
+  RxExtensionsTests:
     platform: iOS
     type: bundle.unit-test
     sources: 
-      - ReactiveExtensions/Tests
+      - RxExtensions/Tests
     dependencies:
-      - target: ReactiveExtensions
+      - target: RxExtensions
       - carthage: Quick
       - carthage: Nimble
+      - carthage: RxTest
+      - carthage: RxBlocking
     settings:
       LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

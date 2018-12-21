@@ -44,7 +44,7 @@ CARTHAGE = "mint run #{MINT_REPO_MAP[CARTHAGE_MINT_REPO]} carthage"
 
 LOGGER_NAME = "Logger"
 CORE_NAME = "Core"
-REACTIVE_EXTENSIONS_NAME = "ReactiveExtensions"
+REACTIVE_EXTENSIONS_NAME = "RxExtensions"
 PRESENTATIONS_NAME = "Presentations"
 THEMER_NAME = "Themer"
 APPLICATION_NAME = "Application"

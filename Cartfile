@@ -1,7 +1,7 @@
 ## Frameworks
 
 # Shared
-github "ReactiveCocoa/ReactiveCocoa" ~> 8.0
+github "ReactiveX/RxSwift" ~> 4.4
 github "DaveWoodCom/XCGLogger" ~> 6.1
 
 # Application

@@ -7,10 +7,9 @@ targets:
       - Presentations/Source
       - Presentations/Supporting Files
     dependencies:
-      - target: ReactiveExtensions
-      - carthage: ReactiveCocoa
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - target: RxExtensions
+      - carthage: RxSwift
+      - carthage: RxCocoa
     scheme:
       testTargets: 
         - PresentationsTests
@@ -27,5 +26,7 @@ targets:
       - target: Presentations
       - carthage: Quick
       - carthage: Nimble
+      - carthage: RxTest
+      - carthage: RxBlocking
     settings:
       LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

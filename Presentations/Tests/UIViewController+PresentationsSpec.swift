@@ -2,7 +2,7 @@ import Quick
 import Nimble
 import ReactiveSwift
 import Result
-import ReactiveExtensions
+import RxExtensions
 
 @testable import Presentations
 

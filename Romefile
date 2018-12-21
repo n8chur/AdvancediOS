@@ -4,3 +4,8 @@ repositoryMap:
   - XCGLogger:
     - name: XCGLogger
     - name: ObjcExceptionBridging
+  - RxSwift:
+    - name: RxSwift
+    - name: RxCocoa
+    - name: RxBlocking
+    - name: RxTest
