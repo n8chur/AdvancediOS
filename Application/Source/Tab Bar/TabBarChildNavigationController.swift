@@ -29,7 +29,7 @@ class TabBarChildNavigationController<ViewModelType: TabBarChildViewModel>: UINa
         super.viewDidLoad()
 
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { TabBarChildNavigationStyle<ViewModelType>(theme: $0) }

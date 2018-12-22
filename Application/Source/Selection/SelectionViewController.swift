@@ -40,7 +40,7 @@ class SelectionViewController: UIViewController, ViewController {
             .bind(to: viewModel.input)
             .disposed(by: disposeBag)
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { SelectionViewControllerStyle(theme: $0) }

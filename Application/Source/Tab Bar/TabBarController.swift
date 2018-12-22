@@ -23,7 +23,7 @@ class TabBarController<ViewModelType: ViewModel>: UITabBarController {
         super.viewDidLoad()
 
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { TabBarControllerStyle<ViewModelType>(theme: $0) }

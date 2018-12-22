@@ -44,7 +44,7 @@ class DetailViewController: UIViewController, ViewController {
         detailView.button.rx.bind(to: viewModel.presentSelection, input: true)
 
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { DetailViewControllerStyle(theme: $0) }

@@ -20,7 +20,7 @@ public extension UINavigationController {
                 .ignoreElements()
         }
 
-        let didDismiss = viewController.rx.didMoveToNilParent
+        let didDismiss = viewController.rx.didMoveToNilParent()
             .map { _ in return () }
             .asObservable()
 

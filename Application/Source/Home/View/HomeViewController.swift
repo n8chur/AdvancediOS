@@ -45,7 +45,7 @@ class HomeViewController: UIViewController, ViewController {
         homeView.detailButton.rx.bind(to: viewModel.presentDetail, input: true)
 
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { HomeViewControllerStyle(theme: $0) }

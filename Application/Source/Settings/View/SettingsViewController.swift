@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController, ViewController {
             .disposed(by: disposeBag)
 
         rx.isAppeared
-            .emit(to: viewModel.isActive)
+            .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { SettingsViewControllerStyle(theme: $0) }

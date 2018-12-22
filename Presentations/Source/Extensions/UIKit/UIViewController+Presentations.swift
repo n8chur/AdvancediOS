@@ -20,7 +20,7 @@ public extension UIViewController {
                 .ignoreElements()
         }
 
-        let didDismiss = viewController.rx.didDismiss
+        let didDismiss = viewController.rx.didDismiss()
             .map { _ in return () }
             .asObservable()
 

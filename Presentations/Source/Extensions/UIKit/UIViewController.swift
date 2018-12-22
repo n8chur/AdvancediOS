@@ -2,8 +2,10 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Action
+import RxExtensions
 
 private struct AssociatedKeys {
+    static var isAppeared = "rx_viewController_isAppeared"
     static var present = "rx_viewController_present"
     static var dismiss = "rx_viewController_dismiss"
 }
@@ -15,36 +17,34 @@ extension Reactive where Base: UIViewController {
     /// Replays the last value.
     ///
     /// Initializes with a value determined by base.view.window != nil.
-    public var isAppeared: Signal<Bool> {
+    public var isAppeared: Property<Bool> {
+        let isAppeared: Property<Bool>
+        if let associatedIsAppeared = objc_getAssociatedObject(base, &AssociatedKeys.isAppeared) as? Property<Bool> {
+            isAppeared = associatedIsAppeared
+        } else {
+            isAppeared = self.makeIsAppeared()
+            objc_setAssociatedObject(base, &AssociatedKeys.isAppeared, isAppeared, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return isAppeared
+    }
+
+    private func makeIsAppeared() -> Property<Bool> {
         let trueOnAppearance = methodInvoked(#selector(UIViewController.viewWillAppear(_:)))
             .map { _ in return true }
 
         let falseOnDisappearance = methodInvoked(#selector(UIViewController.viewDidDisappear(_:)))
             .map { _ in return false }
 
-        let appearance = Observable
-            .deferred { [weak base] () -> Observable<Bool> in
-                guard let base = base else {
-                    return Observable<Bool>.empty()
-                }
+        let appearance = Observable.merge([
+            trueOnAppearance,
+            falseOnDisappearance,
+        ])
 
-                let initial = base.view.window != nil
-
-                return Observable
-                    .merge([
-                        trueOnAppearance,
-                        falseOnDisappearance,
-                    ])
-                    .startWith(initial)
-            }
-
-        return appearance
-            .replay(1)
-            .asSignal(onErrorRecover: { _ in Signal.empty() })
+        return Property(appearance, initial: base.view.window != nil)
     }
 
     /// Sends the UIViewController when the view controller's parent view controller becomes nil.
-    public var didMoveToNilParent: Signal<Base> {
+    public func didMoveToNilParent() -> Signal<Base> {
         return methodInvoked(#selector(UIViewController.didMove(toParent:)))
             .map { $0.first }
             .filter {
@@ -58,7 +58,7 @@ extension Reactive where Base: UIViewController {
     }
 
     /// Sends the UIViewController when the view is being dismissed.
-    public var didDismiss: Signal<Base> {
+    public func didDismiss() -> Signal<Base> {
         return methodInvoked(#selector(UIViewController.viewWillDisappear(_:)))
             .map { [weak base] _ in
                 return base
@@ -69,7 +69,7 @@ extension Reactive where Base: UIViewController {
     }
 
     /// Sends the UIViewController whenever the view controller's viewDidLoad method is called.
-    public var viewDidLoad: Signal<Base> {
+    public func viewDidLoad() -> Signal<Base> {
         let observer = Observable<Base>.create { [weak base] observer in
             guard let viewController = base else {
                 observer.onCompleted()
@@ -95,8 +95,8 @@ extension Reactive where Base: UIViewController {
     }
 
     /// Sends the UIViewController when the view controller's view's window becomes nil.
-    public var didMoveToNilWindow: Signal<Base> {
-        return viewDidLoad
+    public func didMoveToNilWindow() -> Signal<Base> {
+        return viewDidLoad()
             .flatMap { viewController -> Signal<Base> in
                 return viewController.view.rx.methodInvoked(#selector(UIView.didMoveToWindow))
                     .map { _ in return viewController }
