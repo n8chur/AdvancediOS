@@ -32,7 +32,7 @@ class DetailViewModelSpec: QuickSpec {
                     let selectionValue = "Test selection input"
 
                     _ = presenter.selectionPresentation.asObservable()
-                        .filter { $0 != nil }.map { $0! }
+                        .unwrap()
                         .subscribe(onNext: { viewModel in
                             viewModel.input.accept(selectionValue)
                             viewModel.submit.execute(())
@@ -50,7 +50,7 @@ class DetailViewModelSpec: QuickSpec {
                     let value = "Test selection input"
 
                     _ = presenter.selectionPresentation.asObservable()
-                        .filter { $0 != nil }.map { $0! }
+                        .unwrap()
                         .take(1)
                         .subscribe(onNext: { viewModel in
                             viewModel.input.accept(value)
@@ -62,7 +62,7 @@ class DetailViewModelSpec: QuickSpec {
                     var defaultValue: String??
 
                     _ = presenter.selectionPresentation.asObservable()
-                        .filter { $0 != nil }.map { $0! }
+                        .unwrap()
                         .subscribe(onNext: { viewModel in
                             defaultValue = viewModel.input.value
                         })

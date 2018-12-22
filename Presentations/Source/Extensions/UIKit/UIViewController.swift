@@ -53,7 +53,7 @@ extension Reactive where Base: UIViewController {
             .map { [weak base] _ in
                 return base
             }
-            .filter { $0 != nil }.map { $0! }
+            .unwrap()
             .asSignal(onErrorRecover: { _ in Signal.empty() })
     }
 
@@ -63,7 +63,7 @@ extension Reactive where Base: UIViewController {
             .map { [weak base] _ in
                 return base
             }
-            .filter { $0 != nil }.map { $0! }
+            .unwrap()
             .filter { $0.isBeingDismissed }
             .asSignal(onErrorRecover: { _ in Signal.empty() })
     }
@@ -87,7 +87,7 @@ extension Reactive where Base: UIViewController {
                 .map { [weak viewController] _ in
                     return viewController
                 }
-                .filter { $0 != nil }.map { $0! }
+                .unwrap()
                 .subscribe(observer)
         }
 
