@@ -110,11 +110,3 @@ extension Reactive where Base: UINavigationController {
         }
     }
 }
-
-class UINavigationControllerDelegateProxy: NSObject, UINavigationControllerDelegate {
-
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) { }
-
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) { }
-
-}
