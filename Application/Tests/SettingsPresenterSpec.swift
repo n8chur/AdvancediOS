@@ -22,19 +22,19 @@ class SettingsPresenterSpec: QuickSpec {
                 }
 
                 it("should call the presenter to create a view model") {
-                    presentingViewModel.presentSettings.apply(false).start()
+                    presentingViewModel.presentSettings.execute(false)
 
                     expect(presentingViewModel.factory.makeViewModel.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context") {
-                    presentingViewModel.presentSettings.apply(false).start()
+                    presentingViewModel.presentSettings.execute(false)
 
                     expect(presenter.settingsPresentation.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
 
                 it("should call the setup block") {
-                    presentingViewModel.presentSettings.apply(false).start()
+                    presentingViewModel.presentSettings.execute(false)
 
                     expect(presentingViewModel.setupViewModel.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }

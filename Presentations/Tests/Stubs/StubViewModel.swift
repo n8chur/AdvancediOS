@@ -1,8 +1,8 @@
-import RxSwift
+import RxCocoa
 import Presentations
 
 class StubViewModel: ViewModel {
 
-    let isActive = Variable(true)
+    let isActive = BehaviorRelay(value: true)
 
 }

@@ -1,18 +1,18 @@
-import RxSwift
+import RxCocoa
 import Presentations
 
 @testable import Application
 
 class StubSelectionPresenter {
 
-    let selectionPresentation = MutableProperty<SelectionViewModel?>(nil)
+    let selectionPresentation = BehaviorRelay<SelectionViewModel?>(value: nil)
 
 }
 
 extension StubSelectionPresenter: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
-        selectionPresentation.value = viewModel
+        selectionPresentation.accept(viewModel)
         return DismissablePresentation.stub()
     }
 

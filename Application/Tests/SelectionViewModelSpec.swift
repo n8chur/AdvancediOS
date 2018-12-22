@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import RxSwift
+import RxCocoa
 
 @testable import Application
 
@@ -36,16 +37,14 @@ class SelectionViewModelSpec: QuickSpec {
                 context("when input is nil") {
                     it("should send the value") {
                         let newValue = "New test value"
-                        viewModel.input.value = newValue
+                        viewModel.input.accept(newValue)
 
-                        var submitValue: String??
-                        viewModel.submit.apply()
-                            .on(value: { value in
-                                submitValue = value
-                            })
-                            .start()
+                        let submitValue = BehaviorRelay<String??>(value: nil)
+                        _ = viewModel.submit.elements.bind(to: submitValue)
 
-                        guard let sentValue = submitValue else {
+                        viewModel.submit.execute(())
+
+                        guard let sentValue = submitValue.value else {
                             fail("No value sent.")
                             return
                         }
@@ -57,16 +56,14 @@ class SelectionViewModelSpec: QuickSpec {
                 context("when input is non-nil") {
                     it("should send the value") {
                         let input = "Test input value."
-                        viewModel.input.value = input
+                        viewModel.input.accept(input)
 
-                        var sentValue: String?
-                        viewModel.submit.apply()
-                            .on(value: { value in
-                                sentValue = value
-                            })
-                            .start()
+                        let submitValue = BehaviorRelay<String?>(value: nil)
+                        _ = viewModel.submit.elements.bind(to: submitValue)
 
-                        expect(sentValue).to(equal(input))
+                        viewModel.submit.execute(())
+
+                        expect(submitValue.value).to(equal(input))
                     }
                 }
             }

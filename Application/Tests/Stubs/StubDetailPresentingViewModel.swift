@@ -1,18 +1,18 @@
-import RxSwift
+import RxCocoa
 
 @testable import Application
 
 class StubDetailPresentingViewModel: DetailPresentingViewModel {
 
-    let setupViewModel = MutableProperty<DetailViewModel?>(nil)
+    let setupViewModel = BehaviorRelay<DetailViewModel?>(value: nil)
 
     weak var detailPresenter: DetailPresenter?
 
     private(set) lazy var presentDetail = makePresentDetail(withFactory: factory) { [unowned self] (viewModel) in
-        self.setupViewModel.value = viewModel
+        self.setupViewModel.accept(viewModel)
     }
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
     let factory = StubDetailViewModelFactory()
 
@@ -20,11 +20,11 @@ class StubDetailPresentingViewModel: DetailPresentingViewModel {
 
 class StubDetailViewModelFactory: DetailViewModelFactoryProtocol {
 
-    let makeViewModel = MutableProperty<DetailViewModel?>(nil)
+    let makeViewModel = BehaviorRelay<DetailViewModel?>(value: nil)
 
     func makeDetailViewModel() -> DetailViewModel {
         let viewModel = DetailViewModel(selectionFactory: self)
-        makeViewModel.value = viewModel
+        makeViewModel.accept(viewModel)
         return viewModel
     }
 }

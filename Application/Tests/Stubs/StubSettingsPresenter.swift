@@ -1,18 +1,18 @@
-import RxSwift
+import RxCocoa
 import Presentations
 
 @testable import Application
 
 class StubSettingsPresenter {
 
-    let settingsPresentation = MutableProperty<SettingsViewModel?>(nil)
+    let settingsPresentation = BehaviorRelay<SettingsViewModel?>(value: nil)
 
 }
 
 extension StubSettingsPresenter: SettingsPresenter {
 
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation {
-        settingsPresentation.value = viewModel
+        settingsPresentation.accept(viewModel)
         return DismissablePresentation.stub()
     }
 

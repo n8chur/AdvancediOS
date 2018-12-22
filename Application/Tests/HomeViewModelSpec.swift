@@ -24,7 +24,7 @@ class HomeViewModelSpec: QuickSpec {
                     it("should send the correct value") {
                         expect(viewModel.testText.value).to(beNil())
 
-                        viewModel.isActive.value = true
+                        viewModel.isActive.accept(true)
 
                         expect(viewModel.testText.value).toEventually(equal(L10n.Home.testText))
                     }
