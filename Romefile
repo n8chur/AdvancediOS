@@ -7,5 +7,6 @@ repositoryMap:
   - RxSwift:
     - name: RxSwift
     - name: RxCocoa
+    - name: RxAtomic
     - name: RxBlocking
     - name: RxTest
