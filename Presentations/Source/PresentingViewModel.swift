@@ -1,5 +1,5 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 
 public protocol PresentingViewModel: ViewModel { }
 
@@ -16,20 +16,20 @@ public extension PresentingViewModel {
     ///             If nil is returned, this action will have no effect.
     public func makePresentAction<Input, PresentationContextType: PresentationContext>(
         withContext context: @escaping (Input) -> PresentationContextType?
-    ) -> Action<Input, PresentationContextType.ViewModelType, NoError> {
-        return Action<Input, PresentationContextType.ViewModelType, NoError> { input in
-            return SignalProducer<PresentationContextType.ViewModelType, NoError> { (observer, lifetime) in
+    ) -> Action<Input, PresentationContextType.ViewModelType> {
+        return Action<Input, PresentationContextType.ViewModelType> { input in
+            return Observable<PresentationContextType.ViewModelType>.create { observer in
                 guard let context = context(input) else {
-                    observer.sendCompleted()
-                    return
+                    observer.onCompleted()
+                    return SingleAssignmentDisposable()
                 }
 
-                context.presentation.present.apply(context.presentAnimated)
-                    .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
-                    .then(SignalProducer(value: context.viewModel))
-                    .take(during: lifetime)
+                return context.presentation.present.execute(context.presentAnimated)
+                    .catchError { _ in return Observable<Never>.empty() }
+                    .ignoreElements()
+                    .andThen(Observable.just(context.viewModel))
                     .untilDisposal(retain: context)
-                    .start(observer)
+                    .subscribe(observer)
             }
         }
     }

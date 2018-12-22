@@ -1,6 +1,4 @@
 import UIKit
-import ReactiveSwift
-import Result
 import Presentations
 
 extension DismissablePresentationContext where PresentedViewModel == StubViewModel {

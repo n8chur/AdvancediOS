@@ -1,6 +1,5 @@
 import UIKit
-import ReactiveSwift
-import Result
+import RxSwift
 import RxExtensions
 
 public protocol PresentationContext: class {
@@ -40,24 +39,33 @@ public class ResultPresentationContext<PresentedViewModel: ResultViewModel>: Dis
     override public init(presentation: DismissablePresentation, viewModel: PresentedViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
         super.init(presentation: presentation, viewModel: viewModel, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
 
-        let dismiss = presentation.dismiss.apply(dismissAnimated)
-            .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+        let dismiss = Observable<Never>.deferred { [weak self] in
+            guard let self = self else {
+                return Observable<Never>.empty()
+            }
+
+            return self.presentation.dismiss.execute(dismissAnimated)
+                .catchError { _ in return Observable<Never>.empty() }
+        }
 
         // Wait until the dismiss action is enabled before dismissing.
-        let dismissWhenEnabled = presentation.dismiss.isEnabled.producer
+        let dismissWhenEnabled = presentation.dismiss.enabled
             // Observe on the main queue scheduler to avoid a deadlock if this all happens synchronously.
-            .observe(on: QueueScheduler.main)
+            .observeOn(MainScheduler.asyncInstance)
             .filter { $0 }
-            .take(first: 1)
+            .take(1)
             .whenTrue(subscribeTo: dismiss)
-            .take(until: presentation.didDismiss)
 
         // When a result is received begin waiting for the dismiss action to be enabled and then dismiss.
-        viewModel.result.producer
-            .take(first: 1)
-            .then(dismissWhenEnabled)
-            .take(until: presentation.didDismiss)
-            .start()
+        viewModel.result
+            .take(1)
+            .ignoreElements()
+            .andThen(dismissWhenEnabled)
+            .takeUntil(presentation.didDismiss)
+            .subscribe()
+            .disposed(by: disposeBag)
     }
+
+    private let disposeBag = DisposeBag()
 
 }

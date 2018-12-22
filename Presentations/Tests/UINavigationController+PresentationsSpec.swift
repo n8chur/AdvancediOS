@@ -1,7 +1,6 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
 
 @testable import Presentations
 
@@ -25,25 +24,25 @@ class UINavigationControllerPresentationsSpec: QuickSpec {
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController ]))
 
-                presentation.present.apply(false).start()
+                _ = presentation.present.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController, presentedViewController ]))
             }
 
             it("should dismiss a presented view controller") {
                 let presentation = navigationController.makePushPresentation(of: presentedViewController)
-                presentation.present.apply(false).start()
+                _ = presentation.present.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController, presentedViewController ]))
 
-                presentation.dismiss.apply(false).start()
+                presentation.dismiss.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController ]))
             }
 
             it("should dismiss any view controller controllers presented on top of the presented view controller") {
                 let presentation = navigationController.makePushPresentation(of: presentedViewController)
-                presentation.present.apply(false).start()
+                _ = presentation.present.execute(false).subscribe()
 
                 let topViewController = UIViewController()
                 navigationController.pushViewController(topViewController, animated: false)
@@ -54,7 +53,7 @@ class UINavigationControllerPresentationsSpec: QuickSpec {
                     topViewController,
                 ]))
 
-                presentation.dismiss.apply(false).start()
+                _ = presentation.dismiss.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController ]))
             }
@@ -62,11 +61,11 @@ class UINavigationControllerPresentationsSpec: QuickSpec {
             it("should should not pop the root view controller") {
                 let navigationController = UINavigationController()
                 let presentation = navigationController.makePushPresentation(of: rootViewController)
-                presentation.present.apply(false).start()
+                _ = presentation.present.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController ]))
 
-                presentation.dismiss.apply(false).start()
+                _ = presentation.dismiss.execute(false).subscribe()
 
                 expect(navigationController.viewControllers).to(equal([ rootViewController ]))
             }

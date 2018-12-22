@@ -1,11 +1,13 @@
 import UIKit
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
+import Action
+import RxExtensions
 
 public protocol Presentation: class {
-    typealias MakePresent = (_ presentedViewController: UIViewController, _ animated: Bool) -> SignalProducer<Never, NoError>
+    typealias MakePresent = (_ presentedViewController: UIViewController, _ animated: Bool) -> Completable
     var viewController: UIViewController { get }
-    var present: Action<Bool, Never, NoError> { get }
+    var present: CompletableAction<Bool> { get }
 }
 
 /// A dismissible presentation (e.g. navigation push, modal presentation, etc.).
@@ -13,7 +15,7 @@ public protocol Presentation: class {
 /// Presentation are single use. After the present command has been executed, a new presentation will need to be created
 /// to start a another presentation.
 public class DismissablePresentation: Presentation {
-    public typealias MakeDismiss = (_ presentedViewController: UIViewController, _ animated: Bool) -> SignalProducer<Never, NoError>
+    public typealias MakeDismiss = (_ presentedViewController: UIViewController, _ animated: Bool) -> Completable
 
     public let viewController: UIViewController
 
@@ -22,20 +24,20 @@ public class DismissablePresentation: Presentation {
     /// completes.
     ///
     /// This action is only enabled when the view controller has not yet been presented.
-    public let present: Action<Bool, Never, NoError>
+    public let present: CompletableAction<Bool>
 
     /// The action that begins executing the producer returned from the dismiss producer (provided by the MakeDismiss
     /// closure at initialization time). The action's execution signal completes when the signal producer's signal
     /// completes.
     ///
     /// This action is only enabled after presentation completes.
-    public let dismiss: Action<Bool, Never, NoError>
+    public let dismiss: CompletableAction<Bool>
 
     /// Sends () and then completes when the view controller dismisses (either through the the dismiss action or a value
     /// is sent along the didDismiss signal provided at initialization).
     ///
     /// This action will be disabled while the
-    public let didDismiss: Signal<(), NoError>
+    public let didDismiss: Observable<()>
 
     /// - Parameter viewController: The view controller being presented.
     /// - Parameter present: A closure that returns a signal producer that will be created and started when the present
@@ -45,54 +47,60 @@ public class DismissablePresentation: Presentation {
     /// - Parameter didDismiss: Should send a value and then complete when the view controller did dismiss. In the case
     ///             of a view controller being presented in a navigation controller, this may be a signal that sends ()
     ///             when the view controller's parent becomes nil.
-    public init(presentedViewController viewController: UIViewController, present: @escaping MakePresent, dismiss: @escaping MakeDismiss, didDismiss: Signal<(), NoError>) {
+    public init(presentedViewController viewController: UIViewController, present: @escaping MakePresent, dismiss: @escaping MakeDismiss, didDismiss: Observable<()>) {
         self.viewController = viewController
 
-        let canPresent = MutableProperty<Bool>(true)
-        let canDismiss = MutableProperty<Bool>(false)
+        let canPresent = Variable<Bool>(true)
+        let canDismiss = Variable<Bool>(false)
 
-        self.present = Action<Bool, Never, NoError>(enabledIf: canPresent, execute: { [weak viewController] animated -> SignalProducer<Never, NoError> in
+        self.present = CompletableAction<Bool>(enabledIf: canPresent.asObservable()) { [weak viewController] animated -> Completable in
             guard let viewController = viewController else {
-                return SignalProducer.empty
+                return Completable.empty()
             }
             return present(viewController, animated)
-        })
+        }
 
-        self.dismiss = Action<Bool, Never, NoError>(enabledIf: canDismiss, execute: { [weak viewController] animated -> SignalProducer<Never, NoError> in
+        self.dismiss = CompletableAction<Bool>(enabledIf: canDismiss.asObservable()) { [weak viewController] animated -> Completable in
             guard let viewController = viewController else {
-                return SignalProducer.empty
+                return Completable.empty()
             }
             return dismiss(viewController, animated)
-        })
+        }
 
-        self.didDismiss = Signal
+        self.didDismiss = Observable
             .merge([
                 self.dismiss.completed,
                 didDismiss,
             ])
-            .take(first: 1)
+            .take(1)
 
-        let falseDuringPresentation = self.present.isExecuting.signal
+        let falseDuringPresentation = self.present.executing
             .filter { $0 }
             .map { _ in return false }
 
-        canPresent <~ falseDuringPresentation
+        falseDuringPresentation
+            .bind(to: canPresent)
+            .disposed(by: disposeBag)
 
-        let falseDuringDismissActionExecution = self.dismiss.isExecuting.signal
+        let falseDuringDismissActionExecution = self.dismiss.executing
             .filter { $0 }
             .map { _ in return false }
 
         let trueAfterFirstPresentation = self.present.completed
             .map { true }
-            .take(first: 1)
+            .take(1)
 
-        canDismiss <~ Signal
+        Observable
             .merge([
                 trueAfterFirstPresentation,
                 falseDuringDismissActionExecution,
                 self.didDismiss.map { false },
             ])
-            .skipRepeats()
+            .distinctUntilChanged()
+            .bind(to: canDismiss)
+            .disposed(by: disposeBag)
     }
+
+    private let disposeBag = DisposeBag()
 
 }

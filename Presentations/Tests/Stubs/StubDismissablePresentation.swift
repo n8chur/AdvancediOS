@@ -1,6 +1,5 @@
 import UIKit
-import ReactiveSwift
-import Result
+import RxSwift
 import Presentations
 
 extension DismissablePresentation {
@@ -10,12 +9,12 @@ extension DismissablePresentation {
         return DismissablePresentation(
             presentedViewController: viewController,
             present: { (_, _)  in
-                return SignalProducer<Never, NoError>.empty
+                return Completable.empty()
             },
             dismiss: { (_, _) in
-                return SignalProducer<Never, NoError>.empty
+                return Completable.empty()
             },
-            didDismiss: Signal<(), NoError>.empty)
+            didDismiss: Observable<()>.empty())
     }
 
 }

@@ -10,6 +10,7 @@ targets:
       - target: RxExtensions
       - carthage: RxSwift
       - carthage: RxCocoa
+      - carthage: Action
     scheme:
       testTargets: 
         - PresentationsTests

@@ -1,6 +1,5 @@
 import UIKit
-import ReactiveSwift
-import Result
+import RxSwift
 
 /// Adopted from https://stackoverflow.com/a/33767837
 extension UINavigationController {

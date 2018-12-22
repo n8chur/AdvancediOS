@@ -1,8 +1,11 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
+import UIKit
 import RxExtensions
+import Action
+import RxBlocking
+import Foundation
 
 @testable import Presentations
 
@@ -18,15 +21,16 @@ class UIViewControllerPresentationsSpec: QuickSpec {
 
                 let presentation = DismissablePresentation(
                     presentedViewController: presentedViewController,
-                    present: { (_, _) in return SignalProducer.empty },
-                    dismiss: { (_, animated) -> SignalProducer<Never, NoError> in
-                        return SignalProducer<Bool, NoError> { () -> Bool in
+                    present: { (_, _) in return Completable.empty() },
+                    dismiss: { (_, animated) -> Completable in
+                        return Observable<Bool>.create { observer in
                                 animatedValue = animated
-                                return animated
+                                observer.onCompleted()
+                                return Disposables.create()
                             }
-                            .ignoreValues()
+                            .ignoreElements()
                     },
-                    didDismiss: Signal.empty)
+                    didDismiss: Observable<()>.empty())
 
                 presentation.addCancelBarButtonItem(to: viewController, animated: false)
 
@@ -35,19 +39,15 @@ class UIViewControllerPresentationsSpec: QuickSpec {
                     return
                 }
 
-                guard let action = cancelButton.reactive.pressed else {
-                    fail("cancelButton's action is not set.")
-                    return
-                }
-
                 // The button's action should be disabled until presentation completes.
-                expect(action.isEnabled.value).to(beFalse())
+                expect(cancelButton.isEnabled).to(beFalse())
 
-                presentation.present.apply(false).start()
+                _ = presentation.present.execute(false).subscribe()
 
-                expect(action.isEnabled.value).to(beTrue())
+                expect(cancelButton.isEnabled).to(equal(true))
 
-                action.execute(cancelButton)
+                // Simulate a button press.
+                _ = cancelButton.target?.perform(cancelButton.action)
 
                 expect(animatedValue).toEventually(beFalse())
             }

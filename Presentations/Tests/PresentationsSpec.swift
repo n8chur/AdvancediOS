@@ -2,8 +2,8 @@
 
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 
 @testable import Presentations
 
@@ -18,7 +18,7 @@ class PresentationsSpec: QuickSpec {
                     var presentClosureCallCount = 0
                     var presentClosureViewController: UIViewController?
                     var presentClosureAnimated: Bool?
-                    let (presentSignal, presentObserver) = Signal<Never, NoError>.pipe()
+                    let presentSubject = PublishSubject<Never>()
 
                     let presentation = DismissablePresentation(
                         presentedViewController: viewController,
@@ -27,18 +27,20 @@ class PresentationsSpec: QuickSpec {
                             presentClosureViewController = viewController
                             presentClosureAnimated = animated
 
-                            return presentSignal.producer
+                            return presentSubject
+                                .asObservable()
+                                .ignoreElements()
                         },
-                        dismiss: { (_, _) in return SignalProducer<Never, NoError>.empty },
-                        didDismiss: Signal<(), NoError>.empty)
+                        dismiss: { (_, _) in return Completable.empty() },
+                        didDismiss: Observable<()>.empty())
 
                     expect(presentClosureCallCount).to(equal(0))
                     expect(presentClosureViewController).to(beNil())
                     expect(presentClosureAnimated).to(beNil())
 
                     let animated = true
-                    presentation.present.apply(animated).start()
-                    presentObserver.sendCompleted()
+                    _ = presentation.present.execute(animated).subscribe()
+                    presentSubject.onCompleted()
 
                     expect(presentClosureCallCount).to(equal(1))
                     expect(presentClosureViewController).to(equal(viewController))
@@ -48,32 +50,32 @@ class PresentationsSpec: QuickSpec {
                 it("should be disabled when the present command is executed") {
                     let viewController = UIViewController()
 
-                    let (presentSignal, presentObserver) = Signal<Never, NoError>.pipe()
-                    let (dismissSignal, dismissObserver) = Signal<Never, NoError>.pipe()
+                    let presentSubject = PublishSubject<Never>()
+                    let dismissSubject = PublishSubject<Never>()
 
                     let presentation = DismissablePresentation(
                         presentedViewController: viewController,
-                        present: { (_, _) in return presentSignal.producer },
-                        dismiss: { (_, _) in return dismissSignal.producer },
-                        didDismiss: Signal<(), NoError>.empty)
+                        present: { (_, _) in return presentSubject.asObserver().ignoreElements() },
+                        dismiss: { (_, _) in return dismissSubject.asObserver().ignoreElements() },
+                        didDismiss: Observable<()>.empty())
 
-                    expect(presentation.present.isEnabled.value).to(beTrue())
+                    expect(try? presentation.present.enabled.toBlocking().first()).to(equal(true))
 
-                    presentation.present.apply(true).start()
+                    _ = presentation.present.execute(true).subscribe()
 
-                    expect(presentation.present.isEnabled.value).to(beFalse())
+                    expect(try? presentation.present.enabled.toBlocking().first()).to(equal(false))
 
-                    presentObserver.sendCompleted()
+                    presentSubject.onCompleted()
 
-                    expect(presentation.present.isEnabled.value).to(beFalse())
+                    expect(try? presentation.present.enabled.toBlocking().first()).to(equal(false))
 
-                    presentation.dismiss.apply(true).start()
+                    _ = presentation.dismiss.execute(true).subscribe()
 
-                    expect(presentation.present.isEnabled.value).to(beFalse())
+                    expect(try? presentation.present.enabled.toBlocking().first()).to(equal(false))
 
-                    dismissObserver.sendCompleted()
+                    dismissSubject.onCompleted()
 
-                    expect(presentation.present.isEnabled.value).to(beFalse())
+                    expect(try? presentation.present.enabled.toBlocking().first()).to(equal(false))
                 }
             }
 
@@ -84,29 +86,29 @@ class PresentationsSpec: QuickSpec {
                     var dismissClosureCallCount = 0
                     var dismissClosureViewController: UIViewController?
                     var dismissClosureAnimated: Bool?
-                    let (dismissSignal, dismissObserver) = Signal<Never, NoError>.pipe()
+                    let dismissSubject = PublishSubject<Never>()
 
                     let presentation = DismissablePresentation(
                         presentedViewController: viewController,
-                        present: { (_, _) in return SignalProducer<Never, NoError>.empty },
+                        present: { (_, _) in return Completable.empty() },
                         dismiss: { (viewController, animated) in
                             dismissClosureCallCount += 1
                             dismissClosureViewController = viewController
                             dismissClosureAnimated = animated
 
-                            return dismissSignal.producer
+                            return dismissSubject.asObservable().ignoreElements()
                         },
-                        didDismiss: Signal<(), NoError>.empty)
+                        didDismiss: Observable<()>.empty())
 
                     expect(dismissClosureCallCount).to(equal(0))
                     expect(dismissClosureViewController).to(beNil())
                     expect(dismissClosureAnimated).to(beNil())
 
                     let animated = true
-                    presentation.present.apply(animated).start()
+                    _ = presentation.present.execute(animated).subscribe()
 
-                    presentation.dismiss.apply(animated).start()
-                    dismissObserver.sendCompleted()
+                    _ = presentation.dismiss.execute(animated).subscribe()
+                    dismissSubject.onCompleted()
 
                     expect(dismissClosureCallCount).to(equal(1))
                     expect(dismissClosureViewController).to(equal(viewController))
@@ -116,52 +118,52 @@ class PresentationsSpec: QuickSpec {
                 it("should be disabled after the dismiss action finishes executing") {
                     let viewController = UIViewController()
 
-                    let (presentSignal, presentObserver) = Signal<Never, NoError>.pipe()
-                    let (dismissSignal, dismissObserver) = Signal<Never, NoError>.pipe()
+                    let presentSubject = PublishSubject<Never>()
+                    let dismissSubject = PublishSubject<Never>()
 
                     let presentation = DismissablePresentation(
                         presentedViewController: viewController,
-                        present: { (_, _) in return presentSignal.producer },
-                        dismiss: { (_, _) in return dismissSignal.producer },
-                        didDismiss: Signal<(), NoError>.empty)
+                        present: { (_, _) in return presentSubject.asObserver().ignoreElements() },
+                        dismiss: { (_, _) in return dismissSubject.asObserver().ignoreElements() },
+                        didDismiss: Observable<()>.empty())
 
-                    expect(presentation.dismiss.isEnabled.value).to(beFalse())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(false))
 
-                    presentation.present.apply(true).start()
+                    _ = presentation.present.execute(true).subscribe()
 
-                    expect(presentation.dismiss.isEnabled.value).to(beFalse())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(false))
 
-                    presentObserver.sendCompleted()
+                    presentSubject.onCompleted()
 
-                    expect(presentation.dismiss.isEnabled.value).to(beTrue())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(true))
 
-                    presentation.dismiss.apply(true).start()
+                    _ = presentation.dismiss.execute(true).subscribe()
 
-                    expect(presentation.dismiss.isEnabled.value).to(beFalse())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(false))
 
-                    dismissObserver.sendCompleted()
+                    dismissSubject.onCompleted()
 
-                    expect(presentation.dismiss.isEnabled.value).to(beFalse())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(false))
                 }
 
                 it("should be disabled after the didDismiss signal sends a value") {
                     let viewController = UIViewController()
 
-                    let (didDismiss, didDismissObserver) = Signal<(), NoError>.pipe()
+                    let didDismissSubject = PublishSubject<()>()
 
                     let presentation = DismissablePresentation(
                         presentedViewController: viewController,
-                        present: { (_, _) in return SignalProducer<Never, NoError>.empty },
-                        dismiss: { (_, _) in return SignalProducer<Never, NoError>.empty },
-                        didDismiss: didDismiss)
+                        present: { (_, _) in return Completable.empty() },
+                        dismiss: { (_, _) in return Completable.empty() },
+                        didDismiss: didDismissSubject)
 
-                    presentation.present.apply(true).start()
+                    _ = presentation.present.execute(true).subscribe()
 
-                    expect(presentation.dismiss.isEnabled.value).to(beTrue())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(true))
 
-                    didDismissObserver.send(value: ())
+                    didDismissSubject.onNext(())
 
-                    expect(presentation.dismiss.isEnabled.value).to(beFalse())
+                    expect(try? presentation.dismiss.enabled.toBlocking().first()).to(equal(false))
                 }
             }
         }

@@ -1,7 +1,7 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 
 @testable import Presentations
 
@@ -16,14 +16,14 @@ class PresentationContextSpec: QuickSpec {
                         let stubPresentation = DismissablePresentation.stub()
                         let context = ResultPresentationContext(presentation: stubPresentation, viewModel: viewModel, presentAnimated: false, dismissAnimated: false)
 
-                        let dismissDidExecute = MutableProperty(false)
-                        dismissDidExecute <~ context.presentation.dismiss.isExecuting.signal
-                            .filter { $0 }
-                            .take(first: 1)
+                        let dismissDidExecute = Variable(false)
+                        _ = context.presentation.dismiss.completed
+                            .map { true }
+                            .bind(to: dismissDidExecute)
 
-                        context.presentation.present.apply(false).start()
+                        _ = context.presentation.present.execute(false).subscribe()
 
-                        viewModel.resultObserver.send(value: true)
+                        viewModel.resultSubject.onNext(())
 
                         expect(dismissDidExecute.value).toEventually(beTrue())
                     }
@@ -35,14 +35,14 @@ class PresentationContextSpec: QuickSpec {
                         let stubPresentation = DismissablePresentation.stub()
                         let context = ResultPresentationContext(presentation: stubPresentation, viewModel: viewModel, presentAnimated: false, dismissAnimated: false)
 
-                        let dismissDidExecute = MutableProperty(false)
-                        dismissDidExecute <~ context.presentation.dismiss.isExecuting.signal
-                            .filter { $0 }
-                            .take(first: 1)
+                        let dismissDidExecute = Variable(false)
+                        _ = context.presentation.dismiss.completed
+                            .map { true }
+                            .bind(to: dismissDidExecute)
 
-                        viewModel.resultObserver.send(value: true)
+                        viewModel.resultSubject.onNext(())
 
-                        context.presentation.present.apply(false).start()
+                        _ = context.presentation.present.execute(false).subscribe()
 
                         expect(dismissDidExecute.value).toEventually(beTrue())
                     }

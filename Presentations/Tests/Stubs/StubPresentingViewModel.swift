@@ -1,16 +1,16 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 import Presentations
 
 class StubPresentingViewModel<Presenter: AnyObject>: PresentingViewModel {
 
-    let isActive = MutableProperty(true)
+    let isActive = Variable(true)
 
     weak var presenter: Presenter?
 
-    let context = MutableProperty<Bool?>(nil)
+    let context = Variable<Bool?>(nil)
 
-    private(set) lazy var presentViewModel: Action<Bool, StubViewModel, NoError> = makePresentAction { [unowned self] animated -> DismissablePresentationContext<StubViewModel> in
+    private(set) lazy var presentViewModel: Action<Bool, StubViewModel> = makePresentAction { [unowned self] animated -> DismissablePresentationContext<StubViewModel> in
             self.context.value = animated
             return DismissablePresentationContext.stub()
         }

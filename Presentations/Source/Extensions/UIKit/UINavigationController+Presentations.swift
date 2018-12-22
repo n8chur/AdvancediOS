@@ -1,6 +1,5 @@
 import UIKit
-import ReactiveSwift
-import Result
+import RxSwift
 
 public extension UINavigationController {
 
@@ -8,18 +7,22 @@ public extension UINavigationController {
         let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
-            return self.reactive.pushViewController.apply((viewController, animated))
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+            return self.rx.pushViewController.execute((viewController, animated))
+                .catchError { _ in return Observable<Never>.empty() }
+                .ignoreElements()
         }
 
         let dismiss: DismissablePresentation.MakeDismiss = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
-            return self.reactive.popViewController.apply((viewController, animated))
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+            return self.rx.popViewController.execute((viewController, animated))
+                .catchError { _ in return Observable<Never>.empty() }
+                .ignoreElements()
         }
 
-        let didDismiss = viewController.reactive.didMoveToNilParent.map { _ in return () }
+        let didDismiss = viewController.rx.didMoveToNilParent
+            .map { _ in return () }
+            .asObservable()
 
         let presentation = DismissablePresentation(
             presentedViewController: viewController,
@@ -28,10 +31,10 @@ public extension UINavigationController {
             didDismiss: didDismiss)
 
         // Retain the presentation for its lifecycle.
-        presentation.didDismiss.producer
+        _ = presentation.didDismiss
             .untilDisposal(retain: presentation)
-            .take(duringLifetimeOf: self)
-            .start()
+            .takeUntil(rx.deallocated)
+            .subscribe()
 
         return presentation
     }

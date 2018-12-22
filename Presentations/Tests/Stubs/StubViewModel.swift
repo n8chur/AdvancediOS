@@ -1,9 +1,8 @@
-import ReactiveSwift
-import Result
+import RxSwift
 import Presentations
 
 class StubViewModel: ViewModel {
 
-    let isActive = MutableProperty(true)
+    let isActive = Variable(true)
 
 }
