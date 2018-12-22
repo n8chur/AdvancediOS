@@ -18,7 +18,7 @@ public extension ThemeProviderProtocol {
     ///
     /// A new style is created using the provided closure whenever the theme changes, and
     /// is then applied to the styleable.
-    public func bindToStyleable<StyleType: Style, Styleable: AnyObject>(_ styleable: Styleable, makeStyle: @escaping (ThemeType) -> StyleType) where StyleType.Styleable == Styleable {
+    public func bindToStyleable<StyleType: Style>(_ styleable: StyleType.Styleable, makeStyle: @escaping (ThemeType) -> StyleType) where StyleType.Styleable: AnyObject {
         theme.producer
             .take(duringLifetimeOf: styleable)
             .startWithValues { [weak styleable] theme in
@@ -28,7 +28,7 @@ public extension ThemeProviderProtocol {
 
                 let style = makeStyle(theme)
                 style.apply(to: styleable)
-        }
+            }
     }
 
 }
