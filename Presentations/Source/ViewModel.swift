@@ -1,11 +1,12 @@
 import RxSwift
+import RxCocoa
 
 public protocol ViewModel {
     /// Indicates whether the view model is currently active.
     ///
     /// This value should be set by the associated view controller to indicate that it is visible and should be doing
     /// active work.
-    var isActive: Variable<Bool> { get }
+    var isActive: BehaviorRelay<Bool> { get }
 }
 
 /// A view model that has a result.

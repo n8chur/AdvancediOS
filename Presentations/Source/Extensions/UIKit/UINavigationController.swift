@@ -1,20 +1,42 @@
 import UIKit
 import RxSwift
 import Action
+import ObjectiveC
+
+private struct AssociatedKeys {
+    static var push = "rx_navigationController_push"
+    static var pop = "rx_navigationController_pop"
+    static var popTo = "rx_navigationController_popTo"
+}
 
 extension Reactive where Base: UINavigationController {
 
     /// The execution signal sends no values and completes when the view controller has finished presenting.
     public var pushViewController: CompletableAction<(UIViewController, Bool)> {
+        let push: CompletableAction<(UIViewController, Bool)>
+        if let associatedPush = objc_getAssociatedObject(base, &AssociatedKeys.push) as? CompletableAction<(UIViewController, Bool)> {
+            push = associatedPush
+        } else {
+            push = self.makePushViewController()
+            objc_setAssociatedObject(base, &AssociatedKeys.push, push, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return push
+    }
+
+    private func makePushViewController() -> CompletableAction<(UIViewController, Bool)> {
         let navigationController = base
-        return Action { (viewController, animated) in
+        return  Action { (viewController, animated) in
             return Observable.create { [weak navigationController] observer in
-                navigationController?.pushViewController(viewController, animated: animated, completion: {
+                guard let navigationController = navigationController else {
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+
+                navigationController.pushViewController(viewController, animated: animated, completion: {
                     observer.onCompleted()
                 })
                 return Disposables.create()
             }
-
         }
     }
 
@@ -24,6 +46,17 @@ extension Reactive where Base: UINavigationController {
     ///
     /// Calling this on the root view controller does nothing and the action complete immediately.
     public var popViewController: CompletableAction<(UIViewController, Bool)> {
+        let pop: CompletableAction<(UIViewController, Bool)>
+        if let associatedPop = objc_getAssociatedObject(base, &AssociatedKeys.pop) as? CompletableAction<(UIViewController, Bool)> {
+            pop = associatedPop
+        } else {
+            pop = self.makePopViewController()
+            objc_setAssociatedObject(base, &AssociatedKeys.pop, pop, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return pop
+    }
+
+    private func makePopViewController() -> CompletableAction<(UIViewController, Bool)> {
         let navigationController = base
         return Action { (viewController, animated) in
             return Observable.create { [weak navigationController] observer in
@@ -44,12 +77,22 @@ extension Reactive where Base: UINavigationController {
 
                 return Disposables.create()
             }
-
         }
     }
 
     /// The execution signal sends no values and completes when the view controller has finished popping.
     public var popToViewController: CompletableAction<(UIViewController, Bool)> {
+        let popTo: CompletableAction<(UIViewController, Bool)>
+        if let associatedPopTo = objc_getAssociatedObject(base, &AssociatedKeys.popTo) as? CompletableAction<(UIViewController, Bool)> {
+            popTo = associatedPopTo
+        } else {
+            popTo = self.makePopToViewController()
+            objc_setAssociatedObject(base, &AssociatedKeys.popTo, popTo, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return popTo
+    }
+
+    private func makePopToViewController() -> CompletableAction<(UIViewController, Bool)> {
         let navigationController = base
         return CompletableAction { (viewController, animated) in
             return Observable.create { [weak navigationController] observer in

@@ -1,10 +1,10 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 import Presentations
 
 protocol SettingsPresentingViewModel: class, PresentingViewModel {
     var settingsPresenter: SettingsPresenter? { get set }
-    var presentSettings: Action<Bool, SettingsViewModel, NoError> { get }
+    var presentSettings: Action<Bool, SettingsViewModel> { get }
 }
 
 extension SettingsPresentingViewModel {
@@ -17,7 +17,7 @@ extension SettingsPresentingViewModel {
     func makePresentSettings(
         withFactory factory: SettingsViewModelFactoryProtocol,
         setupViewModel: ((SettingsViewModel) -> Void)? = nil
-    ) -> Action<Bool, SettingsViewModel, NoError> {
+    ) -> Action<Bool, SettingsViewModel> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<SettingsViewModel>? in
             guard
                 let self = self,

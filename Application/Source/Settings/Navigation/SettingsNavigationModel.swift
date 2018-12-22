@@ -1,11 +1,13 @@
-import ReactiveSwift
+import RxSwift
+import RxCocoa
+import RxExtensions
 import Core
 
 class SettingsNavigationModel: TabBarChildViewModel, SettingsPresentingViewModel {
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
-    let tabBarItemTitle = Property(value: L10n.SettingsNavigation.TabBarItem.title)
+    let tabBarItemTitle = Property(L10n.SettingsNavigation.TabBarItem.title)
 
     private(set) lazy var presentSettings = makePresentSettings(withFactory: settingsFactory)
 

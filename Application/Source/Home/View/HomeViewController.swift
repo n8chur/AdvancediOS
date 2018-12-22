@@ -1,7 +1,7 @@
 import UIKit
 import Presentations
-import ReactiveCocoa
-import ReactiveSwift
+import RxSwift
+import RxCocoa
 import Core
 
 class HomeViewController: UIViewController, ViewController {
@@ -12,7 +12,7 @@ class HomeViewController: UIViewController, ViewController {
 
     let themeProvider: ThemeProvider
 
-    private let uiScheduler = UIScheduler()
+    private let uiScheduler = MainScheduler.instance
 
     private(set) lazy var homeView: HomeView = {
         return HomeView(frame: UIScreen.main.bounds)
@@ -32,13 +32,21 @@ class HomeViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        homeView.label.reactive.text <~ viewModel.testText.signal
-        homeView.imageView.reactive.image <~ viewModel.image
-        homeView.detailButton.reactive.title <~ viewModel.presentDetailTitle
+        viewModel.testText
+            .bind(to: homeView.label.rx.text)
+            .disposed(by: disposeBag)
+        viewModel.image
+            .bind(to: homeView.imageView.rx.image)
+            .disposed(by: disposeBag)
+        viewModel.presentDetailTitle
+            .bind(to: homeView.detailButton.rx.title())
+            .disposed(by: disposeBag)
 
-        homeView.detailButton.reactive.pressed = CocoaAction(viewModel.presentDetail, input: true)
+        homeView.detailButton.rx.bind(to: viewModel.presentDetail, input: true)
 
-        viewModel.isActive <~ reactive.isAppeared
+        rx.isAppeared
+            .emit(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { HomeViewControllerStyle(theme: $0) }
     }
@@ -48,6 +56,8 @@ class HomeViewController: UIViewController, ViewController {
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }
 

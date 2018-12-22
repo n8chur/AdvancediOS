@@ -1,4 +1,6 @@
 import Core
+import RxSwift
+import Action
 import Presentations
 
 class DetailNavigationController: TabBarChildNavigationController<DetailNavigationModel> {
@@ -14,7 +16,7 @@ class DetailNavigationController: TabBarChildNavigationController<DetailNavigati
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.presentDetail.apply(false).start()
+        viewModel.presentDetail.execute(false)
     }
 
     private let factory: DetailNavigationControllerFactoryProtocol

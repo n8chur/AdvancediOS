@@ -1,10 +1,12 @@
-import ReactiveSwift
+import RxSwift
+import RxCocoa
+import RxExtensions
 
 class DetailNavigationModel: TabBarChildViewModel, DetailPresentingViewModel {
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
-    let tabBarItemTitle = Property(value: L10n.DetailNavigation.TabBarItem.title)
+    let tabBarItemTitle = Property(L10n.DetailNavigation.TabBarItem.title)
 
     private(set) lazy var presentDetail = makePresentDetail(withFactory: detailFactory)
 

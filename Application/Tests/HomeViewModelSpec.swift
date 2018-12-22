@@ -1,7 +1,6 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
 import Core
 
 @testable import Application

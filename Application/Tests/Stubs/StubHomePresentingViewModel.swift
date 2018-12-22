@@ -1,5 +1,4 @@
-import ReactiveSwift
-import Result
+import RxSwift
 
 @testable import Application
 

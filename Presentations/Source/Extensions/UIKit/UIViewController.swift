@@ -3,6 +3,11 @@ import RxCocoa
 import RxSwift
 import Action
 
+private struct AssociatedKeys {
+    static var present = "rx_viewController_present"
+    static var dismiss = "rx_viewController_dismiss"
+}
+
 extension Reactive where Base: UIViewController {
 
     /// Indicates whether the view controller's lifecycle is in between viewWillAppear and viewDidDisappear.
@@ -101,7 +106,18 @@ extension Reactive where Base: UIViewController {
     }
 
     /// The execution signal completes when the view controller's presentation has completed.
-    public var present: CompletableAction<(UIViewController, animated: Bool)> {
+    public var present: CompletableAction<(UIViewController, Bool)> {
+        let present: CompletableAction<(UIViewController, Bool)>
+        if let associatedPresent = objc_getAssociatedObject(base, &AssociatedKeys.present) as? CompletableAction<(UIViewController, Bool)> {
+            present = associatedPresent
+        } else {
+            present = self.makePresent()
+            objc_setAssociatedObject(base, &AssociatedKeys.present, present, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return present
+    }
+
+    private func makePresent() -> CompletableAction<(UIViewController, Bool)> {
         let baseViewController = base
         return CompletableAction { (viewController, animated) in
             return Observable.create { [weak baseViewController] observer in
@@ -123,6 +139,17 @@ extension Reactive where Base: UIViewController {
     ///
     /// The execution signal completes when the view controller's dismissal has completed.
     public var dismiss: CompletableAction<Bool> {
+        let dismiss: CompletableAction<Bool>
+        if let associatedDismiss = objc_getAssociatedObject(base, &AssociatedKeys.dismiss) as? CompletableAction<Bool> {
+            dismiss = associatedDismiss
+        } else {
+            dismiss = self.makeDismiss()
+            objc_setAssociatedObject(base, &AssociatedKeys.dismiss, dismiss, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        return dismiss
+    }
+
+    private func makeDismiss() -> CompletableAction<Bool> {
         let baseViewController = base
         return CompletableAction { animated in
             return Observable.create { [weak baseViewController] observer in

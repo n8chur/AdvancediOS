@@ -1,5 +1,6 @@
 import UIKit
-import ReactiveSwift
+import RxSwift
+import RxCocoa
 import Presentations
 import Core
 
@@ -21,7 +22,9 @@ class TabBarController<ViewModelType: ViewModel>: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.isActive <~ reactive.isAppeared
+        rx.isAppeared
+            .emit(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { TabBarControllerStyle<ViewModelType>(theme: $0) }
     }
@@ -31,5 +34,7 @@ class TabBarController<ViewModelType: ViewModel>: UITabBarController {
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }

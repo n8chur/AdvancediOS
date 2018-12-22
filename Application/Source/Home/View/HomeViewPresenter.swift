@@ -1,10 +1,10 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 import Presentations
 
 protocol HomePresentingViewModel: class, PresentingViewModel {
     var homePresenter: HomePresenter? { get set }
-    var presentHome: Action<Bool, HomeViewModel, NoError> { get }
+    var presentHome: Action<Bool, HomeViewModel> { get }
 }
 
 extension HomePresentingViewModel {
@@ -19,7 +19,7 @@ extension HomePresentingViewModel {
     func makePresentHome(
         withFactory factory: HomeViewModelFactoryProtocol,
         setupViewModel: ((HomeViewModel) -> Void)? = nil
-    ) -> Action<Bool, HomeViewModel, NoError> {
+    ) -> Action<Bool, HomeViewModel> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<HomeViewModel>? in
             guard
                 let self = self,

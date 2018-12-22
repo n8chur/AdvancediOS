@@ -34,6 +34,8 @@ public class DismissablePresentationContext<PresentedViewModel: ViewModel>: Pres
 }
 
 /// A dismissible presentation that dismisses when the provided result view model's result signal sends a value.
+///
+/// This context retains itself until the presentation's didDismiss observable sends a value.
 public class ResultPresentationContext<PresentedViewModel: ResultViewModel>: DismissablePresentationContext<PresentedViewModel> {
 
     override public init(presentation: DismissablePresentation, viewModel: PresentedViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
@@ -62,6 +64,8 @@ public class ResultPresentationContext<PresentedViewModel: ResultViewModel>: Dis
             .ignoreElements()
             .andThen(dismissWhenEnabled)
             .takeUntil(presentation.didDismiss)
+            // Ensure self is retained until the presented view controller is dismiss so that it can observe the result.
+            .untilDisposal(retain: self)
             .subscribe()
             .disposed(by: disposeBag)
     }

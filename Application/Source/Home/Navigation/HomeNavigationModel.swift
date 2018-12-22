@@ -1,10 +1,12 @@
-import ReactiveSwift
+import RxSwift
+import RxCocoa
+import RxExtensions
 
 class HomeNavigationModel: TabBarChildViewModel, HomePresentingViewModel {
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
-    let tabBarItemTitle = Property(value: L10n.HomeNavigation.TabBarItem.title)
+    let tabBarItemTitle = Property(L10n.HomeNavigation.TabBarItem.title)
 
     private(set) lazy var presentHome = makePresentHome(withFactory: homeFactory)
 

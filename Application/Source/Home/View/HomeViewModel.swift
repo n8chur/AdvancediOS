@@ -1,42 +1,44 @@
-import ReactiveSwift
-import Result
 import Presentations
+import RxSwift
+import RxCocoa
 import RxExtensions
 import Core
 
 class HomeViewModel: ViewModel, DetailPresentingViewModel {
 
-    let isActive = MutableProperty(false)
+    let isActive = BehaviorRelay(value: false)
 
     weak var detailPresenter: DetailPresenter?
 
     /// Example text that will be updated asynchronously when isActive becomes true.
     let testText: Property<String?>
-    let image = Property(value: Image.n8churLogo.image)
-    let presentDetailTitle = Property(value: L10n.Home.PresentDetail.title)
+    let image = Property(Image.n8churLogo.image)
+    let presentDetailTitle = Property(L10n.Home.PresentDetail.title)
 
     private(set) lazy var presentDetail = makePresentDetail(withFactory: detailFactory)
 
-    private let backgroundScheduler = QueueScheduler(qos: .background, name: "RootViewModel.backgroundScheduler")
+    private let backgroundScheduler = ConcurrentDispatchQueueScheduler(qos: .background)
 
     init(detailFactory: DetailViewModelFactoryProtocol) {
         self.detailFactory = detailFactory
 
-        let testTextInternalProducer = SignalProducer
+        let testTextInternalObserver = Observable<UInt>
             // Add a delay to simulate a network operation.
-            .timer(interval: DispatchTimeInterval.milliseconds(50), on: backgroundScheduler)
-            .take(first: 1)
-            .map { _ in
-                return Optional.some(L10n.Home.testText)
+            .timer(RxTimeInterval(0.5), scheduler: backgroundScheduler)
+            .take(1)
+            .map { _ -> String? in
+                return L10n.Home.testText
             }
 
-        let testTextProducer = isActive.producer
-            .whenTrue(subscribeTo: testTextInternalProducer)
+        let testTextObserver = isActive.asObservable()
+            .whenTrue(subscribeTo: testTextInternalObserver)
 
-        testText = Property(initial: nil, then: testTextProducer)
+        testText = Property(testTextObserver, initial: nil)
     }
 
     private let detailFactory: DetailViewModelFactoryProtocol
+
+    private let disposeBag = DisposeBag()
 
 }
 

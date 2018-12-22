@@ -1,10 +1,11 @@
-import ReactiveSwift
+import RxSwift
+import RxCocoa
 import Presentations
 import Core
 
 class RootTabBarViewModel: ViewModel {
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
     let home: HomeNavigationModel
     let detail: DetailNavigationModel

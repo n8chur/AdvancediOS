@@ -14,7 +14,7 @@ class HomeNavigationController: TabBarChildNavigationController<HomeNavigationMo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.presentHome.apply(false).start()
+        viewModel.presentHome.execute(false)
     }
 
     private let factory: HomeNavigationControllerFactoryProtocol

@@ -1,10 +1,10 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 import Presentations
 
 protocol SelectionPresentingViewModel: class, PresentingViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
-    var presentSelection: Action<Bool, SelectionViewModel, NoError> { get }
+    var presentSelection: Action<Bool, SelectionViewModel> { get }
 }
 
 extension SelectionPresentingViewModel {
@@ -19,7 +19,7 @@ extension SelectionPresentingViewModel {
         withFactory factory: SelectionViewModelFactoryProtocol,
         defaultValue: (() -> String?)? = nil,
         setupViewModel: ((SelectionViewModel) -> Void)? = nil
-    ) -> Action<Bool, SelectionViewModel, NoError> {
+    ) -> Action<Bool, SelectionViewModel> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<SelectionViewModel>? in
             guard
                 let self = self,
