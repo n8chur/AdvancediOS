@@ -1,7 +1,7 @@
 include:
   - Project_Logger.yml
   - Project_Core.yml
-  - Project_ReactiveExtensions.yml
+  - Project_RxExtensions.yml
   - Project_Presentations.yml
   - Project_Themer.yml
 name: Application
@@ -27,13 +27,12 @@ targets:
       - Application/Supporting Files
     dependencies:
       - target: Core
-      - target: ReactiveExtensions
+      - target: RxExtensions
       - target: Presentations
       - target: Themer
       - target: Logger
-      - carthage: ReactiveCocoa
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - carthage: RxSwift
+      - carthage: RxCocoa
       - carthage: SnapKit
     scheme:
       testTargets:
@@ -55,3 +54,5 @@ targets:
       - target: Application
       - carthage: Quick
       - carthage: Nimble
+      - carthage: RxTest
+      - carthage: RxBlocking

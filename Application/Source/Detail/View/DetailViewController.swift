@@ -1,8 +1,8 @@
 import UIKit
 import Presentations
-import ReactiveCocoa
-import ReactiveSwift
-import Result
+import RxCocoa
+import RxSwift
+import Action
 import Core
 
 class DetailViewController: UIViewController, ViewController {
@@ -31,13 +31,21 @@ class DetailViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        detailView.title.reactive.text <~ viewModel.title
-        detailView.button.reactive.title <~ viewModel.presentSelectionTitle
-        detailView.selectionResult.reactive.text <~ viewModel.selectionResult
+        viewModel.title
+            .bind(to: detailView.title.rx.text)
+            .disposed(by: disposeBag)
+        viewModel.presentSelectionTitle
+            .bind(to: detailView.button.rx.title())
+            .disposed(by: disposeBag)
+        viewModel.selectionResult
+            .bind(to: detailView.selectionResult.rx.text)
+            .disposed(by: disposeBag)
 
-        detailView.button.reactive.pressed = CocoaAction(viewModel.presentSelection, input: true)
+        detailView.button.rx.bind(to: viewModel.presentSelection, input: true)
 
-        viewModel.isActive <~ reactive.isAppeared
+        rx.isAppeared
+            .bind(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { DetailViewControllerStyle(theme: $0) }
     }
@@ -47,6 +55,8 @@ class DetailViewController: UIViewController, ViewController {
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }
 

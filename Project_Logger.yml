@@ -9,8 +9,7 @@ targets:
     dependencies:
       - carthage: XCGLogger
       - carthage: ObjcExceptionBridging
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - carthage: RxSwift
     scheme:
       testTargets: 
         - LoggerTests
@@ -27,5 +26,7 @@ targets:
       - target: Logger
       - carthage: Quick
       - carthage: Nimble
+      - carthage: RxTest
+      - carthage: RxBlocking
     settings:
       LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

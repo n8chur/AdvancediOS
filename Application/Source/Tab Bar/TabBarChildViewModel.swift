@@ -1,5 +1,5 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import RxExtensions
 import Presentations
 
 /// A view model whose view controller is presented in the context of a tab bar controller.

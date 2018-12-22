@@ -1,16 +1,18 @@
 import Themer
-import ReactiveSwift
+import RxSwift
 import Logger
 
 public class ThemeProvider: ThemeProviderProtocol {
     public typealias ThemeType = Theme
 
-    public let theme = MutableProperty<Theme>(.light)
+    public let theme = Variable<Theme>(.light)
 
     public init() {
-        theme.signal
-            .take(duringLifetimeOf: self)
+        theme.asObservable()
             .logValue(.info, .core) { "Theme changed: \($0)" }
-            .observeCompleted { }
+            .subscribe()
+            .disposed(by: disposeBag)
     }
+
+    private let disposeBag = DisposeBag()
 }

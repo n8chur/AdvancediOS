@@ -14,7 +14,7 @@ class SettingsNavigationController: TabBarChildNavigationController<SettingsNavi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.presentSettings.apply(false).start()
+        viewModel.presentSettings.execute(false)
     }
 
     private let factory: SettingsNavigationControllerFactoryProtocol

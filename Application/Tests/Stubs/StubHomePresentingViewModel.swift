@@ -1,19 +1,20 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
+import Action
 
 @testable import Application
 
 class StubHomePresentingViewModel: HomePresentingViewModel {
 
-    let setupViewModel = MutableProperty<HomeViewModel?>(nil)
+    let setupViewModel = BehaviorRelay<HomeViewModel?>(value: nil)
 
     weak var homePresenter: HomePresenter?
 
-    private(set) lazy var presentHome: Action<Bool, HomeViewModel, NoError> = makePresentHome(withFactory: factory) { [unowned self] viewModel in
-        self.setupViewModel.value = viewModel
+    private(set) lazy var presentHome: Action<Bool, HomeViewModel> = makePresentHome(withFactory: factory) { [unowned self] viewModel in
+        self.setupViewModel.accept(viewModel)
     }
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
     let factory = StubHomeViewModelFactory()
 
@@ -21,11 +22,11 @@ class StubHomePresentingViewModel: HomePresentingViewModel {
 
 class StubHomeViewModelFactory: HomeViewModelFactoryProtocol {
 
-    let makeViewModel = MutableProperty<HomeViewModel?>(nil)
+    let makeViewModel = BehaviorRelay<HomeViewModel?>(value: nil)
 
     func makeHomeViewModel() -> HomeViewModel {
         let viewModel = HomeViewModel(detailFactory: self)
-        makeViewModel.value = viewModel
+        makeViewModel.accept(viewModel)
         return viewModel
     }
 }

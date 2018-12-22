@@ -1,5 +1,6 @@
 import UIKit
-import ReactiveSwift
+import RxSwift
+import RxCocoa
 import Core
 import Logger
 
@@ -17,7 +18,9 @@ class TabBarChildNavigationController<ViewModelType: TabBarChildViewModel>: UINa
 
         super.init(nibName: nil, bundle: nil)
 
-        tabBarItem.reactive.title <~ viewModel.tabBarItemTitle
+        viewModel.tabBarItemTitle
+            .bind(to: tabBarItem.rx.title)
+            .disposed(by: disposeBag)
 
         self.delegate = self
     }
@@ -25,7 +28,9 @@ class TabBarChildNavigationController<ViewModelType: TabBarChildViewModel>: UINa
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.isActive <~ reactive.isAppeared
+        rx.isAppeared
+            .bind(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { TabBarChildNavigationStyle<ViewModelType>(theme: $0) }
     }
@@ -49,5 +54,7 @@ class TabBarChildNavigationController<ViewModelType: TabBarChildViewModel>: UINa
 
     @available(*, unavailable)
     override init(rootViewController: UIViewController) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }

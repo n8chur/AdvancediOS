@@ -1,7 +1,6 @@
 import UIKit
-import ReactiveSwift
-import Result
-import ReactiveExtensions
+import RxSwift
+import RxExtensions
 
 public protocol PresentationContext: class {
     associatedtype ViewModelType: ViewModel
@@ -35,29 +34,42 @@ public class DismissablePresentationContext<PresentedViewModel: ViewModel>: Pres
 }
 
 /// A dismissible presentation that dismisses when the provided result view model's result signal sends a value.
+///
+/// This context retains itself until the presentation's didDismiss observable sends a value.
 public class ResultPresentationContext<PresentedViewModel: ResultViewModel>: DismissablePresentationContext<PresentedViewModel> {
 
     override public init(presentation: DismissablePresentation, viewModel: PresentedViewModel, presentAnimated: Bool = true, dismissAnimated: Bool = true) {
         super.init(presentation: presentation, viewModel: viewModel, presentAnimated: presentAnimated, dismissAnimated: dismissAnimated)
 
-        let dismiss = presentation.dismiss.apply(dismissAnimated)
-            .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+        let dismiss = Observable<Never>.deferred { [weak self] in
+            guard let self = self else {
+                return Observable<Never>.empty()
+            }
+
+            return self.presentation.dismiss.execute(dismissAnimated)
+                .catchError { _ in return Observable<Never>.empty() }
+        }
 
         // Wait until the dismiss action is enabled before dismissing.
-        let dismissWhenEnabled = presentation.dismiss.isEnabled.producer
+        let dismissWhenEnabled = presentation.dismiss.enabled
             // Observe on the main queue scheduler to avoid a deadlock if this all happens synchronously.
-            .observe(on: QueueScheduler.main)
+            .observeOn(MainScheduler.asyncInstance)
             .filter { $0 }
-            .take(first: 1)
+            .take(1)
             .whenTrue(subscribeTo: dismiss)
-            .take(until: presentation.didDismiss)
 
         // When a result is received begin waiting for the dismiss action to be enabled and then dismiss.
-        viewModel.result.producer
-            .take(first: 1)
-            .then(dismissWhenEnabled)
-            .take(until: presentation.didDismiss)
-            .start()
+        viewModel.result
+            .take(1)
+            .ignoreElements()
+            .andThen(dismissWhenEnabled)
+            .takeUntil(presentation.didDismiss)
+            // Ensure self is retained until the presented view controller is dismiss so that it can observe the result.
+            .untilDisposal(retain: self)
+            .subscribe()
+            .disposed(by: disposeBag)
     }
+
+    private let disposeBag = DisposeBag()
 
 }

@@ -1,19 +1,19 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
 import Presentations
 
 @testable import Application
 
 class StubHomePresenter: StubDetailPresenter {
 
-    let homePresentation = MutableProperty<HomeViewModel?>(nil)
+    let homePresentation = BehaviorRelay<HomeViewModel?>(value: nil)
 
 }
 
 extension StubHomePresenter: HomePresenter {
 
     func homePresentation(of viewModel: HomeViewModel) -> DismissablePresentation {
-        homePresentation.value = viewModel
+        homePresentation.accept(viewModel)
         return DismissablePresentation.stub()
     }
 

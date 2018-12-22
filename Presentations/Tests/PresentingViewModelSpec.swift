@@ -1,7 +1,6 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
 
 @testable import Presentations
 
@@ -17,7 +16,7 @@ class PresentatingViewModelSpec: QuickSpec {
                         let presenter = NSObject()
                         presentingViewModel.presenter = presenter
 
-                        presentingViewModel.presentViewModel.apply(false).start()
+                        _ = presentingViewModel.presentViewModel.execute(false).subscribe()
 
                         expect(presentingViewModel.context.value).to(be(false))
                     }

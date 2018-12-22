@@ -1,5 +1,4 @@
 import UIKit
-import ReactiveSwift
 import Core
 import Logger
 

@@ -1,19 +1,20 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
+import RxExtensions
 import Presentations
 
 class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
-    let isActive = MutableProperty(false)
+    let isActive = BehaviorRelay(value: false)
 
     weak var selectionPresenter: SelectionPresenter?
 
-    let title = Property(value: L10n.Detail.title)
+    let title = Property(L10n.Detail.title)
 
     /// The value of the result from a selection presentation.
-    var selectionResult: Property<String?> { return Property(capturing: mutableSelectionResult) }
+    var selectionResult: Property<String?> { return selectionResultRelay.asProperty() }
 
-    let presentSelectionTitle = Property(value: L10n.Detail.Select.title)
+    let presentSelectionTitle = Property(L10n.Detail.Select.title)
 
     private(set) lazy var presentSelection = makePresentSelection(
         withFactory: selectionFactory,
@@ -23,15 +24,19 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
         setupViewModel: { [weak self] viewModel in
             guard let self = self else { fatalError() }
 
-            self.mutableSelectionResult <~ viewModel.result
+            viewModel.result
+                .take(1)
+                .bind(to: self.selectionResultRelay)
+                .disposed(by: self.disposeBag)
         })
 
     init(selectionFactory: SelectionViewModelFactoryProtocol) {
         self.selectionFactory = selectionFactory
     }
 
-    private let mutableSelectionResult = MutableProperty<String?>(nil)
+    private let selectionResultRelay = BehaviorRelay<String?>(value: nil)
     private let selectionFactory: SelectionViewModelFactoryProtocol
+    private let disposeBag = DisposeBag()
 
 }
 

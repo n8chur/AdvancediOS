@@ -2,8 +2,7 @@
 
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
 
 @testable import Application
 
@@ -32,14 +31,14 @@ class DetailViewModelSpec: QuickSpec {
 
                     let selectionValue = "Test selection input"
 
-                    presenter.selectionPresentation.signal
-                        .skipNil()
-                        .observeValues { viewModel in
-                            viewModel.input.value = selectionValue
-                            viewModel.submit.apply().start()
-                        }
+                    _ = presenter.selectionPresentation.asObservable()
+                        .unwrap()
+                        .subscribe(onNext: { viewModel in
+                            viewModel.input.accept(selectionValue)
+                            viewModel.submit.execute(())
+                        })
 
-                    viewModel.presentSelection.apply(false).start()
+                    viewModel.presentSelection.execute(false)
 
                     expect(viewModel.selectionResult.value).to(equal(selectionValue))
                 }
@@ -50,25 +49,25 @@ class DetailViewModelSpec: QuickSpec {
 
                     let value = "Test selection input"
 
-                    presenter.selectionPresentation.signal
-                        .skipNil()
-                        .take(first: 1)
-                        .observeValues { viewModel in
-                            viewModel.input.value = value
-                            viewModel.submit.apply().start()
-                    }
+                    _ = presenter.selectionPresentation.asObservable()
+                        .unwrap()
+                        .take(1)
+                        .subscribe(onNext: { viewModel in
+                            viewModel.input.accept(value)
+                            viewModel.submit.execute(())
+                        })
 
-                    viewModel.presentSelection.apply(false).start()
+                    viewModel.presentSelection.execute(false)
 
                     var defaultValue: String??
 
-                    presenter.selectionPresentation.signal
-                        .skipNil()
-                        .observeValues { viewModel in
+                    _ = presenter.selectionPresentation.asObservable()
+                        .unwrap()
+                        .subscribe(onNext: { viewModel in
                             defaultValue = viewModel.input.value
-                    }
+                        })
 
-                    viewModel.presentSelection.apply(false).start()
+                    viewModel.presentSelection.execute(false)
 
                     expect(defaultValue).to(equal(value))
                 }

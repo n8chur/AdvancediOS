@@ -1,7 +1,6 @@
 import Quick
 import Nimble
-import ReactiveSwift
-import Result
+import RxSwift
 
 @testable import Application
 
@@ -22,19 +21,19 @@ class DetailPresenterSpec: QuickSpec {
                 }
 
                 it("should call the presenter to create a view model") {
-                    presentingViewModel.presentDetail.apply(false).start()
+                    presentingViewModel.presentDetail.execute(false)
 
                     expect(presentingViewModel.factory.makeViewModel.value).notTo(beNil())
                 }
 
                 it("should call the presenter to create a presentation context") {
-                    presentingViewModel.presentDetail.apply(false).start()
+                    presentingViewModel.presentDetail.execute(false)
 
                     expect(presenter.detailPresentation.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }
 
                 it("should call the setup block") {
-                    presentingViewModel.presentDetail.apply(false).start()
+                    presentingViewModel.presentDetail.execute(false)
 
                     expect(presentingViewModel.setupViewModel.value).to(be(presentingViewModel.factory.makeViewModel.value))
                 }

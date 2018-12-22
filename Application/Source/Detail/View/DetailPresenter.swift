@@ -1,10 +1,10 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import Action
 import Presentations
 
 protocol DetailPresentingViewModel: class, PresentingViewModel {
     var detailPresenter: DetailPresenter? { get set }
-    var presentDetail: Action<Bool, DetailViewModel, NoError> { get }
+    var presentDetail: Action<Bool, DetailViewModel> { get }
 }
 
 extension DetailPresentingViewModel {
@@ -19,7 +19,7 @@ extension DetailPresentingViewModel {
     func makePresentDetail(
         withFactory factory: DetailViewModelFactoryProtocol,
         setupViewModel: ((DetailViewModel) -> Void)? = nil
-    ) -> Action<Bool, DetailViewModel, NoError> {
+    ) -> Action<Bool, DetailViewModel> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<DetailViewModel>? in
             guard
                 let self = self,

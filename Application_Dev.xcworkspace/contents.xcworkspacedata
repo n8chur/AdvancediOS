@@ -11,19 +11,16 @@
          location = "container:"
          name = "Carthage">
          <FileRef
+            location = "group:Carthage/Checkouts/Action/Action.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:Carthage/Checkouts/Nimble/Nimble.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:Carthage/Checkouts/Quick/Quick.xcodeproj">
          </FileRef>
          <FileRef
-            location = "group:Carthage/Checkouts/ReactiveCocoa/ReactiveCocoa.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:Carthage/Checkouts/ReactiveSwift/ReactiveSwift.xcodeproj">
-         </FileRef>
-         <FileRef
-            location = "group:Carthage/Checkouts/Result/Result.xcodeproj">
+            location = "group:Carthage/Checkouts/RxSwift/Rx.xcodeproj">
          </FileRef>
          <FileRef
             location = "group:Carthage/Checkouts/SnapKit/SnapKit.xcodeproj">

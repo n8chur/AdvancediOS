@@ -1,7 +1,7 @@
 import UIKit
-import ReactiveCocoa
-import ReactiveSwift
-import Result
+import RxCocoa
+import RxSwift
+import Action
 
 public extension UIViewController {
 
@@ -9,16 +9,20 @@ public extension UIViewController {
         let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
-            return self.reactive.present.apply((viewController, animated))
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+            return self.rx.present.execute((viewController, animated))
+                .catchError { _ in return Observable<Never>.empty() }
+                .ignoreElements()
         }
 
         let dismiss: DismissablePresentation.MakeDismiss = { (viewController, animated) in
-            return viewController.reactive.dismiss.apply(animated)
-                .flatMapError { _ in return SignalProducer<Never, NoError>.empty }
+            return viewController.rx.dismiss.execute(animated)
+                .catchError { _ in return Observable<Never>.empty() }
+                .ignoreElements()
         }
 
-        let didDismiss = viewController.reactive.didDismiss.map { _ in return () }
+        let didDismiss = viewController.rx.didDismiss()
+            .map { _ in return () }
+            .asObservable()
 
         let presentation = DismissablePresentation(
             presentedViewController: viewController,
@@ -27,11 +31,11 @@ public extension UIViewController {
             didDismiss: didDismiss)
 
         // Retain the presentation for its lifecycle.
-        presentation.didDismiss.producer
+        _ = presentation.didDismiss
             .untilDisposal(retain: presentation)
-            .take(duringLifetimeOf: viewController)
-            .take(duringLifetimeOf: self)
-            .start()
+            .takeUntil(viewController.rx.deallocated)
+            .takeUntil(self.rx.deallocated)
+            .subscribe()
 
         return presentation
     }
@@ -46,7 +50,7 @@ public extension DismissablePresentation {
     /// - Parameter animated: Whether the dismissal should be animated.
     public func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-        cancelButton.reactive.pressed = CocoaAction(dismiss, input: animated)
+        cancelButton.rx.bind(to: dismiss, input: animated)
         viewController.navigationItem.leftBarButtonItem = cancelButton
     }
 

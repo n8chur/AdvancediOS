@@ -1,8 +1,7 @@
 import UIKit
 import Presentations
-import ReactiveCocoa
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
 import Core
 
 class SettingsViewController: UIViewController, ViewController {
@@ -31,11 +30,17 @@ class SettingsViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        settingsView.themeSwitchTitle.reactive.text <~ viewModel.themeSwitchTitle
+        viewModel.themeSwitchTitle
+            .bind(to: settingsView.themeSwitchTitle.rx.text)
+            .disposed(by: disposeBag)
 
-        viewModel.isDarkTheme <~ settingsView.themeSwitch.reactive.isOnValues
+        settingsView.themeSwitch.rx.isOn
+            .bind(to: viewModel.isDarkTheme)
+            .disposed(by: disposeBag)
 
-        viewModel.isActive <~ reactive.isAppeared
+        rx.isAppeared
+            .bind(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { SettingsViewControllerStyle(theme: $0) }
     }
@@ -45,6 +50,8 @@ class SettingsViewController: UIViewController, ViewController {
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }
 

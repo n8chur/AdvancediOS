@@ -1,4 +1,6 @@
+import Foundation
 import Themer
+import RxSwift
 
 struct StubViewStyle: Style {
     typealias Styleable = StubView
@@ -20,6 +22,6 @@ struct StubViewStyle: Style {
 
 }
 
-class StubView {
+class StubView: ReactiveCompatible {
     var themeName: String?
 }

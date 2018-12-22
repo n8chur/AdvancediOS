@@ -1,10 +1,10 @@
-import ReactiveSwift
+import RxSwift
 import Themer
 
 class StubThemeProvider: ThemeProviderProtocol {
 
     typealias ThemeType = StubTheme
 
-    let theme = MutableProperty<StubTheme>(.light)
+    let theme = Variable<StubTheme>(.light)
 
 }

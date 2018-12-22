@@ -1,7 +1,7 @@
 import UIKit
 import Presentations
-import ReactiveCocoa
-import ReactiveSwift
+import RxSwift
+import Action
 import Core
 
 class SelectionViewController: UIViewController, ViewController {
@@ -30,12 +30,18 @@ class SelectionViewController: UIViewController, ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        selectionView.submitButton.reactive.title <~ viewModel.submitTitle
-        selectionView.submitButton.reactive.pressed = CocoaAction(viewModel.submit)
+        viewModel.submitTitle
+            .bind(to: selectionView.submitButton.rx.title())
+            .disposed(by: disposeBag)
+        selectionView.submitButton.rx.bind(to: viewModel.submit, input: ())
 
         selectionView.textField.text = viewModel.input.value
-        viewModel.input <~ selectionView.textField.reactive.continuousTextValues
-        viewModel.isActive <~ reactive.isAppeared
+        selectionView.textField.rx.text
+            .bind(to: viewModel.input)
+            .disposed(by: disposeBag)
+        rx.isAppeared
+            .bind(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { SelectionViewControllerStyle(theme: $0) }
     }
@@ -51,6 +57,8 @@ class SelectionViewController: UIViewController, ViewController {
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
+
+    private let disposeBag = DisposeBag()
 
 }
 

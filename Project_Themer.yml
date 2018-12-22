@@ -7,9 +7,8 @@ targets:
       - Themer/Source
       - Themer/Supporting Files
     dependencies:
-      - carthage: ReactiveCocoa
-      - carthage: ReactiveSwift
-      - carthage: Result
+      - carthage: RxSwift
+      - carthage: RxCocoa
     scheme:
       testTargets: 
         - ThemerTests
@@ -26,5 +25,7 @@ targets:
       - target: Themer
       - carthage: Quick
       - carthage: Nimble
+      - carthage: RxTest
+      - carthage: RxBlocking
     settings:
       LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)

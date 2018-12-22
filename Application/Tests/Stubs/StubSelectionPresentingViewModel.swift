@@ -1,20 +1,19 @@
-import ReactiveSwift
-import Result
+import RxCocoa
 import Presentations
 
 @testable import Application
 
 class StubSelectionPresentingViewModel: SelectionPresentingViewModel {
 
-    let setupViewModel = MutableProperty<SelectionViewModel?>(nil)
+    let setupViewModel = BehaviorRelay<SelectionViewModel?>(value: nil)
 
     weak var selectionPresenter: SelectionPresenter?
 
     private(set) lazy var presentSelection = makePresentSelection(withFactory: factory) { [unowned self] viewModel in
-        self.setupViewModel.value = viewModel
+        self.setupViewModel.accept(viewModel)
     }
 
-    let isActive = MutableProperty<Bool>(false)
+    let isActive = BehaviorRelay<Bool>(value: false)
 
     let factory = StubSelectionViewModelFactory()
 
@@ -22,11 +21,11 @@ class StubSelectionPresentingViewModel: SelectionPresentingViewModel {
 
 class StubSelectionViewModelFactory: SelectionViewModelFactoryProtocol {
 
-    let makeViewModel = MutableProperty<SelectionViewModel?>(nil)
+    let makeViewModel = BehaviorRelay<SelectionViewModel?>(value: nil)
 
     func makeSelectionViewModel(withDefaultValue defaultValue: String?) -> SelectionViewModel {
         let viewModel = SelectionViewModel(defaultValue: defaultValue)
-        makeViewModel.value = viewModel
+        makeViewModel.accept(viewModel)
         return viewModel
     }
 }

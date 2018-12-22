@@ -1,24 +1,28 @@
-import ReactiveSwift
-import Result
+import RxSwift
+import RxCocoa
+import RxExtensions
 import Presentations
 import Core
 
 class SettingsViewModel: ViewModel {
 
-    let isActive = MutableProperty(false)
+    let isActive = BehaviorRelay(value: false)
 
-    let themeSwitchTitle = Property(value: L10n.Settings.ThemeSwitch.title)
+    let themeSwitchTitle = Property(L10n.Settings.ThemeSwitch.title)
 
     /// Initializes with a value representing whether the theme provider's theme is
     /// currently the dark theme.
     ///
     /// This should be set to switch between the dark and light themes.
-    let isDarkTheme: MutableProperty<Bool>
+    let isDarkTheme: BehaviorRelay<Bool>
 
     init(themeProvider: ThemeProvider) {
-        isDarkTheme = MutableProperty(themeProvider.theme.value == .dark)
+        isDarkTheme = BehaviorRelay(value: themeProvider.theme.value == .dark)
 
-        themeProvider.theme <~ isDarkTheme.map { return $0 ? .dark : .light }
+        isDarkTheme
+            .map { return $0 ? .dark : .light }
+            .bind(to: themeProvider.theme)
+            .disposed(by: disposeBag)
     }
 
     private func isDark(theme: Theme) -> Bool {
@@ -29,6 +33,8 @@ class SettingsViewModel: ViewModel {
             return false
         }
     }
+
+    private let disposeBag = DisposeBag()
 
 }
 

@@ -1,13 +1,15 @@
-import ReactiveSwift
-import Result
+import RxCocoa
+import RxSwift
 import Presentations
 
 class StubResultViewModel: ResultViewModel {
 
-    typealias Result = Bool
+    typealias Result = ()
 
-    let isActive = MutableProperty(true)
+    let isActive = BehaviorRelay(value: true)
 
-    let (result, resultObserver) = Signal<Bool, NoError>.pipe()
+    let resultSubject = PublishSubject<()>()
+
+    private(set) lazy var result = resultSubject.asObservable()
 
 }
