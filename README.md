@@ -15,7 +15,7 @@ Advanced concepts include:
 - Advanced logging
 - Using internal frameworks for more modular code
 - [Carthage](https://github.com/Carthage/Carthage) for iOS dependency management with caching support using [Rome](https://github.com/blender/Rome)
-- Version pinning of as many tooling dependencies as possible using [Mint](https://github.com/n8chur/Mint) and [Bundler](https://bundler.io).
+- Version pinning of as many tooling dependencies as possible using [Mint](https://github.com/yonaskolb/Mint) and [Bundler](https://bundler.io).
 
 This project is mostly intended to be used as a playground to experiment with new tools, libraries, and design patterns for iOS development.
 
