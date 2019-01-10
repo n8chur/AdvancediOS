@@ -3,8 +3,6 @@ import RxSwift
 import Logger
 
 public class ThemeProvider: ThemeProviderProtocol {
-    public typealias ThemeType = Theme
-
     public let theme = Variable<Theme>(.light)
 
     public init() {
