@@ -3,8 +3,6 @@ import UIKit
 import Core
 
 struct SettingsViewControllerStyle: Style {
-    typealias Styleable = SettingsViewController
-
     let theme: Theme
     let background: BackgroundViewStyle
     let themeSwitchTitle: LabelStyle

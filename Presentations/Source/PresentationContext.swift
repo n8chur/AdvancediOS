@@ -16,9 +16,6 @@ public protocol PresentationContext: class {
 /// and dismissal should be animated.
 public class DismissablePresentationContext<PresentedViewModel: ViewModel>: PresentationContext {
 
-    public typealias PresentationType = DismissablePresentation
-    public typealias ViewModelType = PresentedViewModel
-
     public let presentation: DismissablePresentation
     public let viewModel: PresentedViewModel
     public let presentAnimated: Bool

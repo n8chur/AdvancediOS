@@ -4,8 +4,6 @@ import Core
 import SnapKit
 
 struct HomeViewControllerStyle: Style {
-    typealias Styleable = HomeViewController
-
     let theme: Theme
     let background: BackgroundViewStyle
     let detailButton: ButtonStyle

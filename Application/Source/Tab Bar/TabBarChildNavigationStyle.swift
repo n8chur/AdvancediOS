@@ -3,8 +3,6 @@ import UIKit
 import Core
 
 struct TabBarChildNavigationStyle<ViewModelType: TabBarChildViewModel>: Style {
-    typealias Styleable = TabBarChildNavigationController<ViewModelType>
-
     let navigationBar: NavigationBarStyle
     let theme: Theme
 
@@ -13,7 +11,7 @@ struct TabBarChildNavigationStyle<ViewModelType: TabBarChildViewModel>: Style {
         navigationBar = NavigationBarStyle(theme: theme)
     }
 
-    func apply(to styleable: Styleable) {
+    func apply(to styleable: TabBarChildNavigationController<ViewModelType>) {
         navigationBar.apply(to: styleable.navigationBar)
         styleable.statusBarStyle = theme.statusBarStyle
         styleable.setNeedsStatusBarAppearanceUpdate()

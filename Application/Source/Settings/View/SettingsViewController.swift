@@ -6,8 +6,6 @@ import Core
 
 class SettingsViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = SettingsViewModel
-
     let viewModel: SettingsViewModel
 
     let themeProvider: ThemeProvider

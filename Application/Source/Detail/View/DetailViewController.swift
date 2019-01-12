@@ -7,8 +7,6 @@ import Core
 
 class DetailViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = DetailViewModel
-
     let viewModel: DetailViewModel
 
     let themeProvider: ThemeProvider

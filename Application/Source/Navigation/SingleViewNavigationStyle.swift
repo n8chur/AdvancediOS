@@ -3,8 +3,6 @@ import UIKit
 import Core
 
 struct SingleViewNavigationStyle: Style {
-    typealias Styleable = SingleViewNavigationController
-
     let navigationBar: NavigationBarStyle
     let theme: Theme
 

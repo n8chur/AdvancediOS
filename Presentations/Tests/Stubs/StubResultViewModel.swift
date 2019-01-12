@@ -4,8 +4,6 @@ import Presentations
 
 class StubResultViewModel: ResultViewModel {
 
-    typealias Result = ()
-
     let isActive = BehaviorRelay(value: true)
 
     let resultSubject = PublishSubject<()>()
