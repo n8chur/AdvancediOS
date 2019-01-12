@@ -6,10 +6,10 @@ public protocol ThemeProviderProtocol {
     /// The theme type of the style.
     ///
     /// This is typically an enum (e.g. .dark/.light).
-    associatedtype Theme
+    associatedtype ThemeType
 
     /// The current theme.
-    var theme: Variable<Theme> { get }
+    var theme: Variable<ThemeType> { get }
 }
 
 public extension ThemeProviderProtocol {
@@ -18,7 +18,7 @@ public extension ThemeProviderProtocol {
     ///
     /// A new style is created using the provided closure whenever the theme changes, and
     /// is then applied to the styleable.
-    public func bindToStyleable<StyleType: Style>(_ styleable: StyleType.Styleable, makeStyle: @escaping (Theme) -> StyleType) where StyleType.Styleable: AnyObject & ReactiveCompatible {
+    public func bindToStyleable<StyleType: Style>(_ styleable: StyleType.Styleable, makeStyle: @escaping (ThemeType) -> StyleType) where StyleType.Styleable: AnyObject & ReactiveCompatible {
         _ = theme.asObservable()
             .takeUntil(styleable.rx.deallocated)
             .subscribe(onNext: { [weak styleable] theme in
