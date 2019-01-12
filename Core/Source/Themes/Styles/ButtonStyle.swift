@@ -3,8 +3,6 @@ import UIKit
 
 public struct ButtonStyle: UIButtonStyle {
 
-    typealias View = UIButton
-
     public let titleColor: UIColor?
     public let contentEdgeInsets: UIEdgeInsets
     public let backgroundColor: UIColor?

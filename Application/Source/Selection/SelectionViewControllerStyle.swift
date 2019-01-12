@@ -3,8 +3,6 @@ import UIKit
 import Core
 
 struct SelectionViewControllerStyle: Style {
-    typealias Styleable = SelectionViewController
-
     let theme: Theme
     let background: BackgroundViewStyle
     let textField: TextFieldStyle

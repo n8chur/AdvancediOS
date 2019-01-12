@@ -6,8 +6,6 @@ import Core
 
 class HomeViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = HomeViewModel
-
     let viewModel: HomeViewModel
 
     let themeProvider: ThemeProvider

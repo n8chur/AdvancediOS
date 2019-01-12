@@ -3,8 +3,6 @@ import UIKit
 import Core
 
 struct DetailViewControllerStyle: Style {
-    typealias Styleable = DetailViewController
-
     let theme: Theme
     let background: BackgroundViewStyle
     let title: LabelStyle

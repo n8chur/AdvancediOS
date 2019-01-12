@@ -3,8 +3,6 @@ import UIKit
 
 public struct BackgroundViewStyle: UIViewStyle {
 
-    typealias View = UIView
-
     public let backgroundColor: UIColor?
     public var cornerRadius: CGFloat
     public var borderWidth: CGFloat

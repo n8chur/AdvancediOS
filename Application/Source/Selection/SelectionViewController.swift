@@ -6,8 +6,6 @@ import Core
 
 class SelectionViewController: UIViewController, ViewController {
 
-    typealias ViewModelType = SelectionViewModel
-
     let viewModel: SelectionViewModel
 
     let themeProvider: ThemeProvider

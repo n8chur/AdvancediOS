@@ -3,8 +3,6 @@ import Themer
 import RxSwift
 
 struct StubViewStyle: Style {
-    typealias Styleable = StubView
-
     let themeName: String
 
     init(theme: StubTheme) {
