@@ -4,12 +4,7 @@ import SnapKit
 class SelectionView: UIView {
 
     let textField = UITextField()
-
-    let submitButton: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.blue, for: .normal)
-        return button
-    }()
+    let submitButton = UIButton()
 
     private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
