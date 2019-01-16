@@ -7,6 +7,12 @@
 /* The title of the tab bar item for the detail navigation flow. */
 "detail_navigation.tab_bar_item.title" = "Detail";
 
+/* Title for the contents list on the details view. */
+"detail.contents_list.title" = "Contents";
+
+/* Title for the contents button that presents the contents view. */
+"detail.contents_button.title" = "Contents Info";
+
 /* The title of the button that presents the detail view. */
 "home.present_detail.title" = "Details";
 
