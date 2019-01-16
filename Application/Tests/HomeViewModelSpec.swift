@@ -26,7 +26,7 @@ class HomeViewModelSpec: QuickSpec {
 
                         viewModel.isActive.accept(true)
 
-                        expect(viewModel.testText.value).toEventually(equal(L10n.Home.testText))
+                        expect(viewModel.testText.value).toEventually(equal(L10n.Home.testText), timeout: 2.0)
                     }
                 }
             }

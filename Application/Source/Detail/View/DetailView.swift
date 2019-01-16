@@ -23,11 +23,26 @@ class DetailView: UIView {
         return label
     }()
 
+    let contentsListTitle: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
+    let contentsButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.blue, for: .normal)
+        return button
+    }()
+
     private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             title,
             button,
             selectionResult,
+            contentsListTitle,
+            contentsButton
         ])
         stackView.axis = .vertical
         stackView.alignment = .center

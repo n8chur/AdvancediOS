@@ -2,6 +2,7 @@ import RxSwift
 import RxCocoa
 import RxExtensions
 import Presentations
+import Action
 
 class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
@@ -15,6 +16,14 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     var selectionResult: Property<String?> { return selectionResultRelay.asProperty() }
 
     let presentSelectionTitle = Property(L10n.Detail.Select.title)
+
+    let contentsListTitle = Property(L10n.Detail.ContentsList.title)
+    let contentsButtonTitle = Property(L10n.Detail.ContentsButton.title)
+
+    let presentContents = CocoaAction { _ in
+        print("Content button pressed")
+        return .empty()
+    }
 
     private(set) lazy var presentSelection = makePresentSelection(
         withFactory: selectionFactory,

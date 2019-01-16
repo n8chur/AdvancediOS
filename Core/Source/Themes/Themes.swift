@@ -34,7 +34,7 @@ public extension Theme {
 
     public var layout: Layout {
         return Layout(
-            interitemSpacing: 10,
+            interitemSpacing: 20,
             buttonContentEdgeInsets: UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 20),
             buttonBorderWidth: 1,
             buttonCornerRadius: 12,

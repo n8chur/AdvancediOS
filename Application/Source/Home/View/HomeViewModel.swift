@@ -24,7 +24,7 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
 
         let testTextInternalObserver = Observable<UInt>
             // Add a delay to simulate a network operation.
-            .timer(RxTimeInterval(0.5), scheduler: backgroundScheduler)
+            .timer(RxTimeInterval(1.0), scheduler: backgroundScheduler)
             .take(1)
             .map { _ -> String? in
                 return L10n.Home.testText
