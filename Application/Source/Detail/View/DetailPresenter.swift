@@ -14,8 +14,8 @@ extension DetailPresentingViewModel {
     /// This action should be executed with a Bool indicating whether the presentation should be animated.
     ///
     /// - Parameter factory: A factory to be used to generate the presented view model.
-    /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
-    ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
+    /// - Parameter setupViewModel: This closure will be called with the presented view model when a present action
+    ///             is executed. Consumers can use this to observe changes to the presented view model if necessary.
     func makePresentDetail(
         withFactory factory: DetailViewModelFactoryProtocol,
         setupViewModel: ((DetailViewModel) -> Void)? = nil
