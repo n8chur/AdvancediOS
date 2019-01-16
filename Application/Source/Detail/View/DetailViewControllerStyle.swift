@@ -22,8 +22,10 @@ struct DetailViewControllerStyle: Style {
 
         background.apply(to: view)
         title.apply(to: view.title)
+        title.apply(to: view.contentsListTitle)
         selectionResult.apply(to: view.selectionResult)
         button.apply(to: view.button)
+        button.apply(to: view.contentsButton)
 
         view.stackView.spacing = theme.layout.interitemSpacing
     }
