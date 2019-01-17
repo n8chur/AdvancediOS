@@ -30,3 +30,9 @@
 
 /* The title of the tab bar item for the settings navigation flow. */
 "settings_navigation.tab_bar_item.title" = "Settings";
+
+/* Food enum names. */
+"food.beans" = "Beans";
+"food.greens" = "Greens";
+"food.potatoes" = "Potatoes";
+"food.tomatoes" = "Tomatoes";

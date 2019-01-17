@@ -36,6 +36,17 @@ internal enum L10n {
     }
   }
 
+  internal enum Food {
+    /// Beans
+    internal static let beans = L10n.tr("Localizable", "food.beans")
+    /// Greens
+    internal static let greens = L10n.tr("Localizable", "food.greens")
+    /// Potatoes
+    internal static let potatoes = L10n.tr("Localizable", "food.potatoes")
+    /// Tomatoes
+    internal static let tomatoes = L10n.tr("Localizable", "food.tomatoes")
+  }
+
   internal enum Home {
     /// It works!
     internal static let testText = L10n.tr("Localizable", "home.test_text")
