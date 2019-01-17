@@ -1,6 +1,8 @@
 LightContent        : #000000
+LightContentAlt     : #7b7b7b
 LightBackground     : #FFFFFF
 LightActionColor    : #11A4D6
 DarkContent         : #D3D3D3
+DarkContentAlt      : #7b7b7b
 DarkBackground      : #000000
 DarkActionColor     : #15B7ED

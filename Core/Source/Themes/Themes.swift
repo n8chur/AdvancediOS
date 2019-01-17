@@ -10,6 +10,7 @@ public extension Theme {
         switch self {
         case .light: return ColorSet(
             bodyText: Color.lightContent.color,
+            alternateBodyText: Color.lightContentAlt.color,
             inputText: Color.lightContent.color,
             actionColor: Color.lightActionColor.color,
             viewBackground: Color.lightBackground.color,
@@ -17,6 +18,7 @@ public extension Theme {
             tabBarTint: nil)
         case .dark: return ColorSet(
             bodyText: Color.darkContent.color,
+            alternateBodyText: Color.darkContentAlt.color,
             inputText: Color.darkContent.color,
             actionColor: Color.darkActionColor.color,
             viewBackground: Color.darkBackground.color,
@@ -44,6 +46,7 @@ public extension Theme {
 
 public struct ColorSet {
     public let bodyText: UIColor
+    public let alternateBodyText: UIColor
     public let inputText: UIColor
     public let actionColor: UIColor
     public let viewBackground: UIColor?

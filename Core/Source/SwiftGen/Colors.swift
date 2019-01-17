@@ -28,6 +28,9 @@ public struct Color {
   /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#d3d3d3"></span>
   /// Alpha: 100% <br/> (0xd3d3d3ff)
   public static let darkContent = Color(rgbaValue: 0xd3d3d3ff)
+  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#888888"></span>
+  /// Alpha: 100% <br/> (0x888888ff)
+  public static let darkContentAlt = Color(rgbaValue: 0x888888ff)
   /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#11a4d6"></span>
   /// Alpha: 100% <br/> (0x11a4d6ff)
   public static let lightActionColor = Color(rgbaValue: 0x11a4d6ff)
@@ -37,6 +40,9 @@ public struct Color {
   /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#000000"></span>
   /// Alpha: 100% <br/> (0x000000ff)
   public static let lightContent = Color(rgbaValue: 0x000000ff)
+  /// <span style="display:block;width:3em;height:2em;border:1px solid black;background:#888888"></span>
+  /// Alpha: 100% <br/> (0x888888ff)
+  public static let lightContentAlt = Color(rgbaValue: 0x888888ff)
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
