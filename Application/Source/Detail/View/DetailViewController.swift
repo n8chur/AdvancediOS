@@ -32,11 +32,9 @@ class DetailViewController: UIViewController, ViewController {
         viewModel.title
             .bind(to: detailView.title.rx.text)
             .disposed(by: disposeBag)
-
         viewModel.presentSelectionTitle
             .bind(to: detailView.button.rx.title())
             .disposed(by: disposeBag)
-
         viewModel.selectionResult
             .bind(to: detailView.selectionResult.rx.text)
             .disposed(by: disposeBag)
@@ -44,16 +42,9 @@ class DetailViewController: UIViewController, ViewController {
         viewModel.contentsListTitle
             .bind(to: detailView.contentsListTitle.rx.text)
             .disposed(by: disposeBag)
-
-        viewModel.content.value
-            .map { $0.name }
-            .reduce(BehaviorRelay<String>(value: "")) {
-                let combined = ($0.value == "") ? $1.value : $0.value + ", " + $1.value
-                return BehaviorRelay(value: combined)
-            }
+        viewModel.contentsListText
             .bind(to: detailView.contentsList.rx.text)
             .disposed(by: disposeBag)
-
         viewModel.contentsButtonTitle
             .bind(to: detailView.contentsButton.rx.title())
             .disposed(by: disposeBag)

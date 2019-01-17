@@ -27,6 +27,11 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
     let content: Property<[Food]> = Property([.beans, .greens, .potatoes, .tomatoes])
 
+    private(set) lazy var contentsListText: Property<String> = {
+        let listText = createListText(from: content.value)
+        return Property(listText)
+    }()
+
     private(set) lazy var presentSelection = makePresentSelection(
         withFactory: selectionFactory,
         defaultValue: { [weak self] in
@@ -49,6 +54,12 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     private let selectionFactory: SelectionViewModelFactoryProtocol
     private let disposeBag = DisposeBag()
 
+    func createListText<ContentType: Content>(from contents: [ContentType], separatedBy separator: String = ", ") -> String {
+        let initial = ""
+        return contents
+            .map { $0.name.value }
+            .reduce(initial) { return $0 == initial ? $1 : $0 + separator + $1 }
+    }
 }
 
 protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol {
