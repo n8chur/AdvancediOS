@@ -14,6 +14,7 @@ class DetailView: UIView {
     }()
 
     let contentsListTitle = UILabel.centeredLabel()
+    let contentsList = UILabel.centeredLabel()
     let contentsButton = UIButton()
 
     private(set) lazy var stackView: UIStackView = {
@@ -23,6 +24,7 @@ class DetailView: UIView {
             selectionResult,
             spacingView,
             contentsListTitle,
+            contentsList,
             contentsButton
         ])
         stackView.axis = .vertical

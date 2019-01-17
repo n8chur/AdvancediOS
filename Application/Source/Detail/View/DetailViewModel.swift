@@ -25,12 +25,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
         return .empty()
     }
 
-    let content: [Food] = [
-        .beans,
-        .greens,
-        .potatoes,
-        .tomatoes
-    ]
+    let content: Property<[Food]> = Property([.beans, .greens, .potatoes, .tomatoes])
 
     private(set) lazy var presentSelection = makePresentSelection(
         withFactory: selectionFactory,
