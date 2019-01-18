@@ -14,6 +14,7 @@ protocol Content {
  - [Crispy.](https://www.youtube.com/watch?v=1BC1G33-fNY)
  */
 enum Food: Content {
+
     case beans, greens, potatoes, tomatoes
 
     enum Category: Int {
@@ -39,4 +40,5 @@ enum Food: Content {
         case .tomatoes: return .fruit
         }
     }
+
 }

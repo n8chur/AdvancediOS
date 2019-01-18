@@ -79,15 +79,12 @@ class DetailViewModelSpec: QuickSpec {
                 }
             }
 
-            describe("createListText()") {
-                it("should create a string list from an array of Contents") {
-                    let testContent: [Food] = [.tomatoes, .potatoes]
-                    let separator = " 🍅🥔 "
-                    let expectedString = L10n.Food.tomatoes + separator + L10n.Food.potatoes
+            describe("contentsListText") {
+                it("should return a String list from the array of Contents") {
+                    viewModel.content.accept([.tomatoes, .potatoes])
+                    let expected = L10n.Food.tomatoes + viewModel.contentListSeparator + L10n.Food.potatoes
 
-                    let actualString = viewModel.createListText(from: testContent, separatedBy: separator)
-
-                    expect(actualString).to(equal(expectedString))
+                    expect(viewModel.contentsListText.value).to(equal(expected))
                 }
             }
         }
