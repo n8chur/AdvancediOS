@@ -3,9 +3,9 @@ import SnapKit
 
 class DetailView: UIView {
 
-    let title = UILabel.centeredLabel()
+    let title = UILabel()
     let button = UIButton()
-    let selectionResult = UILabel.centeredLabel()
+    let selectionResult = UILabel()
 
     private let spacingView: UIView = {
         let view = UIView()
@@ -13,8 +13,8 @@ class DetailView: UIView {
         return view
     }()
 
-    let foodListTitle = UILabel.centeredLabel()
-    let foodList = UILabel.centeredLabel()
+    let foodListTitle = UILabel()
+    let foodList = UILabel()
     let foodInfoButton = UIButton()
 
     private(set) lazy var stackView: UIStackView = {

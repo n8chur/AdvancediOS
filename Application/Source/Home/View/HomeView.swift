@@ -3,7 +3,7 @@ import SnapKit
 
 class HomeView: UIView {
 
-    let label = UILabel.centeredLabel()
+    let label = UILabel()
 
     let imageView: UIImageView = {
         let imageView = UIImageView()
