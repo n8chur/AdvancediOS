@@ -5,15 +5,15 @@ import Core
 struct DetailViewControllerStyle: Style {
     let theme: Theme
     let background: BackgroundViewStyle
-    let title: LabelStyle
-    let alternateCopy: AlternateLabelStyle
+    let label: LabelStyle
+    let alternateLabel: AlternateLabelStyle
     let button: ButtonStyle
 
     init(theme: Theme) {
         self.theme = theme
         background = BackgroundViewStyle(theme: theme)
-        title = LabelStyle(theme: theme)
-        alternateCopy = AlternateLabelStyle(theme: theme)
+        label = LabelStyle(theme: theme)
+        alternateLabel = AlternateLabelStyle(theme: theme)
         button = ButtonStyle(theme: theme)
     }
 
@@ -21,14 +21,14 @@ struct DetailViewControllerStyle: Style {
         let view = styleable.detailView
         background.apply(to: view)
 
-        title.apply(to: view.title)
-        title.apply(to: view.contentsListTitle)
+        label.apply(to: view.title)
+        label.apply(to: view.foodListTitle)
 
-        alternateCopy.apply(to: view.selectionResult)
-        alternateCopy.apply(to: view.contentsList)
+        alternateLabel.apply(to: view.selectionResult)
+        alternateLabel.apply(to: view.foodList)
 
         button.apply(to: view.button)
-        button.apply(to: view.contentsButton)
+        button.apply(to: view.foodInfoButton)
 
         view.stackView.spacing = theme.layout.interitemSpacing
     }

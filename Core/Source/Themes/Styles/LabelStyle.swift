@@ -18,4 +18,5 @@ public struct AlternateLabelStyle: UILabelStyle {
     public init(theme: Theme) {
         textColor = theme.color.alternateBodyText
     }
+
 }

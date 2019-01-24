@@ -79,12 +79,12 @@ class DetailViewModelSpec: QuickSpec {
                 }
             }
 
-            describe("contentsListText") {
+            describe("foodListText") {
                 it("should return a String list from the array of Contents") {
-                    viewModel.content.accept([.tomatoes, .potatoes])
-                    let expected = L10n.Food.tomatoes + viewModel.contentListSeparator + L10n.Food.potatoes
+                    viewModel.foods.accept([.tomatoes, .potatoes])
+                    let expected = L10n.Food.tomatoes + ", " + L10n.Food.potatoes
 
-                    expect(viewModel.contentsListText.value).to(equal(expected))
+                    expect(viewModel.foodListText.value).to(equal(expected))
                 }
             }
         }

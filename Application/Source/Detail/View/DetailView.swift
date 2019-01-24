@@ -13,9 +13,9 @@ class DetailView: UIView {
         return view
     }()
 
-    let contentsListTitle = UILabel.centeredLabel()
-    let contentsList = UILabel.centeredLabel()
-    let contentsButton = UIButton()
+    let foodListTitle = UILabel.centeredLabel()
+    let foodList = UILabel.centeredLabel()
+    let foodInfoButton = UIButton()
 
     private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -23,9 +23,9 @@ class DetailView: UIView {
             button,
             selectionResult,
             spacingView,
-            contentsListTitle,
-            contentsList,
-            contentsButton
+            foodListTitle,
+            foodList,
+            foodInfoButton
         ])
         stackView.axis = .vertical
         stackView.alignment = .center

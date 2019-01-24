@@ -7,11 +7,11 @@
 /* The title of the tab bar item for the detail navigation flow. */
 "detail_navigation.tab_bar_item.title" = "Detail";
 
-/* Title for the contents list on the details view. */
-"detail.contents_list.title" = "Contents";
+/* Title for the food list on the details view. */
+"detail.food_list.title" = "Ingredients";
 
-/* Title for the contents button that presents the contents view. */
-"detail.contents_button.title" = "Contents Info";
+/* Title for the food button that presents the contents view. */
+"detail.food_button.title" = "Food Info";
 
 /* The title of the button that presents the detail view. */
 "home.present_detail.title" = "Details";
@@ -31,8 +31,14 @@
 /* The title of the tab bar item for the settings navigation flow. */
 "settings_navigation.tab_bar_item.title" = "Settings";
 
-/* Food enum names. */
+/* Name of Food: beans. */
 "food.beans" = "Beans";
+
+/* Name of Food: greens. */
 "food.greens" = "Greens";
+
+/* Name of Food: potatoes. */
 "food.potatoes" = "Potatoes";
+
+/* Name of Food: tomatoes. */
 "food.tomatoes" = "Tomatoes";

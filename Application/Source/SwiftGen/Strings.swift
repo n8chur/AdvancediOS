@@ -15,13 +15,13 @@ internal enum L10n {
   internal enum Detail {
     /// Details
     internal static let title = L10n.tr("Localizable", "detail.title")
-    internal enum ContentsButton {
-      /// Contents Info
-      internal static let title = L10n.tr("Localizable", "detail.contents_button.title")
+    internal enum FoodButton {
+      /// Food Info
+      internal static let title = L10n.tr("Localizable", "detail.food_button.title")
     }
-    internal enum ContentsList {
-      /// Contents
-      internal static let title = L10n.tr("Localizable", "detail.contents_list.title")
+    internal enum FoodList {
+      /// Ingredients
+      internal static let title = L10n.tr("Localizable", "detail.food_list.title")
     }
     internal enum Select {
       /// Select Text
