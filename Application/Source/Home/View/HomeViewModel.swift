@@ -31,9 +31,6 @@ class HomeViewModel: ViewModel, DetailPresentingViewModel {
             }
 
         let testTextObserver = isActive.asObservable()
-            .do(onNext: { isActive in
-                print("XXX: \(isActive)")
-            })
             .whenTrue(subscribeTo: testTextInternalObserver)
 
         testText = Property(testTextObserver, initial: nil)
