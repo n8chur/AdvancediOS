@@ -7,25 +7,36 @@ class DetailView: UIView {
     let button = UIButton()
     let selectionResult = UILabel()
 
-    private let spacingView: UIView = {
-        let view = UIView()
-        view.snp.makeConstraints { $0.height.equalTo(35) }
-        return view
-    }()
-
     let foodListTitle = UILabel()
     let foodList = UILabel()
     let foodInfoButton = UIButton()
 
-    private(set) lazy var stackView: UIStackView = {
+    private(set) lazy var selectionStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             title,
             button,
-            selectionResult,
-            spacingView,
+            selectionResult
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    private(set) lazy var foodStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
             foodListTitle,
             foodList,
             foodInfoButton
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    private(set) lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            selectionStackView,
+            foodStackView
         ])
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -37,8 +48,8 @@ class DetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(stackView)
-        stackView.snp.makeConstraints { make in
+        addSubview(containerStackView)
+        containerStackView.snp.makeConstraints { make in
             make.center.equalTo(self)
         }
     }

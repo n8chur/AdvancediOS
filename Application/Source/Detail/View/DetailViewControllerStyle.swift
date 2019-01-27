@@ -3,6 +3,7 @@ import UIKit
 import Core
 
 struct DetailViewControllerStyle: Style {
+
     let theme: Theme
     let background: BackgroundViewStyle
     let label: LabelStyle
@@ -30,7 +31,10 @@ struct DetailViewControllerStyle: Style {
         button.apply(to: view.button)
         button.apply(to: view.foodInfoButton)
 
-        view.stackView.spacing = theme.layout.interitemSpacing
+        view.selectionStackView.spacing = theme.layout.interitemSpacing
+        view.foodStackView.spacing = theme.layout.interitemSpacing
+
+        view.containerStackView.spacing = theme.layout.containerSpacing
     }
 
 }

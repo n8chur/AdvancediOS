@@ -6,6 +6,7 @@ public enum Theme {
 }
 
 public extension Theme {
+
     public var color: ColorSet {
         switch self {
         case .light: return ColorSet(
@@ -37,14 +38,17 @@ public extension Theme {
     public var layout: Layout {
         return Layout(
             interitemSpacing: 20,
+            containerSpacing: 35,
             buttonContentEdgeInsets: UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 20),
             buttonBorderWidth: 1,
             buttonCornerRadius: 12,
             contentLayoutMargins: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
     }
+
 }
 
 public struct ColorSet {
+
     public let bodyText: UIColor
     public let alternateBodyText: UIColor
     public let inputText: UIColor
@@ -52,12 +56,20 @@ public struct ColorSet {
     public let viewBackground: UIColor?
     public let navigationBarTint: UIColor?
     public let tabBarTint: UIColor?
+
 }
 
 public struct Layout {
+
+    /// Spacing between elements within an inner (or single) stackView.
     public let interitemSpacing: CGFloat
+
+    /// Spacing between inner stackViews within an outer container stackView.
+    public let containerSpacing: CGFloat
+
     public let buttonContentEdgeInsets: UIEdgeInsets
     public let buttonBorderWidth: CGFloat
     public let buttonCornerRadius: CGFloat
     public let contentLayoutMargins: UIEdgeInsets
+
 }
