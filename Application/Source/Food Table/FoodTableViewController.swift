@@ -4,7 +4,7 @@ import RxSwift
 import Action
 import Core
 
-class FoodTableViewController: UIViewController, ViewController {
+class FoodTableViewController: UITableViewController, ViewController {
 
     let viewModel: FoodTableViewModel
 
@@ -19,6 +19,17 @@ class FoodTableViewController: UIViewController, ViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+
+        viewModel.foods
+            .bind(to: tableView.rx.items(cellIdentifier: cellIdentifier)) { _, food, cell in
+                cell.textLabel?.text = food.name
+            }
+            .disposed(by: disposeBag)
+
+        rx.isAppeared
+            .bind(to: viewModel.isActive)
+            .disposed(by: disposeBag)
 
         themeProvider.bindToStyleable(self) { FoodTableViewControllerStyle(theme: $0) }
     }
@@ -29,6 +40,7 @@ class FoodTableViewController: UIViewController, ViewController {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
 
+    private let cellIdentifier = "FoodCell"
     private let disposeBag = DisposeBag()
 
 }
