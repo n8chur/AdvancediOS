@@ -39,6 +39,15 @@ extension HomeNavigationController: DetailPresenter {
 
 }
 
+extension HomeNavigationController: FoodTablePresenter {
+
+    func foodTablePresentation(of viewModel: FoodTableViewModel) -> DismissablePresentation {
+        let viewController = factory.makeFoodTableViewController(viewModel: viewModel)
+        return makePushPresentation(of: viewController)
+    }
+
+}
+
 extension HomeNavigationController: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {
@@ -51,4 +60,4 @@ extension HomeNavigationController: SelectionPresenter {
 
 }
 
-protocol HomeNavigationControllerFactoryProtocol: HomeViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }
+protocol HomeNavigationControllerFactoryProtocol: HomeViewControllerFactoryProtocol, FoodTableViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }

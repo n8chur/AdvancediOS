@@ -50,7 +50,7 @@ class DetailViewController: UIViewController, ViewController {
             .disposed(by: disposeBag)
 
         detailView.button.rx.bind(to: viewModel.presentSelection, input: true)
-        detailView.foodInfoButton.rx.bind(to: viewModel.presentContents, input: ())
+        detailView.foodInfoButton.rx.bind(to: viewModel.presentFoodTable, input: true)
 
         rx.isAppeared
             .bind(to: viewModel.isActive)
