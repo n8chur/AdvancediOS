@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol DetailPresentingViewModel: class, PresentingViewModel {
+protocol DetailPresentingViewModel: AnyObject, PresentingViewModel {
     var detailPresenter: DetailPresenter? { get set }
     var presentDetail: Action<Bool, DetailViewModel> { get }
 }

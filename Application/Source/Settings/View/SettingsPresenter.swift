@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol SettingsPresentingViewModel: class, PresentingViewModel {
+protocol SettingsPresentingViewModel: AnyObject, PresentingViewModel {
     var settingsPresenter: SettingsPresenter? { get set }
     var presentSettings: Action<Bool, SettingsViewModel> { get }
 }
@@ -37,6 +37,6 @@ extension SettingsPresentingViewModel {
 
 }
 
-protocol SettingsPresenter: class {
+protocol SettingsPresenter: AnyObject {
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation
 }
