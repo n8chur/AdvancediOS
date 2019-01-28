@@ -12,7 +12,9 @@ class DetailViewModelSpec: QuickSpec {
         var viewModel: DetailViewModel!
 
         beforeEach {
-            viewModel = DetailViewModel(selectionFactory: StubSelectionViewModelFactory())
+            viewModel = DetailViewModel(
+                selectionFactory: StubSelectionViewModelFactory(),
+                foodTableFactory: StubFoodTableViewModelFactory())
         }
 
         describe("DetailViewModel") {

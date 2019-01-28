@@ -29,7 +29,7 @@ extension FoodTablePresentingViewModel {
                     return nil
             }
 
-            let viewModel = factory.makeFoodTableViewModel(foods: foods)
+            let viewModel = factory.makeFoodTableViewModel(with: foods)
 
             setupViewModel?(viewModel)
 

@@ -23,7 +23,7 @@ class StubDetailViewModelFactory: DetailViewModelFactoryProtocol {
     let makeViewModel = BehaviorRelay<DetailViewModel?>(value: nil)
 
     func makeDetailViewModel() -> DetailViewModel {
-        let viewModel = DetailViewModel(selectionFactory: self)
+        let viewModel = DetailViewModel(selectionFactory: self, foodTableFactory: self)
         makeViewModel.accept(viewModel)
         return viewModel
     }

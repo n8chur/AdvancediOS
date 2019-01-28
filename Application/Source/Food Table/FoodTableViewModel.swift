@@ -9,7 +9,7 @@ class FoodTableViewModel: ViewModel {
     let isActive = BehaviorRelay(value: false)
     let foods: BehaviorRelay<[Food]>
 
-    init(foods: BehaviorRelay<[Food]>) {
+    init(with foods: BehaviorRelay<[Food]>) {
         self.foods = foods
         foods
             .asObservable()
@@ -23,13 +23,13 @@ class FoodTableViewModel: ViewModel {
 }
 
 protocol FoodTableViewModelFactoryProtocol {
-    func makeFoodTableViewModel(foods: BehaviorRelay<[Food]>) -> FoodTableViewModel
+    func makeFoodTableViewModel(with foods: BehaviorRelay<[Food]>) -> FoodTableViewModel
 }
 
 extension FoodTableViewModelFactoryProtocol {
 
-    func makeFoodTableViewModel(foods: BehaviorRelay<[Food]>) -> FoodTableViewModel {
-        return FoodTableViewModel(foods: foods)
+    func makeFoodTableViewModel(with foods: BehaviorRelay<[Food]>) -> FoodTableViewModel {
+        return FoodTableViewModel(with: foods)
     }
 
 }
