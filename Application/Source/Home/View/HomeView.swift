@@ -3,12 +3,7 @@ import SnapKit
 
 class HomeView: UIView {
 
-    let label: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
+    let label = UILabel()
 
     let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -17,11 +12,7 @@ class HomeView: UIView {
         return imageView
     }()
 
-    let detailButton: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.blue, for: .normal)
-        return button
-    }()
+    let detailButton = UIButton()
 
     private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [

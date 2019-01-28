@@ -3,46 +3,40 @@ import SnapKit
 
 class DetailView: UIView {
 
-    let title: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
+    let title = UILabel()
+    let button = UIButton()
+    let selectionResult = UILabel()
 
-    let button: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.blue, for: .normal)
-        return button
-    }()
+    let foodListTitle = UILabel()
+    let foodList = UILabel()
+    let foodInfoButton = UIButton()
 
-    let selectionResult: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    let contentsListTitle: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    let contentsButton: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.blue, for: .normal)
-        return button
-    }()
-
-    private(set) lazy var stackView: UIStackView = {
+    private(set) lazy var selectionStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             title,
             button,
-            selectionResult,
-            contentsListTitle,
-            contentsButton
+            selectionResult
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    private(set) lazy var foodStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            foodListTitle,
+            foodList,
+            foodInfoButton
+        ])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    private(set) lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            selectionStackView,
+            foodStackView
         ])
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -54,8 +48,8 @@ class DetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(stackView)
-        stackView.snp.makeConstraints { make in
+        addSubview(containerStackView)
+        containerStackView.snp.makeConstraints { make in
             make.center.equalTo(self)
         }
     }

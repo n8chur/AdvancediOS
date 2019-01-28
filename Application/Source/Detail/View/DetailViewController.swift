@@ -38,15 +38,19 @@ class DetailViewController: UIViewController, ViewController {
         viewModel.selectionResult
             .bind(to: detailView.selectionResult.rx.text)
             .disposed(by: disposeBag)
-        viewModel.contentsListTitle
-            .bind(to: detailView.contentsListTitle.rx.text)
+
+        viewModel.foodListTitle
+            .bind(to: detailView.foodListTitle.rx.text)
             .disposed(by: disposeBag)
-        viewModel.contentsButtonTitle
-            .bind(to: detailView.contentsButton.rx.title())
+        viewModel.foodListText
+            .bind(to: detailView.foodList.rx.text)
+            .disposed(by: disposeBag)
+        viewModel.foodInfoButtonTitle
+            .bind(to: detailView.foodInfoButton.rx.title())
             .disposed(by: disposeBag)
 
         detailView.button.rx.bind(to: viewModel.presentSelection, input: true)
-        detailView.contentsButton.rx.bind(to: viewModel.presentContents, input: ())
+        detailView.foodInfoButton.rx.bind(to: viewModel.presentContents, input: ())
 
         rx.isAppeared
             .bind(to: viewModel.isActive)

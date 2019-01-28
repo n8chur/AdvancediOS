@@ -3,6 +3,7 @@ import UIKit
 import Core
 
 struct SelectionViewControllerStyle: Style {
+
     let theme: Theme
     let background: BackgroundViewStyle
     let textField: TextFieldStyle

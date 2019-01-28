@@ -17,13 +17,24 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
 
     let presentSelectionTitle = Property(L10n.Detail.Select.title)
 
-    let contentsListTitle = Property(L10n.Detail.ContentsList.title)
-    let contentsButtonTitle = Property(L10n.Detail.ContentsButton.title)
+    let foodListTitle = Property(L10n.Detail.FoodList.title)
+    let foodInfoButtonTitle = Property(L10n.Detail.FoodButton.title)
 
     let presentContents = CocoaAction { _ in
         print("Content button pressed")
         return .empty()
     }
+
+    let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.beans, .greens, .potatoes, .tomatoes])
+
+    private(set) lazy var foodListText: Property<String> = {
+        let observable = foods.map { foods -> String in
+            return foods
+                .map { $0.name }
+                .joined(separator: ", ")
+        }
+        return Property(observable, initial: "")
+    }()
 
     private(set) lazy var presentSelection = makePresentSelection(
         withFactory: selectionFactory,

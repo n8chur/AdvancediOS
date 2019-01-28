@@ -6,7 +6,7 @@ public struct TextFieldStyle: UITextFieldStyle {
     public let textColor: UIColor
 
     public init(theme: Theme) {
-        textColor = theme.color.bodyText
+        textColor = theme.color.alternateBodyText
     }
 
 }
