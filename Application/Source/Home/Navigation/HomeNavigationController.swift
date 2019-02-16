@@ -60,4 +60,4 @@ extension HomeNavigationController: SelectionPresenter {
 
 }
 
-protocol HomeNavigationControllerFactoryProtocol: HomeViewControllerFactoryProtocol, FoodTableViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }
+protocol HomeNavigationControllerFactoryProtocol: HomeViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }

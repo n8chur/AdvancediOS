@@ -53,4 +53,4 @@ extension DetailNavigationController: FoodTablePresenter {
 
 }
 
-protocol DetailNavigationControllerFactoryProtocol: DetailViewControllerFactoryProtocol, FoodTableViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }
+protocol DetailNavigationControllerFactoryProtocol: DetailViewControllerFactoryProtocol, SingleViewNavigationControllerFactoryProtocol { }

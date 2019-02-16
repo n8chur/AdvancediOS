@@ -69,7 +69,7 @@ class DetailViewController: UIViewController, ViewController {
 
 }
 
-protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol {
+protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol, FoodTableViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
 
     func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController
@@ -79,6 +79,10 @@ extension DetailViewControllerFactoryProtocol {
 
     func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController {
         return DetailViewController(viewModel: viewModel, themeProvider: themeProvider)
+    }
+
+    func makeFoodTableViewController(viewModel: FoodTableViewModel) -> FoodTableViewController {
+        return FoodTableViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }
