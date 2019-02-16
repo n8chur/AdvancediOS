@@ -19,6 +19,8 @@ class FoodInfoViewController: UITableViewController, ViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let cellIdentifier = "FoodCell"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
         viewModel.foods
@@ -40,7 +42,6 @@ class FoodInfoViewController: UITableViewController, ViewController {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) { fatalError("\(#function) not implemented.") }
 
-    private let cellIdentifier = "FoodCell"
     private let disposeBag = DisposeBag()
 
 }
