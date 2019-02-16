@@ -21,7 +21,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
     let foodListTitle = Property(L10n.Detail.FoodList.title)
     let foodInfoButtonTitle = Property(L10n.Detail.FoodButton.title)
 
-    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: foodInfoFactory, foods: foods)
+    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory, foods: foods)
 
     let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.beans, .greens, .potatoes, .tomatoes])
 
@@ -35,7 +35,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
     }()
 
     private(set) lazy var presentSelection = makePresentSelection(
-        withFactory: selectionFactory,
+        withFactory: factory,
         defaultValue: { [weak self] in
             return self?.selectionResult.value
         },
@@ -48,14 +48,14 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
                 .disposed(by: self.disposeBag)
         })
 
-    init(selectionFactory: SelectionViewModelFactoryProtocol, foodInfoFactory: FoodInfoViewModelFactoryProtocol) {
-        self.selectionFactory = selectionFactory
-        self.foodInfoFactory = foodInfoFactory
+    typealias Factory = SelectionViewModelFactoryProtocol & FoodInfoViewModelFactoryProtocol
+
+    init(factory: Factory) {
+        self.factory = factory
     }
 
     private let selectionResultRelay = BehaviorRelay<String?>(value: nil)
-    private let selectionFactory: SelectionViewModelFactoryProtocol
-    private let foodInfoFactory: FoodInfoViewModelFactoryProtocol
+    private let factory: Factory
     private let disposeBag = DisposeBag()
 
 }
@@ -67,7 +67,7 @@ protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, Food
 extension DetailViewModelFactoryProtocol {
 
     func makeDetailViewModel() -> DetailViewModel {
-        return DetailViewModel(selectionFactory: self, foodInfoFactory: self)
+        return DetailViewModel(factory: self)
     }
 
 }
