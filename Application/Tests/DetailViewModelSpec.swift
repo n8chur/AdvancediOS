@@ -3,6 +3,7 @@
 import Quick
 import Nimble
 import RxSwift
+import RxExtensions
 
 @testable import Application
 
@@ -10,11 +11,10 @@ class DetailViewModelSpec: QuickSpec {
     override func spec() {
 
         var viewModel: DetailViewModel!
+        let foods = Property<[Food]>([.tomatoes, .potatoes])
 
         beforeEach {
-            viewModel = DetailViewModel(
-                selectionFactory: StubSelectionViewModelFactory(),
-                foodInfoFactory: StubFoodInfoViewModelFactory())
+            viewModel = DetailViewModel(foods: foods, factory: StubDetailViewModelFactory())
         }
 
         describe("DetailViewModel") {
@@ -83,7 +83,6 @@ class DetailViewModelSpec: QuickSpec {
 
             describe("foodListText") {
                 it("should return a String list from the array of Contents") {
-                    viewModel.foods.accept([.tomatoes, .potatoes])
                     let expected = L10n.Food.tomatoes + ", " + L10n.Food.potatoes
 
                     expect(viewModel.foodListText.value).to(equal(expected))

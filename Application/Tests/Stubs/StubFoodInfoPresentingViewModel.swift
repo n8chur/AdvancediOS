@@ -1,5 +1,6 @@
 import RxCocoa
 import Presentations
+import RxExtensions
 
 @testable import Application
 
@@ -9,9 +10,7 @@ class StubFoodInfoPresentingViewModel: FoodInfoPresentingViewModel {
 
     weak var foodInfoPresenter: FoodInfoPresenter?
 
-    let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.tomatoes])
-
-    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory, foods: foods) { [unowned self] viewModel in
+    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory) { [unowned self] viewModel in
         self.setupViewModel.accept(viewModel)
     }
 
@@ -23,9 +22,11 @@ class StubFoodInfoPresentingViewModel: FoodInfoPresentingViewModel {
 
 class StubFoodInfoViewModelFactory: FoodInfoViewModelFactoryProtocol {
 
+    let foods = Property<[Food]>([.tomatoes])
+
     let makeViewModel = BehaviorRelay<FoodInfoViewModel?>(value: nil)
 
-    func makeFoodInfoViewModel(with foods: BehaviorRelay<[Food]>) -> FoodInfoViewModel {
+    func makeFoodInfoViewModel() -> FoodInfoViewModel {
         let viewModel = FoodInfoViewModel(with: foods)
         makeViewModel.accept(viewModel)
         return viewModel

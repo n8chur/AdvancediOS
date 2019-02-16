@@ -7,9 +7,9 @@ import Action
 class FoodInfoViewModel: ViewModel {
 
     let isActive = BehaviorRelay(value: false)
-    let foods: BehaviorRelay<[Food]>
+    let foods: Property<[Food]>
 
-    init(with foods: BehaviorRelay<[Food]>) {
+    init(with foods: Property<[Food]>) {
         self.foods = foods
         foods
             .asObservable()
@@ -23,12 +23,14 @@ class FoodInfoViewModel: ViewModel {
 }
 
 protocol FoodInfoViewModelFactoryProtocol {
-    func makeFoodInfoViewModel(with foods: BehaviorRelay<[Food]>) -> FoodInfoViewModel
+    var foods: Property<[Food]> { get }
+
+    func makeFoodInfoViewModel() -> FoodInfoViewModel
 }
 
 extension FoodInfoViewModelFactoryProtocol {
 
-    func makeFoodInfoViewModel(with foods: BehaviorRelay<[Food]>) -> FoodInfoViewModel {
+    func makeFoodInfoViewModel() -> FoodInfoViewModel {
         return FoodInfoViewModel(with: foods)
     }
 

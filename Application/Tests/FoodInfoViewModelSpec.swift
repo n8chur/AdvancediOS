@@ -2,6 +2,7 @@ import Quick
 import Nimble
 import RxSwift
 import RxCocoa
+import RxExtensions
 
 @testable import Application
 
@@ -9,7 +10,7 @@ class FoodInfoViewModelSpec: QuickSpec {
     override func spec() {
 
         var viewModel: FoodInfoViewModel!
-        let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.potatoes])
+        let foods = Property<[Food]>([.potatoes])
 
         beforeEach {
             viewModel = FoodInfoViewModel(with: foods)

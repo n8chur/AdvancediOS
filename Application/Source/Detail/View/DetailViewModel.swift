@@ -21,9 +21,9 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
     let foodListTitle = Property(L10n.Detail.FoodList.title)
     let foodInfoButtonTitle = Property(L10n.Detail.FoodButton.title)
 
-    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory, foods: foods)
+    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory)
 
-    let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.beans, .greens, .potatoes, .tomatoes])
+    private let foods: Property<[Food]>
 
     private(set) lazy var foodListText: Property<String> = {
         let observable = foods.map { foods -> String in
@@ -50,7 +50,8 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
 
     typealias Factory = SelectionViewModelFactoryProtocol & FoodInfoViewModelFactoryProtocol
 
-    init(factory: Factory) {
+    init(foods: Property<[Food]>, factory: Factory) {
+        self.foods = foods
         self.factory = factory
     }
 
@@ -61,13 +62,20 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresenti
 }
 
 protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, FoodInfoViewModelFactoryProtocol {
+    var foods: Property<[Food]> { get }
+
     func makeDetailViewModel() -> DetailViewModel
 }
 
 extension DetailViewModelFactoryProtocol {
 
+    // This can be backed by a datastore. For now, use a computed property to represent persistent data
+    var foods: Property<[Food]> {
+        return Property([.beans, .greens, .potatoes, .tomatoes])
+    }
+
     func makeDetailViewModel() -> DetailViewModel {
-        return DetailViewModel(factory: self)
+        return DetailViewModel(foods: foods, factory: self)
     }
 
 }

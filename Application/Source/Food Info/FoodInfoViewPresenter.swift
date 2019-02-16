@@ -19,7 +19,6 @@ extension FoodInfoPresentingViewModel {
     ///             is executed. Consumers can use this to observe changes to the presented view model if necessary.
     func makePresentFoodInfo(
         withFactory factory: FoodInfoViewModelFactoryProtocol,
-        foods: BehaviorRelay<[Food]>,
         setupViewModel: ((FoodInfoViewModel) -> Void)? = nil
     ) -> Action<Bool, FoodInfoViewModel> {
         return makePresentAction { [weak self] animated -> DismissablePresentationContext<FoodInfoViewModel>? in
@@ -29,7 +28,7 @@ extension FoodInfoPresentingViewModel {
                     return nil
             }
 
-            let viewModel = factory.makeFoodInfoViewModel(with: foods)
+            let viewModel = factory.makeFoodInfoViewModel()
 
             setupViewModel?(viewModel)
 
