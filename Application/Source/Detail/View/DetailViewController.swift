@@ -50,7 +50,7 @@ class DetailViewController: UIViewController, ViewController {
             .disposed(by: disposeBag)
 
         detailView.button.rx.bind(to: viewModel.presentSelection, input: true)
-        detailView.foodInfoButton.rx.bind(to: viewModel.presentFoodTable, input: true)
+        detailView.foodInfoButton.rx.bind(to: viewModel.presentFoodInfo, input: true)
 
         rx.isAppeared
             .bind(to: viewModel.isActive)
@@ -69,7 +69,7 @@ class DetailViewController: UIViewController, ViewController {
 
 }
 
-protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol, FoodTableViewControllerFactoryProtocol {
+protocol DetailViewControllerFactoryProtocol: SelectionViewControllerFactoryProtocol, FoodInfoViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
 
     func makeDetailViewController(viewModel: DetailViewModel) -> DetailViewController
@@ -81,8 +81,8 @@ extension DetailViewControllerFactoryProtocol {
         return DetailViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
-    func makeFoodTableViewController(viewModel: FoodTableViewModel) -> FoodTableViewController {
-        return FoodTableViewController(viewModel: viewModel, themeProvider: themeProvider)
+    func makeFoodInfoViewController(viewModel: FoodInfoViewModel) -> FoodInfoViewController {
+        return FoodInfoViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }

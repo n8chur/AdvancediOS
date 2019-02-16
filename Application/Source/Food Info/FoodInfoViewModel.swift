@@ -4,7 +4,7 @@ import RxExtensions
 import Presentations
 import Action
 
-class FoodTableViewModel: ViewModel {
+class FoodInfoViewModel: ViewModel {
 
     let isActive = BehaviorRelay(value: false)
     let foods: BehaviorRelay<[Food]>
@@ -22,14 +22,14 @@ class FoodTableViewModel: ViewModel {
 
 }
 
-protocol FoodTableViewModelFactoryProtocol {
-    func makeFoodTableViewModel(with foods: BehaviorRelay<[Food]>) -> FoodTableViewModel
+protocol FoodInfoViewModelFactoryProtocol {
+    func makeFoodInfoViewModel(with foods: BehaviorRelay<[Food]>) -> FoodInfoViewModel
 }
 
-extension FoodTableViewModelFactoryProtocol {
+extension FoodInfoViewModelFactoryProtocol {
 
-    func makeFoodTableViewModel(with foods: BehaviorRelay<[Food]>) -> FoodTableViewModel {
-        return FoodTableViewModel(with: foods)
+    func makeFoodInfoViewModel(with foods: BehaviorRelay<[Food]>) -> FoodInfoViewModel {
+        return FoodInfoViewModel(with: foods)
     }
 
 }

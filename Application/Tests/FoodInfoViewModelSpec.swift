@@ -5,17 +5,17 @@ import RxCocoa
 
 @testable import Application
 
-class FoodTableViewModelSpec: QuickSpec {
+class FoodInfoViewModelSpec: QuickSpec {
     override func spec() {
 
-        var viewModel: FoodTableViewModel!
+        var viewModel: FoodInfoViewModel!
         let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.potatoes])
 
         beforeEach {
-            viewModel = FoodTableViewModel(with: foods)
+            viewModel = FoodInfoViewModel(with: foods)
         }
 
-        describe("FoodTableViewModel") {
+        describe("FoodInfoViewModel") {
             it("should initialize with a false isActive") {
                 expect(viewModel.isActive.value).to(beFalse())
             }

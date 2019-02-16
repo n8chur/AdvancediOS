@@ -2,7 +2,7 @@ import Themer
 import UIKit
 import Core
 
-struct FoodTableViewControllerStyle: Style {
+struct FoodInfoViewControllerStyle: Style {
 
     let theme: Theme
 
@@ -10,7 +10,7 @@ struct FoodTableViewControllerStyle: Style {
         self.theme = theme
     }
 
-    func apply(to styleable: FoodTableViewController) {
+    func apply(to styleable: FoodInfoViewController) {
     }
 
 }

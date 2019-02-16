@@ -30,7 +30,7 @@ extension DetailPresentingViewModel {
             let viewModel = factory.makeDetailViewModel()
 
             viewModel.selectionPresenter = presenter
-            viewModel.foodTablePresenter = presenter
+            viewModel.foodInfoPresenter = presenter
 
             setupViewModel?(viewModel)
 
@@ -42,6 +42,6 @@ extension DetailPresentingViewModel {
 
 }
 
-protocol DetailPresenter: SelectionPresenter, FoodTablePresenter {
+protocol DetailPresenter: SelectionPresenter, FoodInfoPresenter {
     func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation
 }

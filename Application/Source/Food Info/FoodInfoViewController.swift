@@ -4,13 +4,13 @@ import RxSwift
 import Action
 import Core
 
-class FoodTableViewController: UITableViewController, ViewController {
+class FoodInfoViewController: UITableViewController, ViewController {
 
-    let viewModel: FoodTableViewModel
+    let viewModel: FoodInfoViewModel
 
     let themeProvider: ThemeProvider
 
-    required init(viewModel: FoodTableViewModel, themeProvider: ThemeProvider) {
+    required init(viewModel: FoodInfoViewModel, themeProvider: ThemeProvider) {
         self.viewModel = viewModel
         self.themeProvider = themeProvider
 
@@ -31,7 +31,7 @@ class FoodTableViewController: UITableViewController, ViewController {
             .bind(to: viewModel.isActive)
             .disposed(by: disposeBag)
 
-        themeProvider.bindToStyleable(self) { FoodTableViewControllerStyle(theme: $0) }
+        themeProvider.bindToStyleable(self) { FoodInfoViewControllerStyle(theme: $0) }
     }
 
     @available(*, unavailable)
@@ -45,16 +45,16 @@ class FoodTableViewController: UITableViewController, ViewController {
 
 }
 
-protocol FoodTableViewControllerFactoryProtocol {
+protocol FoodInfoViewControllerFactoryProtocol {
     var themeProvider: ThemeProvider { get }
 
-    func makeFoodTableViewController(viewModel: FoodTableViewModel) -> FoodTableViewController
+    func makeFoodInfoViewController(viewModel: FoodInfoViewModel) -> FoodInfoViewController
 }
 
-extension FoodTableViewControllerFactoryProtocol {
+extension FoodInfoViewControllerFactoryProtocol {
 
-    func makeFoodTableViewController(viewModel: FoodTableViewModel) -> FoodTableViewController {
-        return FoodTableViewController(viewModel: viewModel, themeProvider: themeProvider)
+    func makeFoodInfoViewController(viewModel: FoodInfoViewModel) -> FoodInfoViewController {
+        return FoodInfoViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
 }

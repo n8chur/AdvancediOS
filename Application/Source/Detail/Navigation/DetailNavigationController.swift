@@ -44,10 +44,10 @@ extension DetailNavigationController: SelectionPresenter {
 
 }
 
-extension DetailNavigationController: FoodTablePresenter {
+extension DetailNavigationController: FoodInfoPresenter {
 
-    func foodTablePresentation(of viewModel: FoodTableViewModel) -> DismissablePresentation {
-        let viewController = factory.makeFoodTableViewController(viewModel: viewModel)
+    func foodInfoPresentation(of viewModel: FoodInfoViewModel) -> DismissablePresentation {
+        let viewController = factory.makeFoodInfoViewController(viewModel: viewModel)
         return makePushPresentation(of: viewController)
     }
 

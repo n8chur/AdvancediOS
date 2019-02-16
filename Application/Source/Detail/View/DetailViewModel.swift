@@ -4,12 +4,12 @@ import RxExtensions
 import Presentations
 import Action
 
-class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodTablePresentingViewModel {
+class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresentingViewModel {
 
     let isActive = BehaviorRelay(value: false)
 
     weak var selectionPresenter: SelectionPresenter?
-    weak var foodTablePresenter: FoodTablePresenter?
+    weak var foodInfoPresenter: FoodInfoPresenter?
 
     let title = Property(L10n.Detail.title)
 
@@ -21,7 +21,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodTablePresent
     let foodListTitle = Property(L10n.Detail.FoodList.title)
     let foodInfoButtonTitle = Property(L10n.Detail.FoodButton.title)
 
-    private(set) lazy var presentFoodTable = makePresentFoodTable(withFactory: foodTableFactory, foods: foods)
+    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: foodInfoFactory, foods: foods)
 
     let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.beans, .greens, .potatoes, .tomatoes])
 
@@ -48,26 +48,26 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodTablePresent
                 .disposed(by: self.disposeBag)
         })
 
-    init(selectionFactory: SelectionViewModelFactoryProtocol, foodTableFactory: FoodTableViewModelFactoryProtocol) {
+    init(selectionFactory: SelectionViewModelFactoryProtocol, foodInfoFactory: FoodInfoViewModelFactoryProtocol) {
         self.selectionFactory = selectionFactory
-        self.foodTableFactory = foodTableFactory
+        self.foodInfoFactory = foodInfoFactory
     }
 
     private let selectionResultRelay = BehaviorRelay<String?>(value: nil)
     private let selectionFactory: SelectionViewModelFactoryProtocol
-    private let foodTableFactory: FoodTableViewModelFactoryProtocol
+    private let foodInfoFactory: FoodInfoViewModelFactoryProtocol
     private let disposeBag = DisposeBag()
 
 }
 
-protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, FoodTableViewModelFactoryProtocol {
+protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, FoodInfoViewModelFactoryProtocol {
     func makeDetailViewModel() -> DetailViewModel
 }
 
 extension DetailViewModelFactoryProtocol {
 
     func makeDetailViewModel() -> DetailViewModel {
-        return DetailViewModel(selectionFactory: self, foodTableFactory: self)
+        return DetailViewModel(selectionFactory: self, foodInfoFactory: self)
     }
 
 }
