@@ -4,11 +4,12 @@ import RxExtensions
 import Presentations
 import Action
 
-class DetailViewModel: ViewModel, SelectionPresentingViewModel {
+class DetailViewModel: ViewModel, SelectionPresentingViewModel, FoodInfoPresentingViewModel {
 
     let isActive = BehaviorRelay(value: false)
 
     weak var selectionPresenter: SelectionPresenter?
+    weak var foodInfoPresenter: FoodInfoPresenter?
 
     let title = Property(L10n.Detail.title)
 
@@ -20,12 +21,9 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     let foodListTitle = Property(L10n.Detail.FoodList.title)
     let foodInfoButtonTitle = Property(L10n.Detail.FoodButton.title)
 
-    let presentContents = CocoaAction { _ in
-        print("Content button pressed")
-        return .empty()
-    }
+    private(set) lazy var presentFoodInfo = makePresentFoodInfo(withFactory: factory)
 
-    let foods: BehaviorRelay<[Food]> = BehaviorRelay(value: [.beans, .greens, .potatoes, .tomatoes])
+    private let foods: Property<[Food]>
 
     private(set) lazy var foodListText: Property<String> = {
         let observable = foods.map { foods -> String in
@@ -37,7 +35,7 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
     }()
 
     private(set) lazy var presentSelection = makePresentSelection(
-        withFactory: selectionFactory,
+        withFactory: factory,
         defaultValue: { [weak self] in
             return self?.selectionResult.value
         },
@@ -50,24 +48,29 @@ class DetailViewModel: ViewModel, SelectionPresentingViewModel {
                 .disposed(by: self.disposeBag)
         })
 
-    init(selectionFactory: SelectionViewModelFactoryProtocol) {
-        self.selectionFactory = selectionFactory
+    typealias Factory = SelectionViewModelFactoryProtocol & FoodInfoViewModelFactoryProtocol
+
+    init(foods: Property<[Food]>, factory: Factory) {
+        self.foods = foods
+        self.factory = factory
     }
 
     private let selectionResultRelay = BehaviorRelay<String?>(value: nil)
-    private let selectionFactory: SelectionViewModelFactoryProtocol
+    private let factory: Factory
     private let disposeBag = DisposeBag()
 
 }
 
-protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol {
+protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, FoodInfoViewModelFactoryProtocol {
+    var foods: Property<[Food]> { get }
+
     func makeDetailViewModel() -> DetailViewModel
 }
 
 extension DetailViewModelFactoryProtocol {
 
     func makeDetailViewModel() -> DetailViewModel {
-        return DetailViewModel(selectionFactory: self)
+        return DetailViewModel(foods: foods, factory: self)
     }
 
 }

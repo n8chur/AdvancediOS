@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol SelectionPresentingViewModel: class, PresentingViewModel {
+protocol SelectionPresentingViewModel: AnyObject, PresentingViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
     var presentSelection: Action<Bool, SelectionViewModel> { get }
 }
@@ -40,6 +40,6 @@ extension SelectionPresentingViewModel {
 
 }
 
-protocol SelectionPresenter: class {
+protocol SelectionPresenter: AnyObject {
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation
 }

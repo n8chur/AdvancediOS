@@ -31,5 +31,3 @@ extension HomeNavigationModelFactoryProtocol {
     }
 
 }
-
-class HomeNavigationModelFactory: HomeNavigationModelFactoryProtocol { }

@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxExtensions
 
-public protocol PresentationContext: class {
+public protocol PresentationContext: AnyObject {
     associatedtype ViewModelType: ViewModel
     associatedtype PresentationType: Presentation
     var presentation: PresentationType { get }

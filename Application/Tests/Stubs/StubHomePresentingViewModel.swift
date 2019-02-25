@@ -1,4 +1,5 @@
 import RxSwift
+import RxExtensions
 import RxCocoa
 import Action
 
@@ -21,6 +22,8 @@ class StubHomePresentingViewModel: HomePresentingViewModel {
 }
 
 class StubHomeViewModelFactory: HomeViewModelFactoryProtocol {
+
+    let foods = Property<[Food]>([.tomatoes])
 
     let makeViewModel = BehaviorRelay<HomeViewModel?>(value: nil)
 

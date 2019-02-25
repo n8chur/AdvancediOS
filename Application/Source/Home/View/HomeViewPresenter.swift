@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol HomePresentingViewModel: class, PresentingViewModel {
+protocol HomePresentingViewModel: AnyObject, PresentingViewModel {
     var homePresenter: HomePresenter? { get set }
     var presentHome: Action<Bool, HomeViewModel> { get }
 }

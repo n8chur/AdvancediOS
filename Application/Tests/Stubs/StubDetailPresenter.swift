@@ -11,6 +11,10 @@ class StubDetailPresenter: StubSelectionPresenter {
 
 extension StubDetailPresenter: DetailPresenter {
 
+    func foodInfoPresentation(of viewModel: FoodInfoViewModel) -> DismissablePresentation {
+        return DismissablePresentation.stub()
+    }
+
     func detailPresentation(of viewModel: DetailViewModel) -> DismissablePresentation {
         detailPresentation.accept(viewModel)
         return DismissablePresentation.stub()
