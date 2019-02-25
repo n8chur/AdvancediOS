@@ -81,8 +81,4 @@ extension DetailViewControllerFactoryProtocol {
         return DetailViewController(viewModel: viewModel, themeProvider: themeProvider)
     }
 
-    func makeFoodInfoViewController(viewModel: FoodInfoViewModel) -> FoodInfoViewController {
-        return FoodInfoViewController(viewModel: viewModel, themeProvider: themeProvider)
-    }
-
 }

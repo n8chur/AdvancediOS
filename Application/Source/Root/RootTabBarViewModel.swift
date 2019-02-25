@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxExtensions
 import Presentations
 import Core
 
@@ -38,6 +39,9 @@ extension RootTabBarModelFactoryProtocol {
 class RootTabBarModelFactory: RootTabBarModelFactoryProtocol {
 
     let themeProvider: ThemeProvider
+
+    // This can be backed by a model store. For now, use a property to represent persistent data
+    let foods = Property<[Food]>([.beans, .greens, .potatoes, .tomatoes])
 
     init(themeProvider: ThemeProvider) {
         self.themeProvider = themeProvider

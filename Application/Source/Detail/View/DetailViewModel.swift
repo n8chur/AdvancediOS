@@ -69,11 +69,6 @@ protocol DetailViewModelFactoryProtocol: SelectionViewModelFactoryProtocol, Food
 
 extension DetailViewModelFactoryProtocol {
 
-    // This can be backed by a datastore. For now, use a computed property to represent persistent data
-    var foods: Property<[Food]> {
-        return Property([.beans, .greens, .potatoes, .tomatoes])
-    }
-
     func makeDetailViewModel() -> DetailViewModel {
         return DetailViewModel(foods: foods, factory: self)
     }
