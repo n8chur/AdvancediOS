@@ -12,7 +12,7 @@ Advanced concepts include:
 - [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development) style unit testing
 - Dynamic UI theming
 - Programmatic UI
-- Advanced logging
+- A custom logging framework that leverages [XCGLogger](https://github.com/DaveWoodCom/XCGLogger)
 - Using internal frameworks for more modular code
 - [Carthage](https://github.com/Carthage/Carthage) for iOS dependency management with caching support using [Rome](https://github.com/blender/Rome)
 - Version pinning of as many tooling dependencies as possible using [Mint](https://github.com/yonaskolb/Mint) and [Bundler](https://bundler.io).
