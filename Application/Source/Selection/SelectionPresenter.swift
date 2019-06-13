@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol SelectionPresentingViewModel: class, PresentingViewModel {
+protocol SelectionPresentingViewModel: AnyObject, PresentingViewModel {
     var selectionPresenter: SelectionPresenter? { get set }
     var presentSelection: Action<Bool, SelectionViewModel> { get }
 }
@@ -13,8 +13,8 @@ extension SelectionPresentingViewModel {
     ///
     /// - Parameter factory: A factory to be used to generate the presented view model.
     /// - Parameter defaultValue: A closure that provides the default value of the selection input.
-    /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
-    ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
+    /// - Parameter setupViewModel: This closure will be called with the presented view model when a present action
+    ///             is executed. Consumers can use this to observe changes to the presented view model if necessary.
     func makePresentSelection(
         withFactory factory: SelectionViewModelFactoryProtocol,
         defaultValue: (() -> String?)? = nil,
@@ -40,6 +40,6 @@ extension SelectionPresentingViewModel {
 
 }
 
-protocol SelectionPresenter: class {
+protocol SelectionPresenter: AnyObject {
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation
 }

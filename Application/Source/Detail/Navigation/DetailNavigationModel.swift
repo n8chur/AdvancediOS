@@ -31,5 +31,3 @@ extension DetailNavigationModelFactoryProtocol {
     }
 
 }
-
-class DetailNavigationModelFactory: DetailNavigationModelFactoryProtocol { }

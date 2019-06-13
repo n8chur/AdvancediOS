@@ -7,8 +7,6 @@ targets:
       - Core/Source
       - Core/Supporting Files
       - path: Core/Resources
-        excludes:
-          - "*.txt"
     dependencies:
       - target: Themer
       - target: Logger

@@ -15,6 +15,14 @@ internal enum L10n {
   internal enum Detail {
     /// Details
     internal static let title = L10n.tr("Localizable", "detail.title")
+    internal enum FoodButton {
+      /// Food Info
+      internal static let title = L10n.tr("Localizable", "detail.food_button.title")
+    }
+    internal enum FoodList {
+      /// Ingredients
+      internal static let title = L10n.tr("Localizable", "detail.food_list.title")
+    }
     internal enum Select {
       /// Select Text
       internal static let title = L10n.tr("Localizable", "detail.select.title")
@@ -26,6 +34,17 @@ internal enum L10n {
       /// Detail
       internal static let title = L10n.tr("Localizable", "detail_navigation.tab_bar_item.title")
     }
+  }
+
+  internal enum Food {
+    /// Beans
+    internal static let beans = L10n.tr("Localizable", "food.beans")
+    /// Greens
+    internal static let greens = L10n.tr("Localizable", "food.greens")
+    /// Potatoes
+    internal static let potatoes = L10n.tr("Localizable", "food.potatoes")
+    /// Tomatoes
+    internal static let tomatoes = L10n.tr("Localizable", "food.tomatoes")
   }
 
   internal enum Home {

@@ -39,6 +39,15 @@ extension HomeNavigationController: DetailPresenter {
 
 }
 
+extension HomeNavigationController: FoodInfoPresenter {
+
+    func foodInfoPresentation(of viewModel: FoodInfoViewModel) -> DismissablePresentation {
+        let viewController = factory.makeFoodInfoViewController(viewModel: viewModel)
+        return makePushPresentation(of: viewController)
+    }
+
+}
+
 extension HomeNavigationController: SelectionPresenter {
 
     func selectionPresentation(of viewModel: SelectionViewModel) -> DismissablePresentation {

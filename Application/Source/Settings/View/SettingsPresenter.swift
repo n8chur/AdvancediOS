@@ -2,7 +2,7 @@ import RxSwift
 import Action
 import Presentations
 
-protocol SettingsPresentingViewModel: class, PresentingViewModel {
+protocol SettingsPresentingViewModel: AnyObject, PresentingViewModel {
     var settingsPresenter: SettingsPresenter? { get set }
     var presentSettings: Action<Bool, SettingsViewModel> { get }
 }
@@ -12,8 +12,8 @@ extension SettingsPresentingViewModel {
     /// Makes an action that is suitable to be set as the presentSettings action.
     ///
     /// - Parameter factory: A factory to be used to generate the presented view model.
-    /// - Parameter setupViewModel: This closure will be called with the presenting view model when a present action
-    ///             is executed. Consumers can use this to observe changes to the presenting view model if necessary.
+    /// - Parameter setupViewModel: This closure will be called with the presented view model when a present action
+    ///             is executed. Consumers can use this to observe changes to the presented view model if necessary.
     func makePresentSettings(
         withFactory factory: SettingsViewModelFactoryProtocol,
         setupViewModel: ((SettingsViewModel) -> Void)? = nil
@@ -37,6 +37,6 @@ extension SettingsPresentingViewModel {
 
 }
 
-protocol SettingsPresenter: class {
+protocol SettingsPresenter: AnyObject {
     func settingsPresentation(of viewModel: SettingsViewModel) -> DismissablePresentation
 }

@@ -1,4 +1,5 @@
 import RxCocoa
+import RxExtensions
 
 @testable import Application
 
@@ -20,10 +21,12 @@ class StubDetailPresentingViewModel: DetailPresentingViewModel {
 
 class StubDetailViewModelFactory: DetailViewModelFactoryProtocol {
 
+    let foods = Property<[Food]>([.tomatoes])
+
     let makeViewModel = BehaviorRelay<DetailViewModel?>(value: nil)
 
     func makeDetailViewModel() -> DetailViewModel {
-        let viewModel = DetailViewModel(selectionFactory: self)
+        let viewModel = DetailViewModel(foods: foods, factory: self)
         makeViewModel.accept(viewModel)
         return viewModel
     }

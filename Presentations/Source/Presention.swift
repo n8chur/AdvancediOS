@@ -4,7 +4,7 @@ import RxCocoa
 import Action
 import RxExtensions
 
-public protocol Presentation: class {
+public protocol Presentation: AnyObject {
     typealias MakePresent = (_ presentedViewController: UIViewController, _ animated: Bool) -> Completable
     var viewController: UIViewController { get }
     var present: CompletableAction<Bool> { get }
