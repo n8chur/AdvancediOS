@@ -22,7 +22,7 @@ targets:
   Application:
     type: application
     platform: iOS
-    sources: 
+    sources:
       - Application/Source
       - Application/Supporting Files
     dependencies:
@@ -32,6 +32,7 @@ targets:
       - target: Themer
       - target: Logger
       - carthage: RxSwift
+      - carthage: RxRelay
       - carthage: RxCocoa
       - carthage: SnapKit
     scheme:
@@ -46,7 +47,7 @@ targets:
     type: bundle.unit-test
     settings:
       TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Application.app/Application"
-    sources: 
+    sources:
       - Application/Tests
       - Presentations/Tests/Stubs
       - Themer/Tests/Stubs
