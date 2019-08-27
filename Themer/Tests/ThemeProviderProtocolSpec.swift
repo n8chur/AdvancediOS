@@ -17,7 +17,7 @@ class ThemeProviderProtocolSpec: QuickSpec {
 
                 expect(view.themeName).to(equal("light"))
 
-                themeProvider.theme.value = .dark
+                themeProvider.theme.accept(.dark)
 
                 expect(view.themeName).to(equal("dark"))
             }

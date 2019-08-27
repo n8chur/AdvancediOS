@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import RxSwift
+import RxRelay
 import Action
 
 @testable import Presentations
@@ -16,7 +17,7 @@ class PresentationContextSpec: QuickSpec {
                         let stubPresentation = DismissablePresentation.stub()
                         let context = ResultPresentationContext(presentation: stubPresentation, viewModel: viewModel, presentAnimated: false, dismissAnimated: false)
 
-                        let dismissDidExecute = Variable(false)
+                        let dismissDidExecute = BehaviorRelay(value: false)
                         _ = context.presentation.dismiss.completed
                             .map { true }
                             .bind(to: dismissDidExecute)
@@ -35,7 +36,7 @@ class PresentationContextSpec: QuickSpec {
                         let stubPresentation = DismissablePresentation.stub()
                         let context = ResultPresentationContext(presentation: stubPresentation, viewModel: viewModel, presentAnimated: false, dismissAnimated: false)
 
-                        let dismissDidExecute = Variable(false)
+                        let dismissDidExecute = BehaviorRelay(value: false)
                         _ = context.presentation.dismiss.completed
                             .map { true }
                             .bind(to: dismissDidExecute)

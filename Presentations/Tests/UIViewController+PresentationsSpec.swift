@@ -47,7 +47,7 @@ class UIViewControllerPresentationsSpec: QuickSpec {
                 expect(cancelButton.isEnabled).to(equal(true))
 
                 // Simulate a button press.
-                _ = cancelButton.target?.perform(cancelButton.action)
+                _ = cancelButton.target?.perform(cancelButton.action, with: cancelButton)
 
                 expect(animatedValue).toEventually(beFalse())
             }
