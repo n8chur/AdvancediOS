@@ -156,7 +156,7 @@ DEPENDENCIES
   fastlane (~> 2.129)
 
 RUBY VERSION
-   ruby 2.5.3p105
+   ruby 2.5.5p157
 
 BUNDLED WITH
-   1.17.3
+   2.0.2
