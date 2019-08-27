@@ -9,6 +9,7 @@ name: Application
 # settings:
 #  DEVELOPMENT_TEAM: "XXX"
 settings:
+  SWIFT_VERSION: 5
   # These values are read in the appropriate Info.plist files.
   APPLICATION_VERSION: "0.1.0"
   APPLICATION_BUILD_NUMBER: 42 # This should automatically be incremented by CI when generating a build
