@@ -23,7 +23,7 @@ This project is mostly intended to be used as a playground to experiment with ne
 
 ### Prerequisites
 
-- Ruby installation matching the version found in [.ruby-version](.ruby-version) (use [rbenv](https://github.com/rbenv/rbenv) to switch versions)
+- Ruby installation matching the version found in [.ruby-version](.ruby-version) (use [RVM](https://rvm.io/rvm/basics) to switch versions)
 - [Homebrew](https://brew.sh)
 - [Bundler](https://bundler.io)
 - Xcode installation matching version found in [.xcode-version](.xcode-version) (use [xcode-install](https://github.com/KrauseFx/xcode-install) to switch versions)
