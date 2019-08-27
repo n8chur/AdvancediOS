@@ -2,7 +2,7 @@
 default_platform(:ios)
 
 # Parse Mintfile to get repo name with version numbers to run mint commands.
-def mint_repo_map(repo_names) 
+def mint_repo_map(repo_names)
   repo_map = {}
 
   File.readlines('Mintfile').each do |line|
@@ -97,7 +97,7 @@ platform :ios do
     Dir.chdir("..") do
       sh "#{CARTHAGE} checkout"
       sh "rome download --platform iOS"
-      sh "rome list --missing --platform ios | awk '{print $1}' | xargs #{CARTHAGE} build --platform ios"
+      sh "rome list --missing --platform ios | awk '{print $1}' | xargs #{CARTHAGE} build --platform ios --no-use-binaries"
       sh "rome list --missing --platform ios | awk '{print $1}' | xargs rome upload --platform ios"
     end
   end
@@ -257,7 +257,7 @@ platform :ios do
           swiftgen_target(
             target: target
           )
-          
+
           begin
             sh "diff -r #{SWIFTGEN_GENERATED_FOLDER_RELATIVE_PATH} #{dir}/#{SWIFTGEN_GENERATED_FOLDER_NAME}"
           rescue => ex
@@ -267,7 +267,7 @@ platform :ios do
         ensure
           FileUtils.remove_entry dir
         end
-      else 
+      else
         UI.message "Skipping SwiftGen verification for #{target}..."
       end
     end
