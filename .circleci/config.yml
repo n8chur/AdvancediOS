@@ -3,8 +3,8 @@ jobs:
   build:
 
     macos:
-      xcode: "10.1.0"
-    
+      xcode: "10.2.1"
+
     # This should set the approprate ruby version from the .ruby-version file
     shell: /bin/bash --login -eo pipefail
 
