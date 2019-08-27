@@ -6,7 +6,7 @@ public protocol UIButtonStyle: UIViewStyle where Styleable: UIButton {
 }
 
 public extension UIButtonStyle {
-    public func apply(to styleable: UIButton) {
+    func apply(to styleable: UIButton) {
         styleable.setTitleColor(titleColor, for: .normal)
         styleable.contentEdgeInsets = contentEdgeInsets
 

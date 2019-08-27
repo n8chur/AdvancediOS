@@ -50,8 +50,8 @@ public class DismissablePresentation: Presentation {
     public init(presentedViewController viewController: UIViewController, present: @escaping MakePresent, dismiss: @escaping MakeDismiss, didDismiss: Observable<()>) {
         self.viewController = viewController
 
-        let canPresent = Variable<Bool>(true)
-        let canDismiss = Variable<Bool>(false)
+        let canPresent = BehaviorRelay<Bool>(value: true)
+        let canDismiss = BehaviorRelay<Bool>(value: false)
 
         self.present = CompletableAction<Bool>(enabledIf: canPresent.asObservable()) { [weak viewController] animated -> Completable in
             guard let viewController = viewController else {

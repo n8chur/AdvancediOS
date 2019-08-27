@@ -7,7 +7,7 @@ public enum Theme {
 
 public extension Theme {
 
-    public var color: ColorSet {
+    var color: ColorSet {
         switch self {
         case .light: return ColorSet(
             bodyText: Color.lightContent.color,
@@ -28,14 +28,14 @@ public extension Theme {
         }
     }
 
-    public var statusBarStyle: UIStatusBarStyle {
+    var statusBarStyle: UIStatusBarStyle {
         switch self {
         case .light: return .default
         case .dark: return .lightContent
         }
     }
 
-    public var layout: Layout {
+    var layout: Layout {
         return Layout(
             interitemSpacing: 20,
             containerSpacing: 35,

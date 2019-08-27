@@ -5,7 +5,7 @@ public protocol UINavigationBarStyle: Style where Styleable: UINavigationBar {
 }
 
 public extension UINavigationBarStyle {
-    public func apply(to styleable: UINavigationBar) {
+    func apply(to styleable: UINavigationBar) {
         styleable.barTintColor = barTintColor
     }
 }

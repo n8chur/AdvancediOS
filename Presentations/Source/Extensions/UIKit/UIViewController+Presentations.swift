@@ -5,7 +5,7 @@ import Action
 
 public extension UIViewController {
 
-    public func makeModalPresentation(of viewController: UIViewController) -> DismissablePresentation {
+    func makeModalPresentation(of viewController: UIViewController) -> DismissablePresentation {
         let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 
@@ -48,7 +48,7 @@ public extension DismissablePresentation {
     ///
     /// - Parameter viewController: The view controller to add the navigation item to.
     /// - Parameter animated: Whether the dismissal should be animated.
-    public func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
+    func addCancelBarButtonItem(to viewController: UIViewController, animated: Bool) {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
         cancelButton.rx.bind(to: dismiss, input: animated)
         viewController.navigationItem.leftBarButtonItem = cancelButton

@@ -30,7 +30,7 @@ public final class Property<Element>: ObservableType {
         return relay.asObservable()
     }
 
-    public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.E == E {
+    public func subscribe<O: ObserverType>(_ observer: O) -> Disposable where O.Element == Element {
         return relay.subscribe(observer)
     }
 
@@ -39,7 +39,7 @@ public final class Property<Element>: ObservableType {
 }
 
 public extension BehaviorRelay {
-    public func asProperty() -> Property<E> {
+    func asProperty() -> Property<Element> {
         return Property(self)
     }
 }

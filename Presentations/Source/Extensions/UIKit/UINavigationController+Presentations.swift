@@ -3,7 +3,7 @@ import RxSwift
 
 public extension UINavigationController {
 
-    public func makePushPresentation(of viewController: UIViewController) -> DismissablePresentation {
+    func makePushPresentation(of viewController: UIViewController) -> DismissablePresentation {
         let present: DismissablePresentation.MakePresent = { [weak self] (viewController, animated) in
             guard let self = self else { fatalError() }
 

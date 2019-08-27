@@ -1,8 +1,9 @@
 import RxSwift
+import RxRelay
 import Themer
 
 class StubThemeProvider: ThemeProviderProtocol {
 
-    let theme = Variable<StubTheme>(.light)
+    let theme = BehaviorRelay<StubTheme>(value: .light)
 
 }

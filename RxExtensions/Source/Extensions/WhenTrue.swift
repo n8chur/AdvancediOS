@@ -1,6 +1,6 @@
 import RxSwift
 
-public extension ObservableType where Self.E == Bool {
+public extension ObservableType where Self.Element == Bool {
 
     /// Returns an observer that will subscribe to the trueObservable when the receiver sends true, and will subscribe
     /// to the falseObservable when the receiver sends false.
@@ -14,7 +14,7 @@ public extension ObservableType where Self.E == Bool {
     ///
     /// - Parameter trueObservable: The observable that will be subscribed to when the receiver sends true.
     /// - Parameter falseObservable: The observable that will be subscribed to when the receiver sends false.
-    public func whenTrue<Element>(subscribeTo trueObservable: Observable<Element>, otherwise falseObservable: Observable<Element> = Observable<Element>.empty()) -> Observable<Element> {
+    func whenTrue<Element>(subscribeTo trueObservable: Observable<Element>, otherwise falseObservable: Observable<Element> = Observable<Element>.empty()) -> Observable<Element> {
         return flatMapLatest { isActive in
             return isActive ? trueObservable : falseObservable
         }
