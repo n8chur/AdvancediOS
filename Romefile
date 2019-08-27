@@ -9,4 +9,5 @@ repositoryMap:
     - name: RxCocoa
     - name: RxAtomic
     - name: RxBlocking
+    - name: RxRelay
     - name: RxTest
