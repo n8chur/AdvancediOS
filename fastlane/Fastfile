@@ -25,7 +25,7 @@ MINT_REPOS = [
 ]
 MINT_REPO_MAP = mint_repo_map(MINT_REPOS)
 
-TEST_DEVICE = "iPhone XS"
+TEST_DEVICE = "iPhone Xʀ"
 
 SWIFTGEN = "mint run #{MINT_REPO_MAP[SWIFTGEN_MINT_REPO]} swiftgen"
 SWIFTGEN_CONFIG_FILENAME = "swiftgen.yml"
