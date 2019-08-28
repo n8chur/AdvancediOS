@@ -14,7 +14,7 @@ public extension PresentingViewModel {
     ///
     /// - Parameter context: A closure that returns a presentation context or nil if the context failed to be created.
     ///             If nil is returned, this action will have no effect.
-    public func makePresentAction<Input, PresentationContextType: PresentationContext>(
+    func makePresentAction<Input, PresentationContextType: PresentationContext>(
         withContext context: @escaping (Input) -> PresentationContextType?
     ) -> Action<Input, PresentationContextType.ViewModelType> {
         return Action<Input, PresentationContextType.ViewModelType> { input in

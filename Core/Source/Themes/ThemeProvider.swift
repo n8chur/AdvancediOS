@@ -1,9 +1,10 @@
 import Themer
 import RxSwift
+import RxRelay
 import Logger
 
 public class ThemeProvider: ThemeProviderProtocol {
-    public let theme = Variable<Theme>(.light)
+    public let theme = BehaviorRelay<Theme>(value: .light)
 
     public init() {
         theme.asObservable()

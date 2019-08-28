@@ -5,7 +5,7 @@ public protocol UITabBarStyle: Style where Styleable: UITabBar {
 }
 
 public extension UITabBarStyle {
-    public func apply(to styleable: UITabBar) {
+    func apply(to styleable: UITabBar) {
         styleable.barTintColor = barTintColor
     }
 }

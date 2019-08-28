@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-ruby File.open('.ruby-version', &:readline).delete "ruby-"
+ruby File.open('.ruby-version', &:readline)
 
-gem "fastlane", "~> 2.113"
+gem "fastlane", "~> 2.129"

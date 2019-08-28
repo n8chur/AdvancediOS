@@ -3,14 +3,15 @@ targets:
   Themer:
     type: framework
     platform: iOS
-    sources: 
+    sources:
       - Themer/Source
       - Themer/Supporting Files
     dependencies:
       - carthage: RxSwift
       - carthage: RxCocoa
+      - carthage: RxRelay
     scheme:
-      testTargets: 
+      testTargets:
         - ThemerTests
       gatherCoverageData: true
     prebuildScripts:
@@ -19,7 +20,7 @@ targets:
   ThemerTests:
     platform: iOS
     type: bundle.unit-test
-    sources: 
+    sources:
       - Themer/Tests
     dependencies:
       - target: Themer

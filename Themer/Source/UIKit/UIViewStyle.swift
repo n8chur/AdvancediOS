@@ -8,7 +8,7 @@ public protocol UIViewStyle: Style where Styleable: UIView {
 }
 
 public extension UIViewStyle {
-    public func apply(to styleable: UIView) {
+    func apply(to styleable: UIView) {
         styleable.backgroundColor = backgroundColor
         styleable.layer.cornerRadius = cornerRadius
         styleable.layer.borderWidth = borderWidth

@@ -8,7 +8,7 @@ public protocol UILabelStyle: Style where Styleable: UILabel {
 
 public extension UILabelStyle {
 
-    public func apply(to styleable: UILabel) {
+    func apply(to styleable: UILabel) {
         styleable.textColor = textColor
         styleable.textAlignment = textAlignment
         styleable.numberOfLines = numberOfLines

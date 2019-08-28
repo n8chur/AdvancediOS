@@ -5,7 +5,7 @@ public protocol UIWindowStyle: Style where Styleable: UIWindow {
 }
 
 public extension UIWindowStyle {
-    public func apply(to styleable: UIWindow) {
+    func apply(to styleable: UIWindow) {
         styleable.tintColor = tintColor
     }
 }
